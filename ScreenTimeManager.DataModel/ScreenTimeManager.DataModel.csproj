@@ -48,7 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Migrations\ScreenTimeManagerConfiguration.cs" />
+    <Compile Include="Migrations\UserAccountsConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DataContexts\ScreenTimeManagerContext.cs" />
+    <Compile Include="DataContexts\UserAccountsContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -56,6 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ModelPlan.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ScreenTimeManagerModels\" />
+    <Folder Include="UserAccountModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
