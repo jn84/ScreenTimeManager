@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTimeManager", "Screen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTimeManager.Tests", "ScreenTimeManager.Tests\ScreenTimeManager.Tests.csproj", "{8D927DF6-5168-4730-80BC-76B390597F95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTimeManager.DataModel", "ScreenTimeManager.DataModel\ScreenTimeManager.DataModel.csproj", "{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8D927DF6-5168-4730-80BC-76B390597F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D927DF6-5168-4730-80BC-76B390597F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D927DF6-5168-4730-80BC-76B390597F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
