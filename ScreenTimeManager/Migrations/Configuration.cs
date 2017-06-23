@@ -1,18 +1,18 @@
-namespace ScreenTimeManager.DataModel.Migrations
+namespace ScreenTimeManager.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class ScreenTimeManagerConfiguration : DbMigrationsConfiguration<ScreenTimeManager.DataModel.DataContexts.ScreenTimeManagerContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ScreenTimeManager.Models.ApplicationDbContext>
     {
-        public ScreenTimeManagerConfiguration()
+        public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(ScreenTimeManager.DataModel.DataContexts.ScreenTimeManagerContext context)
+        protected override void Seed(ScreenTimeManager.Models.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
