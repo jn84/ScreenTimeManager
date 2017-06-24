@@ -204,7 +204,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -301,6 +300,10 @@
     <ProjectReference Include="..\ScreenTimeManager.DataModel\ScreenTimeManager.DataModel.csproj">
       <Project>{b2d3f5f5-2ed7-4518-b8fc-33fe1d092c71}</Project>
       <Name>ScreenTimeManager.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScreenTimeManager.Models\ScreenTimeManager.Models.csproj">
+      <Project>{638ed674-9c10-42d9-93a7-ac11f2dc29da}</Project>
+      <Name>ScreenTimeManager.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
