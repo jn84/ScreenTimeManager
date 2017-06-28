@@ -1,11 +1,25 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
+using ScreenTimeManager.Models;
 
 namespace ScreenTimeManager.DataModel.DataContexts
 {
 	public class ScreenTimeManagerContext : DbContext
 	{
-		// DbSet
+		public DbSet<TotalScreenTimeChanged> TimeChanged { get; set; }
+		public DbSet<RuleBase> Rules { get; set; }
 
-		// override SaveChanges to persist certain data
+		public override int SaveChanges()
+		{
+			foreach (var timeChange in ChangeTracker.Entries<TotalScreenTimeChanged>()
+				.Where(m => m.State.Equals(EntityState.Added))
+				.Select(e => e.Entity))
+			{
+				timeChange.RecordAddedDateTime = DateTime.Now;
+			}
+
+			return base.SaveChanges();
+		}
 	}
 }

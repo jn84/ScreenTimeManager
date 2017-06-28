@@ -1,31 +1,26 @@
-﻿using System;
+﻿using ScreenTimeManager.Models.Enums;
+using System;
+using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ScreenTimeManager.Models
 {
-    public class RuleBase
+
+	// User RuleBase combined with input to create a TotalScreenTimeChanged entry
+	// These rules will be listed in the rule use page
+	public class RuleBase
     {
-	    public TimeSpan TimeEarned { get; set; }
+		[Key]
+	    public int Id { get; set; }
 
-		// A ratio (or fraction) object
-		// Tuple<numerator, denominator>
-		public Tuple<int, int> TimeEarningRatio { get; set; } 
-	}
+	    public RuleType MyRuleType { get; set; }
 
-	public class RuleFixed
-	{
-		
-	}
+	    public string RuleTitle { get; set; }
+	    public string RuleDescription { get; set; }
 
-	public class RuleVariable
-	{
+	    public Tuple<int, int> TimeEarningRatio { get; set; }
 
-		// The time applied to the rule
-		// This value is multiplied by TimeEarningRatio
-		public TimeSpan TimeApplied { get; set; }
-		
-	}
+	    public virtual ICollection<TotalScreenTimeChanged> UsedInChangeEntries { get; set; }
+    }
 }
