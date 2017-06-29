@@ -51,6 +51,18 @@
     <Compile Include="Migrations\201706290138432_Initial.Designer.cs">
       <DependentUpon>201706290138432_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706291548331_RemoveTupleFromRuleBaseAndReplace.cs" />
+    <Compile Include="Migrations\201706291548331_RemoveTupleFromRuleBaseAndReplace.Designer.cs">
+      <DependentUpon>201706291548331_RemoveTupleFromRuleBaseAndReplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706292008239_RemovedRuleUsedFRomTotalScreenTimeChanged.cs" />
+    <Compile Include="Migrations\201706292008239_RemovedRuleUsedFRomTotalScreenTimeChanged.Designer.cs">
+      <DependentUpon>201706292008239_RemovedRuleUsedFRomTotalScreenTimeChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706292126068_AddedRuleModifierToRuleBase.cs" />
+    <Compile Include="Migrations\201706292126068_AddedRuleModifierToRuleBase.Designer.cs">
+      <DependentUpon>201706292126068_AddedRuleModifierToRuleBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataContexts\ScreenTimeManagerContext.cs" />
@@ -65,6 +77,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706290138432_Initial.resx">
       <DependentUpon>201706290138432_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706291548331_RemoveTupleFromRuleBaseAndReplace.resx">
+      <DependentUpon>201706291548331_RemoveTupleFromRuleBaseAndReplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706292008239_RemovedRuleUsedFRomTotalScreenTimeChanged.resx">
+      <DependentUpon>201706292008239_RemovedRuleUsedFRomTotalScreenTimeChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706292126068_AddedRuleModifierToRuleBase.resx">
+      <DependentUpon>201706292126068_AddedRuleModifierToRuleBase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

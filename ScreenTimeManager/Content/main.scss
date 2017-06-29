@@ -15,6 +15,12 @@ body
     font-family: "Roboto", serif;
 }
 
+div.rule-apply {
+    height: 200px;
+    width: 300px;
+    background: $title-background-color;
+}
+
 div.title-bar
 {
     display: flex;
@@ -177,23 +183,29 @@ div.rule-title
 
 div.rule-settings
 {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 20px 20px;
     width: 100%;
-    height: 300px;
     background-color: $title-background-color;
+}
+
+p.rule-detail
+{
+    color: white;
+    margin: 5px 0px 5px 0px;
+}
+
+textarea.rule-variable-input
+{
+    margin: 5px 0px 5px 0px;
 }
 
 div.rule-apply-save
 {
-    width: 50%;
+    width: 100%;
     height: 70px;
     background-color: #111111;
-}
-
-div.rule-options
-{
-    width: 50%;
-    height: 70px;
-    background-color: #333333;
 }
 
 button.btn-apply-rule
@@ -202,14 +214,6 @@ button.btn-apply-rule
     width: 100%;
     background: green;
     border: green;
-}
-
-button.btn-delete-rule
-{
-    height: 100%;
-    width: 100%;
-    background: red;
-    border: red;
 }
 
 // Accordion code based on: https://codepen.io/raubaca/pen/PZzpVe?editors=1100

@@ -1,25 +1,36 @@
 ﻿@using Microsoft.Web.Mvc
 @using MvcContrib.UI.InputBuilder.Views
+@using ScreenTimeManager.Models.Enums
 @model ScreenTimeManager.Models.RuleBase
 
 <div class="rule-container">
     <!-- rule title colors depends on the rule type -->
     <div class="rule-title">
-        <input id="@("tab-" + Model.Id)" type="checkbox" name="tabs">
+        <input id="tab-@Model.Id" type="radio" name="tabs">
 
-        <label for="@("tab-" + Model.Id)">
+        <label for="tab-@Model.Id">
             @Model.RuleTitle
         </label>
 
         <div class="rule-content">
             <!-- rule-settings will be variable : dependent on the rule type -->
             <div class="rule-settings">
+                @if (Model.RuleType.Equals(RuleType.Fixed))
+                {
+                    Html.RenderPartial("_FixedRuleInput", Model);
+                }
+                else
+                {
+                    Html.RenderPartial("_VariableRuleInput", Model);
+                }
+                
             </div>
             <div class="rule-apply-save">
-                <button class="btn-apply-rule" id="@("apply-" + Model.Id)" onclick="@Url.Action()">Apply</button>
-            </div>
-            <div class="rule-options">
-                <button class="btn-delete-rule" id="@("delete-" + Model.Id)">Delete</button>
+                @*<button type="button" class="btn btn-success btn-sm  modal-link" data-targeturl="@Url.Action("Details","RuleBases",new { id = item.Id })">*@
+                <button type="button" class="btn-apply-rule modal-link"
+                        id="apply-@Model.Id" data-targeturl="@Url.Action("Details", "RuleBases", new {id = Model.Id})">
+                    Apply
+                </button>
             </div>
         </div>
     </div>

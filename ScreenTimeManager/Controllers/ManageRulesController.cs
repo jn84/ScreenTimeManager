@@ -11,60 +11,43 @@ using ScreenTimeManager.Models;
 
 namespace ScreenTimeManager.Controllers
 {
-    public class RuleBasesController : Controller
+    public class ManageRulesController : Controller
     {
         private ScreenTimeManagerContext db = new ScreenTimeManagerContext();
 
-        // GET: RuleBases
+        // GET: ManageRules
         public ActionResult Index()
         {
             return View(db.Rules.ToList());
         }
 
-        // GET: RuleBases/Details/5
+        // GET: ManageRules/Details/5
         public ActionResult Details(int? id)
         {
-			//if (id == null)
-			//{
-			//    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			//}
-			//RuleBase ruleBase = db.Rules.Find(id);
-			//if (ruleBase == null)
-			//{
-			//    return HttpNotFound();
-			//}
-			//return View(ruleBase);
-
-			if (id == null)
-				throw new Exception("Passed rule id was null");
-
-	        var timeHistory = new TotalScreenTimeChanged();
-
-			using (var ctx = new ScreenTimeManagerContext())
-	        {
-				var rule = ctx.Rules.Find(id);
-
-				timeHistory.RecordAddedDateTime = DateTime.Now;
-
-				// TODO: need some error management
-		        timeHistory.RuleUsedId = rule.Id;
-	        }
-
-			return PartialView("_ConfirmApplyRuleOverlay", timeHistory);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            RuleBase ruleBase = db.Rules.Find(id);
+            if (ruleBase == null)
+            {
+                return HttpNotFound();
+            }
+            return View(ruleBase);
         }
 
-        // GET: RuleBases/Create
+        // GET: ManageRules/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: RuleBases/Create
+        // POST: ManageRules/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,MyRuleType,RuleTitle,RuleDescription")] RuleBase ruleBase)
+        public ActionResult Create([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator")] RuleBase ruleBase)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +59,7 @@ namespace ScreenTimeManager.Controllers
             return View(ruleBase);
         }
 
-        // GET: RuleBases/Edit/5
+        // GET: ManageRules/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -91,12 +74,12 @@ namespace ScreenTimeManager.Controllers
             return View(ruleBase);
         }
 
-        // POST: RuleBases/Edit/5
+        // POST: ManageRules/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,MyRuleType,RuleTitle,RuleDescription")] RuleBase ruleBase)
+        public ActionResult Edit([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator")] RuleBase ruleBase)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +90,7 @@ namespace ScreenTimeManager.Controllers
             return View(ruleBase);
         }
 
-        // GET: RuleBases/Delete/5
+        // GET: ManageRules/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -122,7 +105,7 @@ namespace ScreenTimeManager.Controllers
             return View(ruleBase);
         }
 
-        // POST: RuleBases/Delete/5
+        // POST: ManageRules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

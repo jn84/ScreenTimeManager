@@ -1,52 +1,4 @@
-﻿@*<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
-</head>
-<body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-            </ul>
-            @Html.Partial("_LoginPartial")
-        </div>
-    </div>
-</div>
-<div class="container body-content">
-    @RenderBody()
-    <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-    </footer>
-</div>
-
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", required: false)
-</body>
-</html>*@
-
-
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -62,8 +14,12 @@
 </head>
 
 <body>
-<div class="overlay-container">
-    
+<div id="modal-container" class="modal fade" tabindex="-1" role="dialog">
+    <a href="#close" title="Close" class="modal-close-btn">X</a>
+    <div class="modal-content">
+        <div class="modal-body">
+        </div>
+    </div>
 </div>
 
 <div class="title-bar">
@@ -89,40 +45,13 @@
     </div>
     <div class="navigation-menu">
         @Html.ActionLink("Add/Remove Time", "Index", "RuleBases", null, new {@class = "nav-link"})
-        @Html.ActionLink("Add/Remove Rules", "Index", "RuleBases", null, new {@class = "nav-link"})
-        @Html.ActionLink("View Time History", "Index", "RuleBases", null, new {@class = "nav-link"})
+        @Html.ActionLink("Add/Remove Rules", "Index", "ManageRules", null, new {@class = "nav-link"})
+        @Html.ActionLink("View Time History", "Index", "ScreenTimeHistory", null, new {@class = "nav-link"})
     </div>
 </div>
-<!--
 
-NOTE: each input must have a unique id to match with its label
-If not, selecting any rule element will activate the first
-instance of that rule's id that is found on the page
-
--->
-<!-- Begin rules elements -->
 <div class="main-content">
     @RenderBody()
-    @*<div class="rule-container">
-
-        <!-- rule title colors depends on the rule type -->
-        <div class="rule-title">
-            <input id="tab-one" type="checkbox" name="tabs">
-            <label for="tab-one">Placeholder Title</label>
-
-            <div class="rule-content">
-                <!-- rule-settings will be variable : dependent on the rule type -->
-                <div class="rule-settings">
-                </div>
-                <div class="rule-apply-save">
-                    <button class="btn-apply-rule" id="apply-one">Apply</button>
-                </div>
-                <div class="rule-options">
-                    <button class="btn-delete-rule" id="delete-one">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
 </div>
 
 
@@ -133,6 +62,7 @@ instance of that rule's id that is found on the page
 
 <!-- Scripts -->
 @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/bundles/Timer")
 @RenderSection("scripts", required: false)
 </body>

@@ -1,0 +1,5 @@
+﻿@model ScreenTimeManager.Models.RuleBase
+
+<p class="rule-detail">Details: @Model.RuleDescription</p>
+<p class="rule-detail">Applying this rule will add @Model.VariableRatioNumerator minute(s) for every @Model.VariableRatioDenominator minutes spent on task</p>
+<textarea class="rule-variable-input" placeholder="Enter time spent (00:00:00)" id="fixed-input-@Model.Id"></textarea>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SecondsAdded)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecordAddedDateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RuleUsedId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SecondsAdded)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecordAddedDateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RuleUsedId)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+        </td>
+    </tr>
+}
+
+</table>

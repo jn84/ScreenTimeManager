@@ -201,7 +201,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManageRulesController.cs" />
     <Compile Include="Controllers\RuleBasesController.cs" />
+    <Compile Include="Controllers\ScreenTimeHistoryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,6 +214,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\main.css">
       <DependentUpon>main.scss</DependentUpon>
     </Content>
@@ -220,6 +226,7 @@
     </Content>
     <Content Include="Content\reset.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="ApplicationInsights.config">
@@ -230,7 +237,17 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -289,6 +306,15 @@
     <Content Include="Views\RuleBases\Index.cshtml" />
     <Content Include="Views\RuleBases\_Rule.cshtml" />
     <Content Include="Views\RuleBases\_ConfirmApplyRuleOverlay.cshtml" />
+    <Content Include="Views\RuleBases\_FixedRuleInput.cshtml" />
+    <Content Include="Views\RuleBases\_VariableRuleInput.cshtml" />
+    <Content Include="Views\ManageRules\Create.cshtml" />
+    <Content Include="Views\ManageRules\Delete.cshtml" />
+    <Content Include="Views\ManageRules\Details.cshtml" />
+    <Content Include="Views\ManageRules\Edit.cshtml" />
+    <Content Include="Views\ManageRules\Index.cshtml" />
+    <Content Include="Views\ScreenTimeHistory\Details.cshtml" />
+    <Content Include="Views\ScreenTimeHistory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
