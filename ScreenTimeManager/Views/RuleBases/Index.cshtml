@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ScreenTimeManager.Models.RuleBase>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var item in Model)
+{
+    Html.RenderPartial("_Rule", item);
+}

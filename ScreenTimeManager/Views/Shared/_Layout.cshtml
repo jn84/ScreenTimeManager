@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿@*<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -9,36 +9,132 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("About", "About", "Home")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            </ul>
+            @Html.Partial("_LoginPartial")
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+</div>
+<div class="container body-content">
+    @RenderBody()
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
+</div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </body>
+</html>*@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!--  Meta  -->
+    <meta charset="UTF-8" />
+    <title>Screen Time Manager</title>
+
+    <!--  Styles  -->
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    @Styles.Render("~/Content/STM")
+</head>
+
+<body>
+<div class="overlay-container">
+    
+</div>
+
+<div class="title-bar">
+    <h1>Screen Time Manager</h1>
+</div>
+<div class="main-bar">
+    <div class="counter">
+        <div class="number-group hours">
+            <p class="time-number hours-tens">0</p>
+            <p class="time-number hours-ones">0</p>
+        </div>
+        <div class="number-group minutes">
+            <p class="time-number minutes-tens">0</p>
+            <p class="time-number minutes-ones">0</p>
+        </div>
+        <div class="number-group seconds">
+            <p class="time-number seconds-tens">0</p>
+            <p class="time-number seconds-ones">0</p>
+        </div>
+    </div>
+    <div class="toggle-timer">
+        <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
+    </div>
+    <div class="navigation-menu">
+        @Html.ActionLink("Add/Remove Time", "Index", "RuleBases", null, new {@class = "nav-link"})
+        @Html.ActionLink("Add/Remove Rules", "Index", "RuleBases", null, new {@class = "nav-link"})
+        @Html.ActionLink("View Time History", "Index", "RuleBases", null, new {@class = "nav-link"})
+    </div>
+</div>
+<!--
+
+NOTE: each input must have a unique id to match with its label
+If not, selecting any rule element will activate the first
+instance of that rule's id that is found on the page
+
+-->
+<!-- Begin rules elements -->
+<div class="main-content">
+    @RenderBody()
+    @*<div class="rule-container">
+
+        <!-- rule title colors depends on the rule type -->
+        <div class="rule-title">
+            <input id="tab-one" type="checkbox" name="tabs">
+            <label for="tab-one">Placeholder Title</label>
+
+            <div class="rule-content">
+                <!-- rule-settings will be variable : dependent on the rule type -->
+                <div class="rule-settings">
+                </div>
+                <div class="rule-apply-save">
+                    <button class="btn-apply-rule" id="apply-one">Apply</button>
+                </div>
+                <div class="rule-options">
+                    <button class="btn-delete-rule" id="delete-one">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+</div>
+
+
+<div class="footer">
+
+</div>
+
+
+<!-- Scripts -->
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/Timer")
+@RenderSection("scripts", required: false)
+</body>
+
 </html>

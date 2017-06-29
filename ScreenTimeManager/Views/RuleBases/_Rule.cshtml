@@ -1,0 +1,26 @@
+﻿@using Microsoft.Web.Mvc
+@using MvcContrib.UI.InputBuilder.Views
+@model ScreenTimeManager.Models.RuleBase
+
+<div class="rule-container">
+    <!-- rule title colors depends on the rule type -->
+    <div class="rule-title">
+        <input id="@("tab-" + Model.Id)" type="checkbox" name="tabs">
+
+        <label for="@("tab-" + Model.Id)">
+            @Model.RuleTitle
+        </label>
+
+        <div class="rule-content">
+            <!-- rule-settings will be variable : dependent on the rule type -->
+            <div class="rule-settings">
+            </div>
+            <div class="rule-apply-save">
+                <button class="btn-apply-rule" id="@("apply-" + Model.Id)" onclick="@Url.Action()">Apply</button>
+            </div>
+            <div class="rule-options">
+                <button class="btn-delete-rule" id="@("delete-" + Model.Id)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
