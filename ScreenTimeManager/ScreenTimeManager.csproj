@@ -259,11 +259,24 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modal.es5.js">
+      <DependentUpon>modal.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\modal.es5.min.js">
+      <DependentUpon>modal.es5.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\modal.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\timer.es5.js">
+      <DependentUpon>timer.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\timer.es5.min.js">
+      <DependentUpon>timer.es5.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\timer.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -315,6 +328,7 @@
     <Content Include="Views\ManageRules\Index.cshtml" />
     <Content Include="Views\ScreenTimeHistory\Details.cshtml" />
     <Content Include="Views\ScreenTimeHistory\Index.cshtml" />
+    <Content Include="Views\ScreenTimeHistory\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

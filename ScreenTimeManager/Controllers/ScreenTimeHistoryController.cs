@@ -24,16 +24,9 @@ namespace ScreenTimeManager.Controllers
         // GET: ScreenTimeHistory/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TotalScreenTimeChanged totalScreenTimeChanged = db.TimeChanged.Find(id);
-            if (totalScreenTimeChanged == null)
-            {
-                return HttpNotFound();
-            }
-            return View(totalScreenTimeChanged);
+			var ctx = new ScreenTimeManagerContext();
+
+	        return PartialView("_Details", ctx.TimeChanged.Find(id));
         }
 
         protected override void Dispose(bool disposing)

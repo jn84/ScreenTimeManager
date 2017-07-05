@@ -26,11 +26,11 @@
                 
             </div>
             <div class="rule-apply-save">
+                @Html.ActionLink("Apply", "Details", "RuleBases", new { id = Model.Id }, new { @class="btn-apply-rule", data_modal = "" })
                 @*<button type="button" class="btn btn-success btn-sm  modal-link" data-targeturl="@Url.Action("Details","RuleBases",new { id = item.Id })">*@
-                <button type="button" class="btn-apply-rule modal-link"
-                        id="apply-@Model.Id" data-targeturl="@Url.Action("Details", "RuleBases", new {id = Model.Id})">
+                @*<button type="button" class="btn-apply-rule" id="apply-@Model.Id" data-targeturl="@Url.Action("Details", "RuleBases", new { id = Model.Id } )" data_modal="">
                     Apply
-                </button>
+                </button>*@
             </div>
         </div>
     </div>

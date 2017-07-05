@@ -8,63 +8,68 @@
     <title>Screen Time Manager</title>
 
     <!--  Styles  -->
-    
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/STM")
 </head>
 
 <body>
-<div id="modal-container" class="modal fade" tabindex="-1" role="dialog">
-    <a href="#close" title="Close" class="modal-close-btn">X</a>
-    <div class="modal-content">
-        <div class="modal-body">
+    <div id="myModal" class="modal fade in">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="myModalContent">
+                    
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="title-bar">
-    <h1>Screen Time Manager</h1>
-</div>
-<div class="main-bar">
-    <div class="counter">
-        <div class="number-group hours">
-            <p class="time-number hours-tens">0</p>
-            <p class="time-number hours-ones">0</p>
+    <div class="body">
+        <div class="title-bar">
+            <h1>Screen Time Manager</h1>
         </div>
-        <div class="number-group minutes">
-            <p class="time-number minutes-tens">0</p>
-            <p class="time-number minutes-ones">0</p>
+        <div class="main-bar">
+            <div class="counter">
+                <div class="number-group hours">
+                    <p class="time-number hours-tens">0</p>
+                    <p class="time-number hours-ones">0</p>
+                </div>
+                <div class="number-group minutes">
+                    <p class="time-number minutes-tens">0</p>
+                    <p class="time-number minutes-ones">0</p>
+                </div>
+                <div class="number-group seconds">
+                    <p class="time-number seconds-tens">0</p>
+                    <p class="time-number seconds-ones">0</p>
+                </div>
+            </div>
+            <div class="toggle-timer">
+                <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
+            </div>
+            <div class="navigation-menu">
+                @Html.ActionLink("Add/Remove Time", "Index", "RuleBases", null, new { @class = "nav-link" })
+                @Html.ActionLink("Add/Remove Rules", "Index", "ManageRules", null, new { @class = "nav-link" })
+                @Html.ActionLink("View Time History", "Index", "ScreenTimeHistory", null, new { @class = "nav-link" })
+            </div>
         </div>
-        <div class="number-group seconds">
-            <p class="time-number seconds-tens">0</p>
-            <p class="time-number seconds-ones">0</p>
+
+        <div class="main-content">
+            @RenderBody()
         </div>
+
+
+        <div class="footer">
+
+        </div>
+
     </div>
-    <div class="toggle-timer">
-        <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
-    </div>
-    <div class="navigation-menu">
-        @Html.ActionLink("Add/Remove Time", "Index", "RuleBases", null, new {@class = "nav-link"})
-        @Html.ActionLink("Add/Remove Rules", "Index", "ManageRules", null, new {@class = "nav-link"})
-        @Html.ActionLink("View Time History", "Index", "ScreenTimeHistory", null, new {@class = "nav-link"})
-    </div>
-</div>
 
-<div class="main-content">
-    @RenderBody()
-</div>
-
-
-<div class="footer">
-
-</div>
-
-
-<!-- Scripts -->
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@Scripts.Render("~/bundles/Timer")
-@RenderSection("scripts", required: false)
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/Modal")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/Timer")
+    @RenderSection("scripts", required: false)
 </body>
 
 </html>

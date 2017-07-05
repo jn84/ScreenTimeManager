@@ -2,5 +2,13 @@
   {
     "outputFile": "Content/main.css",
     "inputFile": "Content/main.scss"
+  },
+  {
+    "outputFile": "Scripts/modal.es5.js",
+    "inputFile": "Scripts/modal.js"
+  },
+  {
+    "outputFile": "Scripts/timer.es5.js",
+    "inputFile": "Scripts/timer.js"
   }
 ]

@@ -24,7 +24,8 @@ namespace ScreenTimeManager
 					  "~/Scripts/respond.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
-					  "~/Content/site.css"));
+					  "~/Content/bootstrap.css"));//,
+					  //"~/Content/bootstrap-theme.min.css"));
 
 			bundles.Add(new StyleBundle("~/Content/STM").Include(
 				"~/Content/reset.css",
@@ -32,6 +33,9 @@ namespace ScreenTimeManager
 
 			bundles.Add(new ScriptBundle("~/bundles/Timer").Include(
 				"~/Scripts/timer.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/Modal").Include(
+				"~/Scripts/modal.es5.min.js"));
 		}
 	}
 }
