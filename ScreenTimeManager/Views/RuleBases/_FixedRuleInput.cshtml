@@ -1,4 +1,16 @@
 ﻿@model ScreenTimeManager.Models.RuleBase
 
-<p class="rule-detail">Details: @Model.RuleDescription</p>
-<p class="rule-detail">Applying this rule will add @Model.FixedTimeEarned</p>
+<div class="rule-content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <!-- rule-settings will be variable : dependent on the rule type -->
+        <div class="rule-settings">
+            <p class="rule-detail">Details: @Model.RuleDescription</p>
+            <p class="rule-detail">Applying this rule will add @Model.FixedTimeEarned</p>
+        </div>
+
+    }
+</div>
+
+

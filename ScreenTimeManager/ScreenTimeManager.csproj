@@ -224,6 +224,12 @@
     <Content Include="Content\main.min.css">
       <DependentUpon>main.css</DependentUpon>
     </Content>
+    <Content Include="Content\modal.css">
+      <DependentUpon>modal.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\modal.min.css">
+      <DependentUpon>modal.css</DependentUpon>
+    </Content>
     <Content Include="Content\reset.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -245,6 +251,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\modal.scss" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -319,8 +326,6 @@
     <Content Include="Views\RuleBases\Index.cshtml" />
     <Content Include="Views\RuleBases\_Rule.cshtml" />
     <Content Include="Views\RuleBases\_ConfirmApplyRuleOverlay.cshtml" />
-    <Content Include="Views\RuleBases\_FixedRuleInput.cshtml" />
-    <Content Include="Views\RuleBases\_VariableRuleInput.cshtml" />
     <Content Include="Views\ManageRules\Create.cshtml" />
     <Content Include="Views\ManageRules\Delete.cshtml" />
     <Content Include="Views\ManageRules\Details.cshtml" />

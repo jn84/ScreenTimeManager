@@ -1,0 +1,45 @@
+﻿.modal-content {
+  background-color: #111111;
+  border: gray 1px solid;
+  font-family: "Roboto", serif;
+  color: #909090;
+  z-index: 5;
+  overflow: hidden; }
+
+.modal-header {
+  font-size: 130%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px; }
+
+.modal-body {
+  background-color: #222222; }
+
+.modal-footer {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: row;
+  padding: 0px 0px 0px 0px; }
+  .modal-footer div.button-container {
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    color: #111111; }
+  .modal-footer button {
+    width: 100%;
+    height: 70px;
+    border: 0px solid; }
+  .modal-footer button.confirm-apply {
+    background-color: green; }
+    .modal-footer button.confirm-apply:hover {
+      background-color: lightgreen; }
+    .modal-footer button.confirm-apply:active {
+      background-color: brown; }
+  .modal-footer button.cancel-apply {
+    background-color: red; }
+    .modal-footer button.cancel-apply:hover {
+      background-color: pink; }
+    .modal-footer button.cancel-apply:active {
+      background-color: brown; }
+

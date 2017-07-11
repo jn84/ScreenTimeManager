@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 $(function () {
-    $.ajaxSetup({ cache: false });
+    $.ajaxSetup({ cache: false }); ///////////////////////////////////// Document never ready
 
     $("a[data-modal]").on("click", function (e) {
         $("#myModalContent").load(this.href, function () {
@@ -21,7 +21,6 @@ $(function () {
 function bindForm(dialog) {
 
     $("form", dialog).submit(function () {
-        alert("Entering bindForm");
         $.ajax({
             url: this.action,
             type: this.method,
@@ -31,11 +30,9 @@ function bindForm(dialog) {
                     $("#myModal").modal("hide");
                     //Refresh
                     location.reload();
-                    alert("success");
                 } else {
                     $("#myModalContent").html(result);
                     bindForm();
-                    alert("fail");
                 }
             }
         });

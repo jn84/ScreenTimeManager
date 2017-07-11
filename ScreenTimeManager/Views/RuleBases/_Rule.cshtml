@@ -11,26 +11,20 @@
         <label for="tab-@Model.Id">
             @Model.RuleTitle
         </label>
-
         <div class="rule-content">
-            <!-- rule-settings will be variable : dependent on the rule type -->
-            <div class="rule-settings">
-                @if (Model.RuleType.Equals(RuleType.Fixed))
-                {
-                    Html.RenderPartial("_FixedRuleInput", Model);
-                }
-                else
-                {
-                    Html.RenderPartial("_VariableRuleInput", Model);
-                }
-                
-            </div>
+        <div class="rule-settings">
+            <p class="rule-detail">Details: @Model.RuleDescription</p>
+
+            @if (Model.RuleType.Equals(RuleType.Fixed))
+            {
+                <p class="rule-detail">Applying this rule will add @Model.FixedTimeEarned</p>}
+            else
+            {
+                <p class="rule-detail">Applying this rule will add @Model.VariableRatioNumerator minute(s) for every @Model.VariableRatioDenominator minutes spent on task</p>
+            }
+        </div>
             <div class="rule-apply-save">
-                @Html.ActionLink("Apply", "Details", "RuleBases", new { id = Model.Id }, new { @class="btn-apply-rule", data_modal = "" })
-                @*<button type="button" class="btn btn-success btn-sm  modal-link" data-targeturl="@Url.Action("Details","RuleBases",new { id = item.Id })">*@
-                @*<button type="button" class="btn-apply-rule" id="apply-@Model.Id" data-targeturl="@Url.Action("Details", "RuleBases", new { id = Model.Id } )" data_modal="">
-                    Apply
-                </button>*@
+                @Html.ActionLink("Apply", "Details", "RuleBases", new {id = Model.Id}, new {data_modal = "", @class = "link-apply-rule"})
             </div>
         </div>
     </div>

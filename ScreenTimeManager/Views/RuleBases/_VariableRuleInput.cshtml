@@ -1,5 +1,15 @@
-﻿@model ScreenTimeManager.Models.RuleBase
+﻿@using ScreenTimeManager.Models.Enums
+@model ScreenTimeManager.Models.RuleBase
 
-<p class="rule-detail">Details: @Model.RuleDescription</p>
-<p class="rule-detail">Applying this rule will add @Model.VariableRatioNumerator minute(s) for every @Model.VariableRatioDenominator minutes spent on task</p>
-<textarea class="rule-variable-input" placeholder="Enter time spent (00:00:00)" id="fixed-input-@Model.Id"></textarea>
+<div class="rule-content">
+    <!-- rule-settings will be variable : dependent on the rule type -->
+    <div class="rule-settings">
+        <p class="rule-detail">Details: @Model.RuleDescription</p>
+        <p class="rule-detail">Applying this rule will add @Model.VariableRatioNumerator minute(s) for every @Model.VariableRatioDenominator minutes spent on task</p>
+        <textarea class="rule-variable-input" placeholder="Enter time spent (00:00:00)" id="fixed-input-@Model.Id"></textarea>
+    </div>
+    <div class="rule-apply-save">
+        @Html.ActionLink("Apply", "Details", "RuleBases", new {id = Model.Id}, new {data_modal = "", @class = "link-apply-rule"})
+    </div>
+</div>
+

@@ -1,56 +1,35 @@
-﻿@model ScreenTimeManager.Models.TotalScreenTimeChanged
-
-@*<div class="modal-content">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-    </div>
-    <div class="modal-body">
-        <p>Some content for the modal </p>
-
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-    </div>
-</div>
+﻿@using ScreenTimeManager.DataModel.DataContexts
+@model ScreenTimeManager.Models.TotalScreenTimeChanged
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">Edit Person</h4>
-</div>*@
-
-
-
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">Time Added Confirmation</h4>
+    <p class="modal-title" id="myModalLabel">Confirm Screen Time Change</p>
 </div>
 
 <div class="modal-body">
-    <h4>RuleBase</h4>
+    @using (var ctx = new ScreenTimeManagerContext())
+        {
+            <p>@ctx.Rules.Find(Model.RuleUsedId).RuleTitle</p>
+            <p>@ctx.Rules.Find(Model.RuleUsedId).RuleDescription</p>
+        }
+    
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Id)
+            Time Earned
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.RecordAddedDateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RuleUsedId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SecondsAdded)
+            @TimeSpan.FromSeconds(Model.SecondsAdded).ToString()
         </dd>
     </dl>
 </div>
 <div class="modal-footer">
-    <button class="btn" data-dismiss="modal">Ok</button>
+    <div class="button-container">
+        <button class="cancel-apply" data-dismiss="modal">Cancel</button>
+    </div>
+    <div class="button-container">
+        <button class="confirm-apply" data-dismiss="modal">Confirm</button>
+    </div>
 </div>
 

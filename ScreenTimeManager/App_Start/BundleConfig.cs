@@ -29,13 +29,14 @@ namespace ScreenTimeManager
 
 			bundles.Add(new StyleBundle("~/Content/STM").Include(
 				"~/Content/reset.css",
-				"~/Content/main.css"));
+				"~/Content/main.css",
+				"~/Content/modal.min.css"));
 
 			bundles.Add(new ScriptBundle("~/bundles/Timer").Include(
 				"~/Scripts/timer.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/Modal").Include(
-				"~/Scripts/modal.es5.min.js"));
+				"~/Scripts/modal.js"));
 		}
 	}
 }

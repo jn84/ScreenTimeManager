@@ -21,19 +21,39 @@ namespace ScreenTimeManager.Controllers
             return View(db.Rules.ToList());
         }
 
+	    [HttpPost]
+	    [ValidateAntiForgeryToken]
+	    public ActionResult FinalizeChangeTime(TotalScreenTimeChanged timeToAdd)
+	    {
+
+			
+		    return View("Index");
+			// TODO: Placeholder. We would rather update the page with a message without reloading it. The timer would be updated dynamically (SignalR) just as it is with keeping synchronized
+	    }
+
+
+	    [HttpPost]
+	    [ValidateAntiForgeryToken]
+	    public ActionResult SubmitChangeTime(RuleBase rule)
+	    {
+			// Generate a TotalScreenTimeChanged object
+
+		    return PartialView("_ConfirmApplyRuleOverlay", null);
+	    }
+
+		// For Variable Rule
+		[HttpPost]
+	    [ValidateAntiForgeryToken]
+	    public ActionResult SubmitChangeTime(RuleBase rule, string hoursApplied, string minutesApplied)
+	    {
+		    // Generate a TotalScreenTimeChanged object
+
+			return PartialView("_ConfirmApplyRuleOverlay", null);
+		}
+
         // GET: RuleBases/Details/5
         public ActionResult Details(int? id)
         {
-			//if (id == null)
-			//{
-			//    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			//}
-			//RuleBase ruleBase = db.Rules.Find(id);
-			//if (ruleBase == null)
-			//{
-			//    return HttpNotFound();
-			//}
-			//return View(ruleBase);
 
 			if (id == null)
 				throw new Exception("Passed rule id was null");

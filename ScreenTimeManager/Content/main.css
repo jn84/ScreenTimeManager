@@ -145,9 +145,11 @@ div.rule-apply-save {
   height: 70px;
   background-color: #111111; }
 
-button.btn-apply-rule {
+a.link-apply-rule {
   height: 100%;
   width: 100%;
+  color: black;
+  text-decoration: none;
   background: green;
   border: green; }
 

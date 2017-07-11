@@ -10,5 +10,9 @@
   {
     "outputFile": "Scripts/timer.es5.js",
     "inputFile": "Scripts/timer.js"
+  },
+  {
+    "outputFile": "Content/modal.css",
+    "inputFile": "Content/modal.scss"
   }
 ]
