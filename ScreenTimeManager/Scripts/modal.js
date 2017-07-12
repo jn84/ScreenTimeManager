@@ -14,19 +14,24 @@
 
         return false;
     });
-
-
-});
+ });
 
 
 function bindForm(dialog) {
-    
-    $("form", dialog).submit(function () {
+    $("button.confirm-apply").on("click", function(e) {
+        e.preventDefault();
+        $("form").submit();
+    });
+
+    // any <form> tag, the context in which that form tag is found
+    $("form", dialog).submit(function () { // Why is this not called when hitting the submit button?
+        //alert("entered submit function");
         $.ajax({
             url: this.action,
             type: this.method,
             data: $(this).serialize(),
             success: function (result) {
+                alert(result);
                 if (result.success) {
                     $("#myModal").modal("hide");
                     //Refresh

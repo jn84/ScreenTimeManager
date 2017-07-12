@@ -1,35 +1,28 @@
 ﻿@using ScreenTimeManager.DataModel.DataContexts
-@model ScreenTimeManager.Models.TotalScreenTimeChanged
+@using WebGrease.Css
+@model ScreenTimeManager.Models.RuleBase
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <p class="modal-title" id="myModalLabel">Confirm Screen Time Change</p>
 </div>
+@using (Html.BeginForm("ChangeTime", "RuleBases", new { id = Model.Id }, FormMethod.Post, new { id="modalForm" }))
+{
+    <div class="modal-body">
 
-<div class="modal-body">
-    @using (var ctx = new ScreenTimeManagerContext())
-        {
-            <p>@ctx.Rules.Find(Model.RuleUsedId).RuleTitle</p>
-            <p>@ctx.Rules.Find(Model.RuleUsedId).RuleDescription</p>
-        }
-    
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Time Earned
-        </dt>
+        @Html.AntiForgeryToken()
+        <p>@Model.RuleTitle</p>
+        <p>@Model.RuleDescription</p>
 
-        <dd>
-            @TimeSpan.FromSeconds(Model.SecondsAdded).ToString()
-        </dd>
-    </dl>
-</div>
-<div class="modal-footer">
-    <div class="button-container">
-        <button class="cancel-apply" data-dismiss="modal">Cancel</button>
     </div>
-    <div class="button-container">
-        <button class="confirm-apply" data-dismiss="modal">Confirm</button>
+    <div class="modal-footer">
+        <div class="button-container">
+            <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
+        </div>
+        <div class="button-container">
+            <button class="confirm-apply" type="submit" data-dismiss="modal">Submit</button>
+        </div>
     </div>
-</div>
+}
+
 

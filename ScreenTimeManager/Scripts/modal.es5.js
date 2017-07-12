@@ -19,13 +19,17 @@ $(function () {
 });
 
 function bindForm(dialog) {
-
-    $("form", dialog).submit(function () {
+    alert("Called bindForm");
+    // any <form> tag, the context in which that form tag is found
+    $("form").submit(function () {
+        //////////////////////////// WHY U NO CALLED!!!!11!!???//??/
+        alert("entered submit function");
         $.ajax({
             url: this.action,
             type: this.method,
             data: $(this).serialize(),
             success: function success(result) {
+                alert(result);
                 if (result.success) {
                     $("#myModal").modal("hide");
                     //Refresh

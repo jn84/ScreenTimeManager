@@ -21,31 +21,13 @@ namespace ScreenTimeManager.Controllers
             return View(db.Rules.ToList());
         }
 
-	    [HttpPost]
-	    [ValidateAntiForgeryToken]
-	    public ActionResult FinalizeChangeTime(TotalScreenTimeChanged timeToAdd)
-	    {
-
-			
-		    return View("Index");
-			// TODO: Placeholder. We would rather update the page with a message without reloading it. The timer would be updated dynamically (SignalR) just as it is with keeping synchronized
-	    }
-
-
-	    [HttpPost]
-	    [ValidateAntiForgeryToken]
-	    public ActionResult SubmitChangeTime(RuleBase rule)
-	    {
-			// Generate a TotalScreenTimeChanged object
-
-		    return PartialView("_ConfirmApplyRuleOverlay", null);
-	    }
-
 		// For Variable Rule
 		[HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public ActionResult SubmitChangeTime(RuleBase rule, string hoursApplied, string minutesApplied)
+	    public ActionResult ChangeTime(int? id, string hoursApplied, string minutesApplied)
 	    {
+			//if hoursApplied and minutesApplied are null, must be fixed rule
+
 		    // Generate a TotalScreenTimeChanged object
 
 			return PartialView("_ConfirmApplyRuleOverlay", null);
@@ -58,19 +40,12 @@ namespace ScreenTimeManager.Controllers
 			if (id == null)
 				throw new Exception("Passed rule id was null");
 
-	        var timeHistory = new TotalScreenTimeChanged();
+	        RuleBase rule;
 
 			using (var ctx = new ScreenTimeManagerContext())
-	        {
-				var rule = ctx.Rules.Find(id);
+				rule = ctx.Rules.Find(id);
 
-				timeHistory.RecordAddedDateTime = DateTime.Now;
-
-				// TODO: need some error management
-		        timeHistory.RuleUsedId = rule.Id;
-	        }
-
-			return PartialView("_ConfirmApplyRuleOverlay", timeHistory);
+			return PartialView("_ConfirmApplyRuleOverlay", rule);
         }
 
         // GET: RuleBases/Create
