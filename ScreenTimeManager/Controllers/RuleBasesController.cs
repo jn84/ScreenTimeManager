@@ -24,14 +24,23 @@ namespace ScreenTimeManager.Controllers
 		// For Variable Rule
 		[HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public ActionResult ChangeTime(int? id, string hoursApplied, string minutesApplied)
+	    public void ChangeTime(int? id, string hoursApplied, string minutesApplied)
 	    {
-			//if hoursApplied and minutesApplied are null, must be fixed rule
+		    using (var ctx = new ScreenTimeManagerContext())
+		    {
+			    
+		    }
 
-		    // Generate a TotalScreenTimeChanged object
+				//if hoursApplied and minutesApplied are null, must be fixed rule
 
-			return PartialView("_ConfirmApplyRuleOverlay", null);
-		}
+				// Generate a TotalScreenTimeChanged object
+			
+			// Shouldn't.. does it?
+			if (db == null) throw new NullReferenceException();
+
+
+			//////////////////////////////////////// Should just say "I worked!" or "Validation error!"
+	    }
 
         // GET: RuleBases/Details/5
         public ActionResult Details(int? id)

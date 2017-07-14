@@ -334,6 +334,8 @@
     <Content Include="Views\ScreenTimeHistory\Details.cshtml" />
     <Content Include="Views\ScreenTimeHistory\Index.cshtml" />
     <Content Include="Views\ScreenTimeHistory\_Details.cshtml" />
+    <Content Include="Views\RuleBases\_FixedInput.cshtml" />
+    <Content Include="Views\RuleBases\_VariableInput.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
