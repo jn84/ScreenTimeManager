@@ -14,17 +14,19 @@ namespace ScreenTimeManager
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-			Database.SetInitializer(new DataModel.Initializers.ScreenTimeManagerInitializer());
+	        Database.SetInitializer(new DataModel.Initializers.ScreenTimeManagerInitializer());
 
 	        using (ScreenTimeManagerContext ctx = new ScreenTimeManagerContext())
 	        {
-		        ctx.Database.Initialize(true);
+		        ctx.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction
+			        , string.Format("ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE", ctx.Database.Connection.Database));
+				ctx.Database.Initialize(true);
 	        }
+
+			AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }
