@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Initializers\ScreenTimeManagerInitializer.cs" />
     <Compile Include="Migrations\201706290138432_Initial.cs" />
     <Compile Include="Migrations\201706290138432_Initial.Designer.cs">
       <DependentUpon>201706290138432_Initial.cs</DependentUpon>
@@ -70,9 +71,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ModelPlan.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706290138432_Initial.resx">
