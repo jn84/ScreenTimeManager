@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.Models;
+using ScreenTimeManager.Models.Enums;
 
 namespace ScreenTimeManager.Controllers
 {
@@ -37,9 +38,12 @@ namespace ScreenTimeManager.Controllers
         }
 
         // GET: ManageRules/Create
-        public ActionResult Create()
+        public ActionResult Create(int ruleType)
         {
-            return View();
+	        if (ruleType == (int)RuleType.Fixed)
+		        return PartialView("_CreateFixedRuleModal");
+			else
+				return PartialView("_CreateVariableRuleModal");
         }
 
         // POST: ManageRules/Create

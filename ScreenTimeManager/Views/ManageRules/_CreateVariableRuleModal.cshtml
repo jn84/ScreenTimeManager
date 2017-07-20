@@ -72,19 +72,22 @@
     </div>
 }*@
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+
+<!-- WHY IS THE MODAL EMPTY? -->
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <p class="modal-title" id="myModalLabel">Create New Variable Rule</p>
 </div>
 
-@using (Html.BeginForm("Create", "ManageRules", new { id = Model.Id }, FormMethod.Post, new { id = "modalForm" }))
+@using (Html.BeginForm("Create", "ManageRules", FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
 {
     <div class="modal-body">
 
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h4>Create New Variable Rule</h4>
-            <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">

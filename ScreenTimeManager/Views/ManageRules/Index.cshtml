@@ -15,11 +15,13 @@
 
 *@
 <p>
-    @Html.ActionLink("Create Fixed Rule", "Create", "ManageRules", RuleType.Fixed, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
+    @Html.ActionLink("Create Fixed Rule", "Create", "ManageRules",  new { ruleType = (int)RuleType.Fixed }, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
 </p>
+<br/>
 <p>
-    @Html.ActionLink("Create Variable Rule", "Create", "ManageRules", RuleType.Variable, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
+    @Html.ActionLink("Create Variable Rule", "Create", "ManageRules", new { ruleType = (int)RuleType.Variable }, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
 </p>
+<br/>
 <table class="table">
     <tr>
         <th>
