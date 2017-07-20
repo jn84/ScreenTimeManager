@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ScreenTimeManager.Models.RuleBase>
+﻿@using ScreenTimeManager.Models.Enums
+@model IEnumerable<ScreenTimeManager.Models.RuleBase>
 
 @{
     ViewBag.Title = "Index";
@@ -6,9 +7,18 @@
 }
 
 <h2>Index</h2>
+@*
+    
+            NEXT THING IS TO WRITE CODE FOR THE CREATE (GET) METHOD IN THE MANAGERULES CONTROLLER
 
+
+
+*@
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create Fixed Rule", "Create", "ManageRules", RuleType.Fixed, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
+</p>
+<p>
+    @Html.ActionLink("Create Variable Rule", "Create", "ManageRules", RuleType.Variable, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
 </p>
 <table class="table">
     <tr>
@@ -32,8 +42,10 @@
         </th>
         <th></th>
     </tr>
+    
+    <!-- Rules should not actually be deleted. Just marked as no longer in use. Older time changes might need to use their data-->
 
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.RuleType)

@@ -18,8 +18,9 @@ namespace ScreenTimeManager
 
 	        using (ScreenTimeManagerContext ctx = new ScreenTimeManagerContext())
 	        {
-		        ctx.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction
-			        , string.Format("ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE", ctx.Database.Connection.Database));
+		        ctx.Database.ExecuteSqlCommand(
+					TransactionalBehavior.DoNotEnsureTransaction,
+			        $"ALTER DATABASE [{ctx.Database.Connection.Database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
 				ctx.Database.Initialize(true);
 	        }
 
