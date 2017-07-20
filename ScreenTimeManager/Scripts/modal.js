@@ -42,6 +42,8 @@ function bindForm(dialog) {
 
     function updatePendingTime() {
 
+        // TODO: Just recode this into an ajax request with a short delay before making the request
+
         if (parseInt($("input#hoursApplied").val()) < 0)
             $("input#hoursApplied").val(0);
 
@@ -79,11 +81,14 @@ function bindForm(dialog) {
             type: this.method,
             data: $(this).serialize(),
             success: function (result) {
-                alert(result);
                 if (result.success) {
                     $("#myModal").modal("hide");
-                    //Refresh
-                    location.reload();
+                    // Send to appropriate url
+                    if (result.redirectUrl == null) {
+                        location.reload();
+                    } else {
+                        location.replace(result.redirectUrl);
+                    }
                 } else {
                     $("#myModalContent").html(result);
                     bindForm();

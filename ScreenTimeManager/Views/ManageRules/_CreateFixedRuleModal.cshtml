@@ -1,80 +1,6 @@
-﻿@model ScreenTimeManager.Models.RuleBase
+﻿@using ScreenTimeManager.Models.Enums
+@model ScreenTimeManager.Models.RuleBase
 
-@*@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>RuleBase</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.RuleType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.RuleType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RuleType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RuleModifier, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RuleModifier, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RuleTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RuleTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RuleTitle, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RuleDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RuleDescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RuleDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FixedTimeEarned, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FixedTimeEarned, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FixedTimeEarned, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VariableRatioNumerator, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VariableRatioNumerator, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VariableRatioNumerator, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VariableRatioDenominator, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VariableRatioDenominator, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VariableRatioDenominator, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>*@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -93,7 +19,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.RuleModifier, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new { @class = "form-control" })
+                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new { @class = "form-control", Value = RuleModifier.Add })
                     @Html.ValidationMessageFor(model => model.RuleModifier, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -121,17 +47,21 @@
                     @Html.ValidationMessageFor(model => model.FixedTimeEarned, "", new { @class = "text-danger" })
                 </div>
             </div>
+            
+            @Html.HiddenFor(model => model.RuleType, new { Value = RuleType.Fixed })
+            @Html.HiddenFor(model => model.VariableRatioNumerator, new { Value = 1 })
+            @Html.HiddenFor(model => model.VariableRatioDenominator, new { Value = 1 })
         </div>
 
     </div>
 
-    <!--Need javascript to submit the form-->
+    <!--Need javascript to submit the form -> Previous code works here. No additional code needed. -->
     <div class="modal-footer">
         <div class="button-container">
             <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
         </div>
         <div class="button-container">
-            <button class="confirm-apply" type="submit" data-dismiss="modal">Create Rule</button> <!-- TODO: Change to id for javascript on click function-->
+            <button class="confirm-apply" type="submit">Create Rule</button> <!-- TODO: Change to id for javascript on click function-->
         </div>
     </div>
 }

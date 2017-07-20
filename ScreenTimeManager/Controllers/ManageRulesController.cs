@@ -51,16 +51,25 @@ namespace ScreenTimeManager.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator")] RuleBase ruleBase)
+        public ActionResult Create([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator,RuleModifier")] RuleBase ruleBase)
         {
+			if (ruleBase.RuleModifier == 0)
+				ModelState.AddModelError("RuleModifier", @"Please select a value");
+
+			if (ruleBase.FixedTimeEarned >= TimeSpan.FromDays(1))
+				ModelState.AddModelError("FixedTimeEarned", @"Please enter a value less than 1 day (hh:mm:ss)");
+
             if (ModelState.IsValid)
             {
                 db.Rules.Add(ruleBase);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+				// The request succeeded, so we'll let the client know this so the modal can be closed and the new page can be loaded
+				return Json( new {success = ModelState.IsValid, redirectUrl = Url.Action("Index")} );
             }
 
-            return View(ruleBase);
+	        if (ruleBase.RuleType == RuleType.Fixed)
+		        return PartialView("_CreateFixedRuleModal", ruleBase);
+			return PartialView("_CreateVariableRuleModal", ruleBase);
         }
 
         // GET: ManageRules/Edit/5

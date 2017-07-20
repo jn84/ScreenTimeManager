@@ -14,15 +14,22 @@ namespace ScreenTimeManager.Models
 		[Key]
 	    public int Id { get; set; }
 
+		[Required]
 	    public RuleType RuleType { get; set; }
+		[Required]
 	    public RuleModifier RuleModifier { get; set; }
 
+		[Required]
 	    public string RuleTitle { get; set; }
+		[Required]
 	    public string RuleDescription { get; set; }
 
+		[Required]
 	    public TimeSpan FixedTimeEarned { get; set; }
 	    
+		[Required]
 	    public int VariableRatioNumerator { get; set; }
+		[Required]
 	    public int VariableRatioDenominator { get; set; }
 
 		public virtual ICollection<TotalScreenTimeChanged> UsedInChangeEntries { get; set; }
