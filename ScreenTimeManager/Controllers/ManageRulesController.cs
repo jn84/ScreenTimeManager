@@ -103,14 +103,15 @@ namespace ScreenTimeManager.Controllers
         {
 			ValidateRule(ruleBase);
 
-	        ruleBase.IsExpired = true;
-
-
-
             if (ModelState.IsValid)
             {
-                db.Entry(ruleBase).State = EntityState.Modified;
+	            var oldRule = db.Rules.Find(ruleBase.Id);
+				if (oldRule != null)
+					oldRule.IsExpired = true;
+
+                db.Rules.Add(ruleBase);
                 db.SaveChanges();
+
 				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
 			}
 
@@ -161,35 +162,6 @@ namespace ScreenTimeManager.Controllers
 		    if (rule.FixedTimeEarned >= TimeSpan.FromDays(1))
 			    ModelState.AddModelError("FixedTimeEarned", @"Please enter a value less than 1 day (hh:mm:ss)");
 		}
-
-
-		//
-		//
-		//
-		//
-		//   Implment proper deep copy cloning of RuleBase
-		//
-		//
-		//
-		//
-
-	    private RuleBase CreateRuleCopy(RuleBase oldRule)
-	    {
-
-		    RuleBase newRule = new RuleBase();
-
-		    newRule.RuleType = oldRule.RuleType;
-		    newRule.FixedTimeEarned = oldRule.FixedTimeEarned;
-		    newRule.RuleModifier = oldRule.RuleModifier;
-		    newRule.VariableRatioNumerator = oldRule.VariableRatioNumerator;
-		    newRule.VariableRatioDenominator = oldRule.VariableRatioDenominator;
-		    newRule.RuleTitle = oldRule.RuleTitle;
-		    newRule.RuleDescription = oldRule.RuleDescription;
-
-			newRule.IsExpired = false;
-
-		    return newRule;
-	    }
 
         protected override void Dispose(bool disposing)
         {
