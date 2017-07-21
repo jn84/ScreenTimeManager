@@ -108,8 +108,10 @@ namespace ScreenTimeManager.Controllers
 	            var oldRule = db.Rules.Find(ruleBase.Id);
 				if (oldRule != null)
 					oldRule.IsExpired = true;
+				else
+					return HttpNotFound();
 
-                db.Rules.Add(ruleBase);
+				db.Rules.Add(ruleBase);
                 db.SaveChanges();
 
 				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
