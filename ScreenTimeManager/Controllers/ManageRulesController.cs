@@ -53,11 +53,13 @@ namespace ScreenTimeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator,RuleModifier")] RuleBase ruleBase)
         {
-			if (ruleBase.RuleModifier == 0)
-				ModelState.AddModelError("RuleModifier", @"Please select a value");
+			ValidateRule(ruleBase);
 
-			if (ruleBase.FixedTimeEarned >= TimeSpan.FromDays(1))
-				ModelState.AddModelError("FixedTimeEarned", @"Please enter a value less than 1 day (hh:mm:ss)");
+			//if ((int)ruleBase.RuleModifier != -1 || (int)ruleBase.RuleModifier != 1)
+			//	ModelState.AddModelError("RuleModifier", @"Please select a value");
+
+			//if (ruleBase.FixedTimeEarned >= TimeSpan.FromDays(1))
+			//	ModelState.AddModelError("FixedTimeEarned", @"Please enter a value less than 1 day (hh:mm:ss)");
 
             if (ModelState.IsValid)
             {
@@ -79,12 +81,17 @@ namespace ScreenTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             RuleBase ruleBase = db.Rules.Find(id);
             if (ruleBase == null)
             {
                 return HttpNotFound();
             }
-            return View(ruleBase);
+
+	        if (ruleBase.RuleType == RuleType.Fixed)
+		        return PartialView("_EditFixedRuleModal", ruleBase);
+
+			return PartialView("_EditVariableRuleModal", ruleBase);
         }
 
         // POST: ManageRules/Edit/5
@@ -92,16 +99,22 @@ namespace ScreenTimeManager.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator")] RuleBase ruleBase)
+        public ActionResult Edit([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator,RuleModifier")] RuleBase ruleBase)
         {
+			ValidateRule(ruleBase);
+
             if (ModelState.IsValid)
             {
                 db.Entry(ruleBase).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(ruleBase);
-        }
+				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
+			}
+
+			if (ruleBase.RuleType == RuleType.Fixed)
+		        return PartialView("_EditFixedRuleModal", ruleBase);
+
+	        return PartialView("_EditVariableRuleModal", ruleBase);
+		}
 
         // GET: ManageRules/Delete/5
         public ActionResult Delete(int? id)
@@ -110,12 +123,14 @@ namespace ScreenTimeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             RuleBase ruleBase = db.Rules.Find(id);
             if (ruleBase == null)
             {
                 return HttpNotFound();
             }
-            return View(ruleBase);
+
+            return PartialView("_DeleteRuleModal", ruleBase);
         }
 
         // POST: ManageRules/Delete/5
@@ -123,11 +138,25 @@ namespace ScreenTimeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            RuleBase ruleBase = db.Rules.Find(id);
-            db.Rules.Remove(ruleBase);
+	        RuleBase ruleBase = db.Rules.Find(id);
+	        if (ruleBase == null)
+	        {
+		        return HttpNotFound();
+	        }
+
+			ruleBase.IsExpired = true;
             db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+	        return Json(new { success = true, redirectUrl = Url.Action("Index") });
+		}
+
+	    private void ValidateRule(RuleBase rule)
+	    {
+			if ((int)rule.RuleModifier != -1 && (int)rule.RuleModifier != 1)
+			    ModelState.AddModelError("RuleModifier", @"Please select a value");
+
+		    if (rule.FixedTimeEarned >= TimeSpan.FromDays(1))
+			    ModelState.AddModelError("FixedTimeEarned", @"Please enter a value less than 1 day (hh:mm:ss)");
+		}
 
         protected override void Dispose(bool disposing)
         {

@@ -1,4 +1,5 @@
-﻿@using ScreenTimeManager.Models.Enums
+﻿@using System.Diagnostics.Eventing.Reader
+@using ScreenTimeManager.Models.Enums
 @model IEnumerable<ScreenTimeManager.Models.RuleBase>
 
 @{
@@ -41,8 +42,13 @@
     
     <!-- Rules should not actually be deleted. Just marked as no longer in use. Older time changes might need to use their data-->
 
-    @foreach (var item in Model) {
-    <tr>
+    @foreach (var item in Model)
+    {
+        if (item.IsExpired) // If the rule is expired, dont show it. It exists only for historical purposes
+        {
+            continue;
+        }
+        <tr>
         <td>
             @Html.DisplayFor(modelItem => item.RuleType)
         </td>
@@ -61,10 +67,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.VariableRatioDenominator)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        <td>@*Html.ActionLink("Create Variable Rule", "Create", "ManageRules", new { ruleType = (int)RuleType.Variable }, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })*@
+            <p>@Html.ActionLink("Edit", "Edit", "ManageRules", new {id = item.Id }, htmlAttributes: new { data_modal= "" } );</p>
+            <p>@Html.ActionLink("Details", "Details", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "" }) </p>
+            <p>@Html.ActionLink("Delete", "Delete", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "" }) </p>
         </td>
     </tr>
 }

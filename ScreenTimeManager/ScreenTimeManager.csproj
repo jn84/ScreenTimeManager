@@ -337,8 +337,10 @@
     <Content Include="Views\RuleBases\_FixedInput.cshtml" />
     <Content Include="Views\RuleBases\_VariableInput.cshtml" />
     <Content Include="Views\ManageRules\_CreateFixedRuleModal.cshtml" />
-    <Content Include="Views\ManageRules\_DeleteRuleModal.cshtml" />
     <Content Include="Views\ManageRules\_CreateVariableRuleModal.cshtml" />
+    <Content Include="Views\ManageRules\_EditFixedRuleModal.cshtml" />
+    <Content Include="Views\ManageRules\_EditVariableRuleModal.cshtml" />
+    <Content Include="Views\ManageRules\_DeleteRuleModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

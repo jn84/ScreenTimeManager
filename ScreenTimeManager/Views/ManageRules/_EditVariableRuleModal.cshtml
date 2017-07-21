@@ -2,12 +2,16 @@
 @model ScreenTimeManager.Models.RuleBase
 
 
+
+<!-- EDITING A RULE SHOULD CREATE A NEW RULE AND MARK THE OLD RULE EXPIRED-->
+
+
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <p class="modal-title" id="myModalLabel">Create New Variable Rule</p>
+    <p class="modal-title" id="myModalLabel">Editing </p>
 </div>
 
-@using (Html.BeginForm("Create", "ManageRules", FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
+@using (Html.BeginForm("Edit", "ManageRules", FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
 {
     <div class="modal-body">
 
@@ -67,9 +71,9 @@
         <div class="button-container">
             <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
         </div>
-        
+
         <div class="button-container">
-            <button class="confirm-apply" type="submit" >Create</button> <!-- TODO: Change to id for javascript on click function-->
+            <button class="confirm-apply" type="submit">Confirm</button> <!-- TODO: Change to id for javascript on click function-->
         </div>
     </div>
 }

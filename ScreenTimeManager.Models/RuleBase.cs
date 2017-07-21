@@ -14,6 +14,9 @@ namespace ScreenTimeManager.Models
 		[Key]
 	    public int Id { get; set; }
 
+	    [Required]
+	    public bool IsExpired { get; set; }
+
 		[Required]
 	    public RuleType RuleType { get; set; }
 		[Required]
@@ -26,8 +29,8 @@ namespace ScreenTimeManager.Models
 
 		[Required]
 	    public TimeSpan FixedTimeEarned { get; set; }
-	    
-		[Required]
+
+	    [Required]
 	    public int VariableRatioNumerator { get; set; }
 		[Required]
 	    public int VariableRatioDenominator { get; set; }
