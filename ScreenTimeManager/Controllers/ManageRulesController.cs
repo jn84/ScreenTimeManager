@@ -10,6 +10,18 @@ using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
 
+
+//
+//
+//
+//
+//	Next to do: Implement a controller method (and possibly a universal class in DataModel or Model) to get calculated time samples
+//
+//
+//
+//
+
+
 namespace ScreenTimeManager.Controllers
 {
     public class ManageRulesController : Controller
