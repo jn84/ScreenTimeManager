@@ -6,19 +6,36 @@ namespace ScreenTimeManager.Utility
 {
 	// Should there be subscribers? That way the class can just let everyone know about events like start and stop
 
-	public static class TimeRunning
+	public static class ElapsedTimer
 	{
-		public static bool IsRunning { get; } = false;
+		public static int UpdateInterval
+		{
+			get => _updateInterval;
+			set
+			{
+				if (IsRunning())
+					return;
+				_updateInterval = value;
+			}
+		}
 
 		private static Timer _timer = null;
 
 		private static Stopwatch _stopWatch = null;
 
+		private static int _updateInterval = 10000;
+
+		public static bool IsRunning()
+		{
+			return _timer != null && _timer.Enabled;
+		}
+
 		public static void BeginTimer()
 		{
 			_timer = new Timer(0)
 			{
-				Interval = 10000
+				Interval = UpdateInterval,
+				// method to call
 			};
 
 			_stopWatch = new Stopwatch();
@@ -31,16 +48,8 @@ namespace ScreenTimeManager.Utility
 
 		public static void EndTimer()
 		{
-			if (_stopWatch != null)
-			{
-				_stopWatch.Stop();
-
-			}
-
-			if (_timer != null)
-			{
-				_timer.Stop();
-			}
+			_stopWatch?.Stop();
+			_timer?.Stop();
 
 
 			// Commit the final time

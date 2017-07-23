@@ -26,18 +26,18 @@ namespace ScreenTimeManager.Hubs
 
 		public void ToggleTimerState()
 		{
-			// // // // If there is no TimeRunning object (== null)
-			// Server creates a new TimeRunning object (should be IDisposable..?)
-			// // TimeRunning has a timer
-			// // TimeRunning creates a ScreenTimeHistory object.. ?
+			// // // // If there is no ElapsedTimer object (== null)
+			// Server creates a new ElapsedTimer object (should be IDisposable..?)
+			// // ElapsedTimer has a timer
+			// // ElapsedTimer creates a ScreenTimeHistory object.. ?
 			// // The ScreenTimeHistory object is commited to the database with an initial time of zero
 			// // Every n ticks of the timer, the ScreenTimeHistory object in the database will be updated with how much time has elapsed
 			// // // This is behavior is a failsafe against power outages, etc.
 			// // // When the database time is updated, the server should also send out an update to the clients so that they can stay synchronized
 
-			// // // // If there IS a TimeRunning object
+			// // // // If there IS a ElapsedTimer object
 			// Finalize the ScreenTimeHistory object
-			// Dispose of the TimeRunning object and set the reference to null
+			// Dispose of the ElapsedTimer object and set the reference to null
 
 		}
 
