@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,33 @@ namespace ScreenTimeManager.Models.Utility
 {
 	public static class TotalScreenTimeChangedHandler
 	{
+		// ### Begin Event Code
+
+		// Fire an event whenever screen time changes
+		public delegate void TotalScreenTimeChangedEventHandler(object sender, TotalScreenTimeChangedEventArgs e);
+
+		// Why = delegate {}
+		// https://stackoverflow.com/questions/289002/how-to-raise-custom-event-from-a-static-class
+		public static event TotalScreenTimeChangedEventHandler TotalScreenTimeChangedNotifier = delegate { };
+
+		private static void OnTotalScreenTimeChangedNotify(TotalScreenTimeChangedEventArgs e)
+		{
+			// Sender is null since "this" is static
+			TotalScreenTimeChangedNotifier.Invoke(null, e);
+		}
+
+		public class TotalScreenTimeChangedEventArgs : EventArgs
+		{
+			public long TotalSecondsAvailable { get; }
+
+			public TotalScreenTimeChangedEventArgs(long totalSecondsAvailable)
+			{
+				TotalSecondsAvailable = totalSecondsAvailable;
+			}
+		}
+		// ### End Event Code
+
+
 		// // // // // Timer specific variables
 		// If the timer is NOT running, create a new record
 		// If the timer IS running, update the last used ScreenTimeHistory object with the new time elapsed
@@ -63,6 +91,18 @@ namespace ScreenTimeManager.Models.Utility
 			return (long)Math.Ceiling((modifiedSeconds * ratio) / 1000);
 		}
 
+		public static void AddOrUpdateRuleAppliedEntry(TotalScreenTimeChanged changed)
+		{
+			if (changed == null)
+				throw new Exception("Error in add/update TotalScreenTimeChanged entry to database: changed object was null");
+
+			using (var ctx = new ScreenTimeManagerContext())
+			{
+				ctx.TimeChanged.AddOrUpdate(changed);
+				ctx.SaveChanges();
+			}
+		}
+
 		public static void AddOrUpdateTimerEntry(TimerState state, long timeElapsedMilliseconds)
 		{
 			using (var ctx = new ScreenTimeManagerContext())
@@ -75,12 +115,8 @@ namespace ScreenTimeManager.Models.Utility
 				//// for historical purposes
 				var rule = ctx.Rules.First(r => r.RuleType == RuleType.Timer);
 
-				// In case someone else needs to know what's happening. Might not be needed
-
 				switch (state)
 				{
-					// This is a problem. Going to need static rules.
-
 					case TimerState.Begin:
 						// Create a new one
 						timeChanged = GenerateTotalScreenTimeChanged(rule, timeElapsedMilliseconds);
@@ -111,8 +147,22 @@ namespace ScreenTimeManager.Models.Utility
 						_timerState = TimerState.Stopped;
 						break;
 
+					default:
+						// Timer state is Stopped or an unknown value. Shouldn't happen.. but who knows
+						throw new Exception("Timer state is Stopped or other unhandled value.");
+						break;
+
 				}
+
+				OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(GetCurrentTimerTotalSeconds()));
 			}
+		}
+
+		// TODO: Placeholder method. This will take (probably) a long time to execute after many records are added. Implement a running total.
+		public static long GetCurrentTimerTotalSeconds()
+		{
+			using (var ctx = new ScreenTimeManagerContext())
+				return ctx.TimeChanged.Sum(changed => changed.SecondsAdded);
 		}
 	}
 }

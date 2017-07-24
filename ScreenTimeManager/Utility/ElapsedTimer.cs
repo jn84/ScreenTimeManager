@@ -21,15 +21,6 @@ namespace ScreenTimeManager.Utility
 			ElapsedTimerNotifier.Invoke(null, e);
 		}
 
-		//
-		//
-		//
-		// This is wrong!!!
-		// TotalScreenTimeChangedHandler should connect to all the clients, not this one. ElapsedTimer should inform TotalScreenTimeChangedHandler of changes, then the handler informs everyone from there.
-		//
-		//
-		//
-
 		// Timer triggers this, which in turn triggers the event
 		private static void OnElapsedTimerEvent(object source, ElapsedEventArgs e)
 		{
