@@ -5,10 +5,10 @@ using ScreenTimeManager.DataModel.DataContexts;
 
 namespace ScreenTimeManager.Utility
 {
-	// Should there be subscribers? That way the class can just let everyone know about events like start and stop
-
 	public static class ElapsedTimer
 	{
+		// ### Begin event code TODO: Move events to partial?
+
 		public delegate void ElapsedTimerEventHandler(object sender, ElapsedTimerEventArgs e);
 
 		// Why = delegate {}
@@ -24,18 +24,25 @@ namespace ScreenTimeManager.Utility
 		// Timer triggers this, which in turn triggers the event
 		private static void OnElapsedTimerEvent(object source, ElapsedEventArgs e)
 		{
-			OnElapsedTimerNotify(new ElapsedTimerEventArgs(_timerState, GetTimeElapsed()));
+			OnElapsedTimerNotify(new ElapsedTimerEventArgs(State, GetTimeElapsed()));
 		}
+
+		// ### End event code
 
 		public static int UpdateInterval
 		{
 			get => _updateInterval;
 			set
 			{
-				if (_timerState == TimerState.Running)
+				if (State == TimerState.Running)
 					return;
 				_updateInterval = value;
 			}
+		}
+
+		public static TimerState State
+		{
+			get { return _timerState; }
 		}
 
 		private static Timer _timer = null;
@@ -64,7 +71,7 @@ namespace ScreenTimeManager.Utility
 
 		public static void ToggleTimer()
 		{
-			if (_timerState == TimerState.Running)
+			if (State == TimerState.Running)
 			{
 				EndTimer();
 				return;
@@ -115,24 +122,24 @@ namespace ScreenTimeManager.Utility
 		}
 	}
 
-	public class ElapsedTimerEventArgs : EventArgs
-	{
-		public TimerState State { get; } = TimerState.Stopped;
-
-		public long MillisecondsElapsed { get; } = 0;
-
-		public ElapsedTimerEventArgs(TimerState state, long millisecondsElapsed)
-		{
-			State = state;
-			MillisecondsElapsed = millisecondsElapsed;
-		}
-	}
-
 	public enum TimerState
 	{
 		Stopped = 0,
 		Begin = 1,
 		Running = 2,
 		End = 3
+	}
+
+	public class ElapsedTimerEventArgs : EventArgs
+	{
+		public TimerState State { get; }
+
+		public long MillisecondsElapsed { get; }
+
+		public ElapsedTimerEventArgs(TimerState state, long millisecondsElapsed)
+		{
+			State = state;
+			MillisecondsElapsed = millisecondsElapsed;
+		}
 	}
 }

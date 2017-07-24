@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
+using ScreenTimeManager.Models;
+using ScreenTimeManager.Models.Utility;
 using ScreenTimeManager.Utility;
 
 namespace ScreenTimeManager.Hubs
@@ -14,54 +16,49 @@ namespace ScreenTimeManager.Hubs
 		public TimerSyncHub()
 		{
 			ElapsedTimer.ElapsedTimerNotifier += this.TimerStateChangedOrUpdated;
+			TotalScreenTimeChangedHandler.TotalScreenTimeChangedNotifier += this.TotalScreenTimeChangedOrUpdated;
 		}
 
 		private void TimerStateChangedOrUpdated(object sender, ElapsedTimerEventArgs e)
 		{
-			
+			UpdateClientsTimerState(e.State);
 		}
 
-		public void UpdateClientsTimerState(bool isRunning, long timeInSeconds)
+		private void TotalScreenTimeChangedOrUpdated(object sender, TotalScreenTimeChangedEventArgs e)
 		{
-			Clients.All.doTimerUpdate(isRunning, timeInSeconds);
+			UpdateClientsTimerValue(TotalScreenTimeChangedHandler.GetCurrentTimerTotalSeconds());
+		}
+
+		private void UpdateClientsTimerState(TimerState state)
+		{
+			if (state == TimerState.Begin || state == TimerState.Running)
+			{
+				Clients.All.doTimerStateUpdate(true);
+				return;
+			}
+			Clients.All.doTimerStateUpdate(false);
+		}
+
+		private void UpdateClientsTimerValue(long totalSecondsOnTimer)
+		{
+			Clients.All.doTimerValueUpdate(totalSecondsOnTimer);
 		}
 
 		// For clients to call during the initial visit to the application page
 
-		public void GetTimerState()
+		public void SyncTimer()
 		{
-			// Grab the timer state
+			UpdateClientsTimerState(ElapsedTimer.State);
 
-			Clients.Caller.doTimerUpdate();
+			UpdateClientsTimerValue(TotalScreenTimeChangedHandler.GetCurrentTimerTotalSeconds());
 		}
+
 
 		// A client clicked the start/stop button
 
 		public void ToggleTimerState()
 		{
-			//ElapsedTimer.
-
-			// // // // If there is no ElapsedTimer object (== null)
-			// Server creates a new ElapsedTimer object (should be IDisposable..?)
-			// // ElapsedTimer has a timer
-			// // ElapsedTimer creates a ScreenTimeHistory object.. ?
-			// // The ScreenTimeHistory object is commited to the database with an initial time of zero
-			// // Every n ticks of the timer, the ScreenTimeHistory object in the database will be updated with how much time has elapsed
-			// // // This is behavior is a failsafe against power outages, etc.
-			// // // When the database time is updated, the server should also send out an update to the clients so that they can stay synchronized
-
-			// // // // If there IS a ElapsedTimer object
-			// Finalize the ScreenTimeHistory object
-			// Dispose of the ElapsedTimer object and set the reference to null
-
+			ElapsedTimer.ToggleTimer();
 		}
-
-
-
-		// The server should decide the state of the button and timer
-		// 
-		// 
-		// 
-		// 
 	}
 }

@@ -14,7 +14,7 @@ namespace ScreenTimeManager.Models.Utility
 {
 	public static class TotalScreenTimeChangedHandler
 	{
-		// ### Begin Event Code
+		// ### Begin Event Code TODO: Move events to partial?
 
 		// Fire an event whenever screen time changes
 		public delegate void TotalScreenTimeChangedEventHandler(object sender, TotalScreenTimeChangedEventArgs e);
@@ -29,15 +29,6 @@ namespace ScreenTimeManager.Models.Utility
 			TotalScreenTimeChangedNotifier.Invoke(null, e);
 		}
 
-		public class TotalScreenTimeChangedEventArgs : EventArgs
-		{
-			public long TotalSecondsAvailable { get; }
-
-			public TotalScreenTimeChangedEventArgs(long totalSecondsAvailable)
-			{
-				TotalSecondsAvailable = totalSecondsAvailable;
-			}
-		}
 		// ### End Event Code
 
 
@@ -163,6 +154,16 @@ namespace ScreenTimeManager.Models.Utility
 		{
 			using (var ctx = new ScreenTimeManagerContext())
 				return ctx.TimeChanged.Sum(changed => changed.SecondsAdded);
+		}
+	}
+
+	public class TotalScreenTimeChangedEventArgs : EventArgs
+	{
+		public long TotalSecondsAvailable { get; }
+
+		public TotalScreenTimeChangedEventArgs(long totalSecondsAvailable)
+		{
+			TotalSecondsAvailable = totalSecondsAvailable;
 		}
 	}
 }
