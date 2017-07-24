@@ -25,7 +25,8 @@ namespace ScreenTimeManager.DataModel.Initializers
 				RuleTitle = "Timer Used",
 				RuleDescription = "Used the timer to deduct time",
 				VariableRatioNumerator = 1,
-				VariableRatioDenominator = 1
+				VariableRatioDenominator = 1,
+				IsHidden = true
 			});
 
 			// Keep this rule in production

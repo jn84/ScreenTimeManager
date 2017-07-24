@@ -21,10 +21,19 @@ namespace ScreenTimeManager.Utility
 			ElapsedTimerNotifier.Invoke(null, e);
 		}
 
+		//
+		//
+		//
+		// This is wrong!!!
+		// TotalScreenTimeChangedHandler should connect to all the clients, not this one. ElapsedTimer should inform TotalScreenTimeChangedHandler of changes, then the handler informs everyone from there.
+		//
+		//
+		//
+
 		// Timer triggers this, which in turn triggers the event
 		private static void OnElapsedTimerEvent(object source, ElapsedEventArgs e)
 		{
-			OnElapsedTimerNotify(new ElapsedTimerEventArgs(IsRunning(), GetTimeElapsed()));
+			OnElapsedTimerNotify(new ElapsedTimerEventArgs(_timerState, GetTimeElapsed()));
 		}
 
 		public static int UpdateInterval
@@ -32,7 +41,7 @@ namespace ScreenTimeManager.Utility
 			get => _updateInterval;
 			set
 			{
-				if (IsRunning())
+				if (_timerState == TimerState.Running)
 					return;
 				_updateInterval = value;
 			}
@@ -72,7 +81,7 @@ namespace ScreenTimeManager.Utility
 			BeginTimer();
 		}
 
-		public static void BeginTimer()
+		private static void BeginTimer()
 		{
 			_timer = new Timer(0)
 			{
@@ -92,7 +101,7 @@ namespace ScreenTimeManager.Utility
 			_timerState = TimerState.Running;
 		}
 
-		public static void EndTimer()
+		private static void EndTimer()
 		{
 			if (_stopWatch != null && _timer != null)
 			{

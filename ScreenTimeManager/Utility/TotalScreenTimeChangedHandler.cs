@@ -44,7 +44,8 @@ namespace ScreenTimeManager.Models.Utility
 					if (timeAppliedMilliseconds == null)
 						throw new Exception("Time applied cannot be null for RuleType.Variable or RuleType.Timer: RuleType was " + rule);
 
-					timeChanged.SecondsAdded = GetModifiedTimeInMilliseconds(rule, (long) timeAppliedMilliseconds);
+					timeChanged.SecondsAdded = 
+							GetModifiedTimeInSeconds(rule, (long) timeAppliedMilliseconds);
 					break;
 				default:
 					throw new Exception("This should not have happened. RuleType was null or had another unexpected value.");
@@ -53,50 +54,13 @@ namespace ScreenTimeManager.Models.Utility
 			return timeChanged;
 		}
 
-		private static long GetModifiedTimeInMilliseconds(RuleBase rule, long timeAppliedMilliseconds)
+		private static long GetModifiedTimeInSeconds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
-			double modifiedSeconds = (int)rule.RuleModifier * timeAppliedMilliseconds;
+			double modifiedSeconds = (int)rule.RuleModifier * timeAppliedInMilliseconds;
 			double ratio = (double)rule.VariableRatioNumerator / rule.VariableRatioDenominator;
 
 			// Behold my kindness: we always round up
-			return (long) (modifiedSeconds * ratio);
-		}
-
-		private static long GetModifiedTimeInSeconds(long timeAppliedInMilliseconds)
-		{
-			return (long) Math.Ceiling((double) timeAppliedInMilliseconds / 1000);
-		}
-
-		//public static TotalScreenTimeChanged GetResult()
-		//{
-		//	var timeChanged = new TotalScreenTimeChanged
-		//	{
-		//		RuleUsedId = rule.Id,
-		//		RecordAddedDateTime = DateTime.Now
-		//	};
-
-
-		//	switch (rule.RuleType)
-		//	{
-		//		case RuleType.Fixed:
-		//			timeChanged.SecondsAdded = (int) _rule.RuleModifier * (long) _rule.FixedTimeEarned.TotalSeconds;
-		//			break;
-		//		case RuleType.Variable:
-		//			double modifiedSeconds = (int) _rule.RuleModifier * _timeAppliedSeconds;
-		//			double ratio = (double) _rule.VariableRatioNumerator / _rule.VariableRatioDenominator;
-
-		//			timeChanged.SecondsAdded = (long) (modifiedSeconds * ratio);
-		//			break;
-		//		default:
-		//			throw new Exception("This should not have happened. RuleType was null or had another unexpected value.");
-
-		//	}
-		//	return timeChanged;
-		//}
-
-		private static int SaveScreenTimeHistoryEntry()
-		{
-			return 1;
+			return (long)Math.Ceiling((modifiedSeconds * ratio) / 1000);
 		}
 
 		public static void AddOrUpdateTimerEntry(TimerState state, long timeElapsedMilliseconds)
@@ -107,11 +71,11 @@ namespace ScreenTimeManager.Models.Utility
 
 				// I don't like this. We rely on the database having the default timer rule.
 				// This rule SHOULD exist (and everything is kind of pointless without it) but yuck
-				// Either way, we need a reference to this rule
+				// Either way, we need a reference to this rule, and it needs to be present in the database
+				//// for historical purposes
 				var rule = ctx.Rules.First(r => r.RuleType == RuleType.Timer);
 
 				// In case someone else needs to know what's happening. Might not be needed
-				_timerState = state;
 
 				switch (state)
 				{
@@ -122,20 +86,32 @@ namespace ScreenTimeManager.Models.Utility
 						timeChanged = GenerateTotalScreenTimeChanged(rule, timeElapsedMilliseconds);
 						ctx.TimeChanged.Add(timeChanged);
 						ctx.SaveChanges();
-
 						_lastTimeHistoryId = timeChanged.Id;
+						_timerState = TimerState.Running;
 						break;
-					case TimerState.Running:
-						timeChanged = ctx.TimeChanged.Find(_lastTimeHistoryId);
-						timeChanged.SecondsAdded = Get
 
+					case TimerState.Running:
+						// Update the current one
+						timeChanged = ctx.TimeChanged.Find(_lastTimeHistoryId);
+						if (timeChanged == null)
+							throw new Exception("Timer state is listed as running, but the TotalScreenTimeChanged object was not found in the database.");
+						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
+						ctx.SaveChanges();
 						break;
+
 					case TimerState.End:
 						// Finalize the current one
+						timeChanged = ctx.TimeChanged.Find(_lastTimeHistoryId);
+						if (timeChanged == null)
+							throw new Exception("Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
+						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
+						ctx.SaveChanges();
 
-					default:
+						_lastTimeHistoryId = null;
+						_timerState = TimerState.Stopped;
+						break;
+
 				}
-
 			}
 		}
 	}

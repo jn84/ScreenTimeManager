@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using ScreenTimeManager.Utility;
 
@@ -9,6 +10,17 @@ namespace ScreenTimeManager.Hubs
 {
 	public class TimerSyncHub : Hub
 	{
+
+		public TimerSyncHub()
+		{
+			ElapsedTimer.ElapsedTimerNotifier += this.TimerStateChangedOrUpdated;
+		}
+
+		private void TimerStateChangedOrUpdated(object sender, ElapsedTimerEventArgs e)
+		{
+			
+		}
+
 		public void UpdateClientsTimerState(bool isRunning, long timeInSeconds)
 		{
 			Clients.All.doTimerUpdate(isRunning, timeInSeconds);
