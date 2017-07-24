@@ -5,7 +5,6 @@ using System.Web;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using ScreenTimeManager.Models;
-using ScreenTimeManager.Models.Utility;
 using ScreenTimeManager.Utility;
 
 namespace ScreenTimeManager.Hubs
@@ -15,42 +14,29 @@ namespace ScreenTimeManager.Hubs
 
 		public TimerSyncHub()
 		{
-			ElapsedTimer.ElapsedTimerNotifier += this.TimerStateChangedOrUpdated;
-			TotalScreenTimeChangedHandler.TotalScreenTimeChangedNotifier += this.TotalScreenTimeChangedOrUpdated;
-		}
-
-		private void TimerStateChangedOrUpdated(object sender, ElapsedTimerEventArgs e)
-		{
-			UpdateClientsTimerState(e.State);
+			TotalScreenTimeManager.TotalScreenTimeChangedNotifier += this.TotalScreenTimeChangedOrUpdated;
 		}
 
 		private void TotalScreenTimeChangedOrUpdated(object sender, TotalScreenTimeChangedEventArgs e)
 		{
-			UpdateClientsTimerValue(TotalScreenTimeChangedHandler.GetCurrentTimerTotalSeconds());
+			UpdateClientsTimerState(e.CurrentTimerState, e.TotalSecondsAvailable);
 		}
 
-		private void UpdateClientsTimerState(TimerState state)
+		private void UpdateClientsTimerState(TimerState state, long totalSeconds)
 		{
 			if (state == TimerState.Begin || state == TimerState.Running)
 			{
-				Clients.All.doTimerStateUpdate(true);
+				Clients.All.doTimerStateUpdate(true, totalSeconds);
 				return;
 			}
-			Clients.All.doTimerStateUpdate(false);
-		}
-
-		private void UpdateClientsTimerValue(long totalSecondsOnTimer)
-		{
-			Clients.All.doTimerValueUpdate(totalSecondsOnTimer);
+			Clients.All.doTimerStateUpdate(false, totalSeconds);
 		}
 
 		// For clients to call during the initial visit to the application page
 
 		public void SyncTimer()
 		{
-			UpdateClientsTimerState(ElapsedTimer.State);
-
-			UpdateClientsTimerValue(TotalScreenTimeChangedHandler.GetCurrentTimerTotalSeconds());
+			UpdateClientsTimerState(ElapsedTimer.State, TotalScreenTimeManager.GetTotalTime_Now());
 		}
 
 

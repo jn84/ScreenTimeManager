@@ -1,18 +1,13 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.DynamicData;
 using ScreenTimeManager.DataModel.DataContexts;
+using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
-using ScreenTimeManager.Utility;
 
-namespace ScreenTimeManager.Models.Utility
+namespace ScreenTimeManager.Utility
 {
-	public static class TotalScreenTimeChangedHandler
+	public static class TotalScreenTimeManager
 	{
 		// ### Begin Event Code TODO: Move events to partial?
 
@@ -32,6 +27,21 @@ namespace ScreenTimeManager.Models.Utility
 		// ### End Event Code
 
 
+		// This guy listens to the timer, then notifies the hub about necessary info
+		static TotalScreenTimeManager()
+		{
+			ElapsedTimer.ElapsedTimerNotifier += TimerStateChangedOrUpdated;
+		}
+
+		private static void TimerStateChangedOrUpdated(object sender, ElapsedTimerEventArgs e)
+		{
+			AddOrUpdateTimerEntry(e.State, e.MillisecondsElapsed);
+
+			// Don't need to call the event here since the AddOrUpdate method wil ltake care of that at its closing
+			// OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(e.State));
+		}
+
+
 		// // // // // Timer specific variables
 		// If the timer is NOT running, create a new record
 		// If the timer IS running, update the last used ScreenTimeHistory object with the new time elapsed
@@ -39,6 +49,8 @@ namespace ScreenTimeManager.Models.Utility
 
 		// Nullable to eliminate confusion about whether or not we need to add or update
 		private static int? _lastTimeHistoryId = null;
+
+		private static long? _timerBeginTotalSeconds = null;
 
 
 		// timeApplied is nullable since not all rules have an input for it (variable rules)
@@ -92,6 +104,11 @@ namespace ScreenTimeManager.Models.Utility
 				ctx.TimeChanged.AddOrUpdate(changed);
 				ctx.SaveChanges();
 			}
+
+			if (_timerState == TimerState.Begin || _timerState == TimerState.Running)
+				OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Now()));
+			OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Database()));
+
 		}
 
 		public static void AddOrUpdateTimerEntry(TimerState state, long timeElapsedMilliseconds)
@@ -115,6 +132,7 @@ namespace ScreenTimeManager.Models.Utility
 						ctx.SaveChanges();
 						_lastTimeHistoryId = timeChanged.Id;
 						_timerState = TimerState.Running;
+						_timerBeginTotalSeconds = GetTotalTime_Database();
 						break;
 
 					case TimerState.Running:
@@ -141,28 +159,49 @@ namespace ScreenTimeManager.Models.Utility
 					default:
 						// Timer state is Stopped or an unknown value. Shouldn't happen.. but who knows
 						throw new Exception("Timer state is Stopped or other unhandled value.");
-						break;
-
 				}
 
-				OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(GetCurrentTimerTotalSeconds()));
+				OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Database()));
 			}
 		}
 
 		// TODO: Placeholder method. This will take (probably) a long time to execute after many records are added. Implement a running total.
-		public static long GetCurrentTimerTotalSeconds()
+		public static long GetTotalTime_Database()
 		{
 			using (var ctx = new ScreenTimeManagerContext())
+				// This sums the current timer value INCLUDING the currently active timer
 				return ctx.TimeChanged.Sum(changed => changed.SecondsAdded);
 		}
+
+		public static long GetTotalTime_BeforeTimer()
+		{
+			if (_timerBeginTotalSeconds != null)
+				return (long) _timerBeginTotalSeconds;
+			return 0;
+		}
+
+		public static long GetTotalTime_Now()
+		{
+			if (_timerState != TimerState.Running)
+				return GetTotalTime_Database();
+			return GetTotalTime_BeforeTimer() + ElapsedTimer.GetTimeElapsedInSeconds();
+
+		}
+
 	}
+
+	// This is only used via the timer
+	// So when the clients asks for an update, it should get the current count of the timer PLUS the old value from the database (from before the timer started)
 
 	public class TotalScreenTimeChangedEventArgs : EventArgs
 	{
+		public TimerState CurrentTimerState { get; }
+
 		public long TotalSecondsAvailable { get; }
 
-		public TotalScreenTimeChangedEventArgs(long totalSecondsAvailable)
+		public TotalScreenTimeChangedEventArgs(TimerState state, long totalSecondsAvailable)
 		{
+			CurrentTimerState = state;
 			TotalSecondsAvailable = totalSecondsAvailable;
 		}
 	}

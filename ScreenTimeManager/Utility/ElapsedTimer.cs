@@ -113,10 +113,23 @@ namespace ScreenTimeManager.Utility
 			}
 		}
 
+		/// <summary>
+		/// Get the current time elapsed of the running timer
+		/// If the timer is not running, returns 0
+		/// </summary>
+		/// <returns>Returns the current time elapsed of the timer in milliseconds</returns>
 		public static long GetTimeElapsed()
 		{
 			if (IsRunning())
 				return _stopWatch.ElapsedMilliseconds;
+
+			return 0;
+		}
+
+		public static long GetTimeElapsedInSeconds()
+		{
+			if (IsRunning())
+				return (_stopWatch.ElapsedMilliseconds / 1000);
 
 			return 0;
 		}
