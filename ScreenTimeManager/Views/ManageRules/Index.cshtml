@@ -44,7 +44,7 @@
 
     @foreach (var item in Model)
     {
-        if (item.IsExpired) // If the rule is expired, dont show it. It exists only for historical purposes
+        if (item.IsExpired || item.IsHidden) // If the rule is expired, dont show it. It exists only for historical purposes
         {
             continue;
         }

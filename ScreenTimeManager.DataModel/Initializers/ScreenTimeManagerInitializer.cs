@@ -17,6 +17,18 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			IList<RuleBase> ruleList = new List<RuleBase>();
 
+			// Keep this rule in production
+			ruleList.Add(new RuleBase()
+			{
+				RuleType = RuleType.Timer,
+				RuleModifier = RuleModifier.Subtract,
+				RuleTitle = "Timer Used",
+				RuleDescription = "Used the timer to deduct time",
+				VariableRatioNumerator = 1,
+				VariableRatioDenominator = 1
+			});
+
+			// Keep this rule in production
 			ruleList.Add(new RuleBase()
 			{
 				RuleType = RuleType.Fixed,

@@ -44,6 +44,8 @@ namespace ScreenTimeManager.Utility
 
 		private static int _updateInterval = 10000;
 
+		private static TimerState _timerState = TimerState.Stopped;
+
 		public static bool IsRunning()
 		{
 			return _timer != null && _timer.Enabled && _stopWatch.IsRunning;
@@ -57,11 +59,12 @@ namespace ScreenTimeManager.Utility
 			_timer.Dispose();
 			_timer = null;
 			_stopWatch = null;
+			_timerState = TimerState.Stopped;
 		}
 
 		public static void ToggleTimer()
 		{
-			if (IsRunning())
+			if (_timerState == TimerState.Running)
 			{
 				EndTimer();
 				return;
@@ -84,7 +87,9 @@ namespace ScreenTimeManager.Utility
 			_stopWatch.Start();
 			_timer.Start();
 
-			OnElapsedTimerNotify(new ElapsedTimerEventArgs(IsRunning(), 0));
+			OnElapsedTimerNotify(new ElapsedTimerEventArgs(TimerState.Begin, 0));
+
+			_timerState = TimerState.Running;
 		}
 
 		public static void EndTimer()
@@ -95,7 +100,7 @@ namespace ScreenTimeManager.Utility
 				_timer?.Stop();
 
 				// We let everyone know that the timer has stopped
-				OnElapsedTimerNotify(new ElapsedTimerEventArgs(IsRunning(), _stopWatch.ElapsedMilliseconds));
+				OnElapsedTimerNotify(new ElapsedTimerEventArgs(TimerState.End, _stopWatch.ElapsedMilliseconds));
 
 				Reset();
 			}
@@ -112,14 +117,22 @@ namespace ScreenTimeManager.Utility
 
 	public class ElapsedTimerEventArgs : EventArgs
 	{
-		public bool IsRunning { get; } = false;
+		public TimerState State { get; } = TimerState.Stopped;
 
 		public long MillisecondsElapsed { get; } = 0;
 
-		public ElapsedTimerEventArgs(bool isRunning, long millisecondsElapsed)
+		public ElapsedTimerEventArgs(TimerState state, long millisecondsElapsed)
 		{
-			IsRunning = isRunning;
+			State = state;
 			MillisecondsElapsed = millisecondsElapsed;
 		}
+	}
+
+	public enum TimerState
+	{
+		Stopped = 0,
+		Begin = 1,
+		Running = 2,
+		End = 3
 	}
 }

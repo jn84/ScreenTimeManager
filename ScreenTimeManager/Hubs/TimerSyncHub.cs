@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
+using ScreenTimeManager.Utility;
 
 namespace ScreenTimeManager.Hubs
 {
@@ -26,6 +27,8 @@ namespace ScreenTimeManager.Hubs
 
 		public void ToggleTimerState()
 		{
+			//ElapsedTimer.
+
 			// // // // If there is no ElapsedTimer object (== null)
 			// Server creates a new ElapsedTimer object (should be IDisposable..?)
 			// // ElapsedTimer has a timer

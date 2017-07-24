@@ -7,7 +7,7 @@
 
 @foreach (var item in Model)
 {
-    if (item.IsExpired)
+    if (item.IsExpired || item.IsHidden)
     {
         continue;
     }

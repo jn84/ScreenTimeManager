@@ -3,6 +3,7 @@
 	public enum RuleType
 	{
 		Fixed = 0,
-		Variable = 1
+		Variable = 1,
+		Timer = 2
 	}
 }

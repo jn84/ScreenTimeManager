@@ -47,7 +47,6 @@
     <Compile Include="RuleBase.cs" />
     <Compile Include="Interfaces\IModificationHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\TotalScreenTimeChangedFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

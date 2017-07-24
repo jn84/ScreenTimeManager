@@ -18,6 +18,9 @@ namespace ScreenTimeManager.Models
 	    public bool IsExpired { get; set; }
 
 		[Required]
+		public bool IsHidden { get; set; }
+
+		[Required]
 	    public RuleType RuleType { get; set; }
 		[Required]
 	    public RuleModifier RuleModifier { get; set; }

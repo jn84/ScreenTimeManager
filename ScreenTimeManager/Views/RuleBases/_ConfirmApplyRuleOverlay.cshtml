@@ -30,15 +30,16 @@
         @switch (Model.RuleType)
         {
             case RuleType.Fixed:
-            {
-                Html.RenderPartial("_FixedInput", Model);
-                break;
-            }
+                {
+                    Html.RenderPartial("_FixedInput", Model);
+                    break;
+                }
             case RuleType.Variable:
-            { 
-                Html.RenderPartial("_VariableInput", Model);
-                break;
-            }
+                {
+                    Html.RenderPartial("_VariableInput", Model);
+                    break;
+                }
+                // TODO: Add a partial page to indicate an error (unusable ruletype) for default
         }
 
     </div>
