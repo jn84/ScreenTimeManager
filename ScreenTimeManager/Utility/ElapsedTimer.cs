@@ -81,7 +81,7 @@ namespace ScreenTimeManager.Utility
 
 		private static void BeginTimer()
 		{
-			_timer = new Timer(0)
+			_timer = new Timer(_updateInterval)
 			{
 				Interval = UpdateInterval,
 				AutoReset = true,

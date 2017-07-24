@@ -1,14 +1,15 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(ScreenTimeManager.Startup))]
+[assembly: OwinStartup(typeof(ScreenTimeManager.Startup))]
 namespace ScreenTimeManager
 {
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
-        }
+			ConfigureAuth(app);
+	        app.MapSignalR();
+		}
     }
 }

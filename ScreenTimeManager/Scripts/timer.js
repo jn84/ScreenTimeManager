@@ -1,41 +1,92 @@
-/**
- * index.js
- * - All our useful JS goes here, awesome!
- */
-var isCounting = false;
-
 var seconds = 360000000;
 
 //console.log("JavaScript is amazing!");
 
-$("button#btn-timer-toggle").click(function() {
-  var button = $("button#btn-timer-toggle");
-  if (button.hasClass("btn-start")) {
-    button.removeClass("btn-start");
-    button.addClass("btn-stop");
-    button.html("Stop");
-    isCounting = true;
-  } else if (button.hasClass("btn-stop")) {
-    button.removeClass("btn-stop");
-    button.addClass("btn-start");
-    button.html("Start");
-    isCounting = false;
-  }
-  button.blur();
+$(function () {
+    bindTimer();
+
+    parseCounter();
 });
 
-var decrement = function(integer) {
-  integer--;
-  if (integer < 0) {
-    $("p.time-number").css("background-color", "pink");
-    return integer;
-  }
-  $("p.time-number").css("background-color", "lightgreen");
-  return integer;
+var bindTimer = function () {
+    var totalTimerSeconds = 0;
+
+    var timerIntervalId = null;
+
+    var timerHub = $.connection.timerSyncHub;
+
+    timerHub.client.doTimerStateUpdate = function (isRunning) {
+
+        updateTimerView(isRunning);
+
+        if (isRunning && timerIntervalId == null) {
+            timerIntervalId = startTimer();
+            parseCounter(totalTimerSeconds);
+        } else if (!isRunning && timerIntervalId != null) {
+            timerIntervalId = stopTimer(timerIntervalId);
+            parseCounter(totalTimerSeconds);
+        } else {
+            // alert("The timer inverval id was null when it shouldn't be!");
+        }
+    }
+
+    timerHub.client.doTimerValueUpdate = function (totalSeconds) {
+        totalTimerSeconds = totalSeconds;
+        parseCounter(totalTimerSeconds);
+    }
+
+    // Rework so that the server triggers a change in button state
+    $("button#btn-timer-toggle").click(function () {
+        timerHub.server.toggleTimerState();
+    });
+
+    $.connection.hub.start().done(function() {
+        timerHub.server.syncTimer();
+    });
+
+    var decrement = function (integer) {
+        integer--;
+        if (integer < 0) {
+            $("p.time-number").css("background-color", "pink");
+            return integer;
+        }
+        $("p.time-number").css("background-color", "lightgreen");
+        return integer;
+    }
+
+    var startTimer = function () {
+        return setInterval(function () {
+            totalTimerSeconds = decrement(totalTimerSeconds);
+            parseCounter(totalTimerSeconds);
+        }, 1000);
+    }
+
+    var stopTimer = function (intervalId) {
+        clearInterval(intervalId);
+        return null;
+    }
+    // Do we need to call this again?
 }
 
-var parseCounter = function() {
-  var counter = seconds;
+
+var updateTimerView = function (isRunning) {
+
+    var button = $("button#btn-timer-toggle");
+
+    if (isRunning) {
+        button.removeClass("btn-start");
+        button.addClass("btn-stop");
+        button.html("Stop");
+    } else {
+        button.removeClass("btn-stop");
+        button.addClass("btn-start");
+        button.html("Start");        
+    }
+    button.blur();
+}
+
+var parseCounter = function(inputSeconds) {
+  var counter = inputSeconds;
 
   var hrs = ~~(counter / 3600);
   counter = counter % 3600;
@@ -59,38 +110,3 @@ var parseCounter = function() {
   $("p.seconds-ones").html(Math.abs(secondsones));
 };
 
-$(document).ready(function() {
-  console.log("document ready");
-  parseCounter();
-
-  setInterval(function() {
-    if (isCounting) {
-      seconds = decrement(seconds);
-      parseCounter();
-    }
-  }, 1000);
-});
-
-//$(function () {
-//    // Initialize numeric spinner input boxes
-//    //$(".numeric-spinner").spinedit();
-//    // Initialize modal dialog
-//    // attach modal-container bootstrap attributes to links with .modal-link class.
-//    // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
-//    $('body').on('click', '.modal-link', function (e) {
-//        e.preventDefault();
-//        $(this).attr('data-target', '#modal-container');
-//        $(this).attr('data-toggle', 'modal');
-//    });
-//    // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
-//    $('body').on('click', '.modal-close-btn', function () {
-//        $('#modal-container').modal('hide');
-//    });
-//    //clear modal cache, so that new content can be loaded
-//    $('#modal-container').on('hidden.bs.modal', function () {
-//        $(this).removeData('bs.modal');
-//    });
-//    $('#CancelModal').on('click', function () {
-//        return false;
-//    });
-//});
