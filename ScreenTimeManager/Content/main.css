@@ -222,6 +222,32 @@ div.footer {
   border-right: none;
   background: #111111; }
 
+tr.history-add {
+  color: black;
+  background-color: green; }
+  tr.history-add:hover {
+    background-color: lightgreen; }
+
+tr.history-subtract {
+  color: black;
+  background-color: red; }
+  tr.history-subtract:hover {
+    background-color: pink; }
+
+a.history-detail-link {
+  height: 100%;
+  width: 100%;
+  background-color: lightgray;
+  text-decoration: none;
+  color: black;
+  border: solid black 1px;
+  border-radius: 2px;
+  margin: 0px;
+  text-align: center;
+  display: block; }
+  a.history-detail-link:hover {
+    background-color: white; }
+
 @media screen and (min-width: 1080px) {
   div.title-bar {
     font-size: 5vw; }

@@ -323,6 +323,46 @@ div.footer
     background: $title-background-color;
 }
 
+tr.history-add
+{
+    color: black;
+    background-color: green;
+
+    &:hover {
+        background-color: lightgreen;
+    }
+}
+
+tr.history-subtract
+{
+    color: black;
+    background-color: red;
+
+    &:hover
+    {
+        background-color: pink;
+    }
+}
+
+a.history-detail-link
+{
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+    text-decoration: none;
+    color: black;
+    border: solid black 1px;
+    border-radius: 2px;
+    margin: 0px;
+    text-align: center;
+    display: block;
+
+    &:hover
+    {
+        background-color: white;
+    }
+}
+
 // complete to scale items for mobile/desktop
 @media screen and (min-width : 1080px)
 {

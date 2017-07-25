@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
+﻿@using ScreenTimeManager.DataModel.DataContexts
+@using ScreenTimeManager.Models
+@model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
 
 @{
     ViewBag.Title = "Index";
@@ -7,38 +9,46 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.SecondsAdded)
+            @Html.Encode(@"Time Charged")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.RecordAddedDateTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RuleUsedId)
+            @Html.Encode(@"Rule")
         </th>
         <th></th>
     </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SecondsAdded)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RecordAddedDateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RuleUsedId)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { data_modal = "" })
-        </td>
-    </tr>
-}
+    @using (var ctx = new ScreenTimeManagerContext())
+    {
+        foreach (var item in Model)
+        {
+            <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
+                <td>
+                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordAddedDateTime)
+                </td>
+                <td>
+                    @{ RuleBase ruleBase = ctx.Rules.Find(item.RuleUsedId); }
+                    @if (ruleBase != null)
+                    {
+                    @Html.Encode(ruleBase.RuleTitle)
+                    }
+                    else
+                    {
+                    @Html.Encode(@"Unknown rule")
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new {id = item.Id}, htmlAttributes: new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
+                </td>
+            </tr>
+        }
+    }
 
 </table>

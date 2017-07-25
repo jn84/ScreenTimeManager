@@ -1,31 +1,41 @@
-﻿@model ScreenTimeManager.Models.TotalScreenTimeChanged
+﻿@using ScreenTimeManager.DataModel.DataContexts
+@using ScreenTimeManager.Models
+@model ScreenTimeManager.Models.TotalScreenTimeChanged
 
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">Time Added Confirmation</h4>
-</div>
+@using (var ctx = new ScreenTimeManagerContext())
+{
+    RuleBase ruleBase = ctx.Rules.Find(Model.RuleUsedId);
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+            @(ruleBase != null ? ruleBase.RuleTitle : Html.Encode(@"Error parsing rule data"))
+        </h4>
+    </div>
 
-<div class="modal-body">
-    <h4>RuleBase</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
+    <div class="modal-body">
+        <h4>
+            @(ruleBase != null ? ruleBase.RuleDescription : Html.Encode(@"Error parsing rule data"))
+        </h4>
+        <hr/>
+        <dl class="dl-horizontal" >
+            <dt>
+                @Html.Encode(@"Time Charged")
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.RecordAddedDateTime)
-        </dd>
+            <dd>
+                @Html.Encode(TimeSpan.FromSeconds(Model.SecondsAdded).ToString())
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RuleUsedId)
-        </dt>
+            <dt>
+                @Html.Encode(@"Added")
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.SecondsAdded)
-        </dd>
-    </dl>
-</div>
+            <dd>
+                @Html.DisplayFor(model => model.RecordAddedDateTime)
+            </dd>
+        </dl>
+    </div>
+}
 <div class="modal-footer">
     <button class="btn" data-dismiss="modal">Ok</button>
 </div>
