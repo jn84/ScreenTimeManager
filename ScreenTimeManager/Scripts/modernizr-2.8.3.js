@@ -939,7 +939,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
 
     // Run through all tests and detect their support in the current UA.
-    // todo: hypothetically we could be doing an array of tests and use a basic loop here.
+    // TODO: hypothetically we could be doing an array of tests and use a basic loop here.
     for ( var feature in tests ) {
         if ( hasOwnProp(tests, feature) ) {
             // run the test, throw the return value into the Modernizr,

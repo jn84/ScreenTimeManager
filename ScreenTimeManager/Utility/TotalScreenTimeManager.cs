@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.Linq;
 using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.Models;
@@ -105,9 +106,7 @@ namespace ScreenTimeManager.Utility
 				ctx.SaveChanges();
 			}
 
-			if (_timerState == TimerState.Begin || _timerState == TimerState.Running)
-				OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Now()));
-			OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Database()));
+			OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Now()));
 
 		}
 
@@ -132,7 +131,7 @@ namespace ScreenTimeManager.Utility
 						ctx.SaveChanges();
 						_lastTimeHistoryId = timeChanged.Id;
 						_timerState = TimerState.Running;
-						_timerBeginTotalSeconds = GetTotalTime_Database();
+						_timerBeginTotalSeconds = GetTotalTime_Now();
 						break;
 
 					case TimerState.Running:
@@ -161,33 +160,27 @@ namespace ScreenTimeManager.Utility
 						throw new Exception("Timer state is Stopped or other unhandled value.");
 				}
 
-				OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Database()));
+				OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Now()));
 			}
 		}
 
-		// TODO: Placeholder method. This will take (probably) a long time to execute after many records are added. Implement a running total.
-		public static long GetTotalTime_Database()
-		{
-			using (var ctx = new ScreenTimeManagerContext())
-				// This sums the current timer value INCLUDING the currently active timer
-				return ctx.TimeChanged.Sum(changed => changed.SecondsAdded);
-		}
-
-		public static long GetTotalTime_BeforeTimer()
-		{
-			if (_timerBeginTotalSeconds != null)
-				return (long) _timerBeginTotalSeconds;
-			return 0;
-		}
-
+		//// TODO: Placeholder method. This will take (probably) a long time to execute after many records are added. Implement a running total.
 		public static long GetTotalTime_Now()
 		{
-			if (_timerState != TimerState.Running)
-				return GetTotalTime_Database();
-			return GetTotalTime_BeforeTimer() + ElapsedTimer.GetTimeElapsedInSeconds();
+			long dbTotalMinusTimer;
+			using (var ctx = new ScreenTimeManagerContext())
+			{
+				dbTotalMinusTimer = ctx.TimeChanged.
+					Where(tstc => tstc.Id != _lastTimeHistoryId).
+					Sum(tstc => tstc.SecondsAdded);
+			}
 
+			// Why + (-val): It makes it clearer (to me) what exactly is happening
+			// We add a value to the record, that happens to be a negative value
+			// This is how it works in the database, so it's consistent
+			// The compiler will convert it to plain subtraction anyway
+			return dbTotalMinusTimer + (-ElapsedTimer.GetTimeElapsedInSeconds());
 		}
-
 	}
 
 	// This is only used via the timer
