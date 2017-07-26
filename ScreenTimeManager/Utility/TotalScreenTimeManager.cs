@@ -87,13 +87,37 @@ namespace ScreenTimeManager.Utility
 			return timeChanged;
 		}
 
-		private static long GetModifiedTimeInSeconds(RuleBase rule, long timeAppliedInMilliseconds)
+		public static long GetModifiedTimeInMillisecnds(RuleBase rule, long timeAppliedInMilliseconds)
+		{
+			double modifiedMilliseconds = (int)rule.RuleModifier * timeAppliedInMilliseconds;
+			double ratio = (double)rule.VariableRatioNumerator / rule.VariableRatioDenominator;
+
+			// Behold my kindness: we always round up
+			return (long)Math.Ceiling(modifiedMilliseconds * ratio);
+		}
+
+		public static long GetModifiedTimeInSeconds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
 			double modifiedSeconds = (int)rule.RuleModifier * timeAppliedInMilliseconds;
 			double ratio = (double)rule.VariableRatioNumerator / rule.VariableRatioDenominator;
 
 			// Behold my kindness: we always round up
 			return (long)Math.Ceiling((modifiedSeconds * ratio) / 1000);
+		}
+
+		private static long HoursMinutesToMilliseconds(int hours, int minutes)
+		{
+			var span = new TimeSpan(0, hours, minutes, 0);
+
+			return span.Milliseconds;
+
+		}
+
+		// If everyong uses this, we'll all be consistent
+		public static string FormatTimeSpan(int milliseconds)
+		{
+			var ts = new TimeSpan(0, 0, 0, 0, milliseconds);
+			return ts.ToString(ts.Days > 0 ? "dd'd 'hh'h 'mm'm 'ss's '" : "hh'h 'mm'm 'ss's'");
 		}
 
 		public static void AddOrUpdateRuleAppliedEntry(TotalScreenTimeChanged changed)

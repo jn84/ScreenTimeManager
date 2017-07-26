@@ -20,55 +20,64 @@ $(function () {
 });
 
 function bindForm(dialog) {
-    // grab data here. Could we pass it in? Look for a better way than storing it in the page
 
-    var numerator = parseInt($("meta.ratio-data").attr("numerator"));
-    var denominator = parseInt($("meta.ratio-data").attr("denominator"));
+    // So that the interval can be reset when the modal input is modified
+    var timeoutId = null;
 
+
+
+    // Submit the form to the server with a standard (see: easily styled) button, rather
+    // than via a form input tag
     $("button.confirm-apply").on("click", function (e) {
         e.preventDefault();
         $("form").submit();
     });
 
-    // need the ratio numbers
-
     ///// BEGIN: Applies only to variable rules
 
-    // AHA moment. Learning javascript. Events will "fire" immediately if the function used is pass with parentheses
+    // AHA moment. Learning javascript. Events will "fire" immediately if the function used is passed with parentheses
     // as it sees the paramater as the result of the function. Do it without the parentheses, and it will see it as 
     // a reference to the function (the function itself is now the paramater)
-    $("#myModalContent").on("input", "#minutesApplied", updatePendingTime);
-    $("#myModalContent").on("input", "#hoursApplied", updatePendingTime);
+    $("#myModalContent").on("input", "#minutes-applied", beginUpdateTimeout);
+    $("#myModalContent").on("input", "#hours-applied", beginUpdateTimeout);
+
+    function jsonifyForm() {
+        var rawData = $("input.modal-input").serializeArray();
+        var output = {};
+        $.each(rawData, function() {
+            output[this.name] = this.value;
+        });
+        return JSON.stringify(output);
+
+    }
+
+    function beginUpdateTimeout() {
+        if (timeoutId == null) {
+            // TODO: Find a reasonable value for the timeout length. Maybe it doesn't really matter
+            timeoutId = setTimeout(updatePendingTime, 1500);
+            return;
+        }
+        // reset interval
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(updatePendingTime, 1500);
+    }
 
     function updatePendingTime() {
 
-        // TODO: Just recode this into an ajax request with a short delay before making the request
+        timeoutId = null;
 
-        if (parseInt($("input#hoursApplied").val()) < 0)
-            $("input#hoursApplied").val(0);
-
-        if (parseInt($("input#minutesApplied").val()) < 0)
-            $("input#minutesApplied").val(0);
-
-
-        var result = "";
-
-        var hours = parseInt($("input#hoursApplied").val());
-        var minutes = parseInt($("input#minutesApplied").val());
-
-        var totalSeconds = Math.floor(((hours * 60 + minutes) * 60) * (numerator / denominator));
-
-        var temp = Math.abs(Math.floor(totalSeconds / 3600));
-        result += temp + "h ";
-        totalSeconds -= temp * 3600;
-
-        temp = Math.abs(Math.floor(totalSeconds / 60));
-        result += temp + "m ";
-        totalSeconds -= temp * 60;
-
-        result += totalSeconds + "s";
-        
-        $("span#pendingTime").text(result);
+        $.ajax({
+            url: "RuleBases/UpdatePendingTime",
+            type: "POST",
+            data: { "formData" : jsonifyForm },
+            success: function (result) {
+                if (result.success) {
+                    $("span#pendingTime").text(result.timespan);
+                } else {
+                    $("span#pendingTime").text("I AM ERROR");
+                }
+            }
+        });
     }
 
     ///// END: Applies only to variable rules
@@ -89,6 +98,7 @@ function bindForm(dialog) {
                     } else {
                         location.replace(result.redirectUrl);
                     }
+                // There was a validation error or something, so update the modal
                 } else {
                     $("#myModalContent").html(result);
                     bindForm();

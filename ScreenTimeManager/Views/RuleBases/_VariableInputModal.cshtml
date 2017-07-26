@@ -32,14 +32,13 @@
         <!-- Summary of what will be added-->
 
         <!--For JS reference TODO: Find a better way to do this-->        
-        <meta class="ratio-data" numerator="@ViewBag.Rule.VariableRatioNumerator" denominator="@ViewBag.Rule.VariableRatioDenominator"/>
 
-        @Html.HiddenFor(model => model.RuleBaseId)
+        @Html.HiddenFor(model => model.RuleBaseId, htmlAttributes: new { @class = "modal-input" })
 
         <div class="form-group">
             @Html.LabelFor(model => model.Hours, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "form-control", min = 0, max = 23 } })
+                @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "form-control modal-input", min = 0, max = 23, id = "hours-applied" } })
                 @Html.ValidationMessageFor(model => model.Hours, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -47,7 +46,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Minutes, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Minutes, new { htmlAttributes = new { @class = "form-control", min = 0, max = 59 } })
+                @Html.EditorFor(model => model.Minutes, new { htmlAttributes = new { @class = "form-control modal-input", min = 0, max = 59, id = "minutes-applied" } })
                 @Html.ValidationMessageFor(model => model.Minutes, "", new { @class = "text-danger" })
             </div>
         </div>

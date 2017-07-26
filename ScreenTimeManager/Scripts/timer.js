@@ -15,19 +15,9 @@ var bindTimer = function () {
 
     var timerHub = $.connection.timerSyncHub;
 
-    var decrement = function (integer) {
-        integer--;
-        if (integer < 0) {
-            $("p.time-number").css("background-color", "pink");
-            return integer;
-        }
-        $("p.time-number").css("background-color", "lightgreen");
-        return integer;
-    }
-
     var startTimer = function () {
         return setInterval(function () {
-            totalTimerSeconds = decrement(totalTimerSeconds);
+            totalTimerSeconds--;
             parseCounter(totalTimerSeconds);
         }, 1000);
     }
@@ -79,27 +69,33 @@ var updateTimerView = function (isRunning) {
 }
 
 var parseCounter = function(inputSeconds) {
-  var counter = inputSeconds;
+    if (inputSeconds < 0) {
+        $("p.time-number").css("background-color", "pink");
+    } else {
+        $("p.time-number").css("background-color", "lightgreen");
+    }
 
-  var hrs = ~~(counter / 3600);
-  counter = counter % 3600;
-  var hourstens = ~~(hrs / 10);
-  var hoursones = hrs % 10;
+    var counter = inputSeconds;
 
-  var mins = ~~(counter / 60);
-  counter = counter % 60;
-  var minutestens = ~~(mins / 10);
-  var minutesones = mins % 10;
+    var hrs = ~~(counter / 3600);
+    counter = counter % 3600;
+    var hourstens = ~~(hrs / 10);
+    var hoursones = hrs % 10;
 
-  var secs = counter;
-  var secondstens = ~~(secs / 10);
-  var secondsones = secs % 10;
+    var mins = ~~(counter / 60);
+    counter = counter % 60;
+    var minutestens = ~~(mins / 10);
+    var minutesones = mins % 10;
 
-  $("p.hours-tens").html(Math.abs(hourstens));
-  $("p.hours-ones").html(Math.abs(hoursones));
-  $("p.minutes-tens").html(Math.abs(minutestens));
-  $("p.minutes-ones").html(Math.abs(minutesones));
-  $("p.seconds-tens").html(Math.abs(secondstens));
-  $("p.seconds-ones").html(Math.abs(secondsones));
+    var secs = counter;
+    var secondstens = ~~(secs / 10);
+    var secondsones = secs % 10;
+
+    $("p.hours-tens").html(Math.abs(hourstens));
+    $("p.hours-ones").html(Math.abs(hoursones));
+    $("p.minutes-tens").html(Math.abs(minutestens));
+    $("p.minutes-ones").html(Math.abs(minutesones));
+    $("p.seconds-tens").html(Math.abs(secondstens));
+    $("p.seconds-ones").html(Math.abs(secondsones));
 };
 
