@@ -138,6 +138,20 @@ p.time-number
 a.nav-link
 {
     text-decoration: none;
+    background-color: darken($main-content-background-color, 10%);
+    padding: 15px 0px 15px 10px;
+    width: 100%;
+    color: black;
+    font-size: 20px;
+    border: solid black 2px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: 0px;
+}
+
+a.nav-link-active
+{
+    text-decoration: none;
     background-color: $main-content-background-color;
     padding: 15px 0px 15px 10px;
     width: 100%;
@@ -147,6 +161,8 @@ a.nav-link
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin: 0px;
+
+    border-bottom: none;
 }
 
 // rule-container

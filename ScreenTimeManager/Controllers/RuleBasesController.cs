@@ -31,6 +31,7 @@ namespace ScreenTimeManager.Controllers
 			if (rule == null)
 				throw new ArgumentException("The rule ID does not correspond to a rule found in the database." +
 				                            " You shouldn't be able to get here if the rule doesn't exist.");
+
 			// We'll need the rule data to build the view
 			ViewBag.Rule = rule;
 

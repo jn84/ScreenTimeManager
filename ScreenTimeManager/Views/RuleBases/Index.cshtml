@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 @foreach (var item in Model)
 {
     if (item.IsExpired || item.IsHidden)
@@ -12,5 +13,4 @@
         continue;
     }
     Html.RenderPartial("_Rule", item);
-
 }

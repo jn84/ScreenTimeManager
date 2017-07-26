@@ -34,21 +34,6 @@ namespace ScreenTimeManager.Controllers
             return View(db.Rules.ToList());
         }
 
-        // GET: ManageRules/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RuleBase ruleBase = db.Rules.Find(id);
-            if (ruleBase == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ruleBase);
-        }
-
         // GET: ManageRules/Create
         public ActionResult Create(int ruleType)
         {
@@ -66,12 +51,6 @@ namespace ScreenTimeManager.Controllers
         public ActionResult Create([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator,RuleModifier")] RuleBase ruleBase)
         {
 			ValidateRule(ruleBase);
-
-			//if ((int)ruleBase.RuleModifier != -1 || (int)ruleBase.RuleModifier != 1)
-			//	ModelState.AddModelError("RuleModifier", @"Please select a value");
-
-			//if (ruleBase.FixedTimeEarned >= TimeSpan.FromDays(1))
-			//	ModelState.AddModelError("FixedTimeEarned", @"Please enter a value less than 1 day (hh:mm:ss)");
 
             if (ModelState.IsValid)
             {

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using ScreenTimeManager.Helpers;
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -47,9 +49,9 @@
                 <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
             </div>
             <div class="navigation-menu">
-                @Html.ActionLink("Add/Remove Time", "Index", "RuleBases", null, new { @class = "nav-link" })
-                @Html.ActionLink("Add/Remove Rules", "Index", "ManageRules", null, new { @class = "nav-link" })
-                @Html.ActionLink("View Time History", "Index", "ScreenTimeHistory", null, new { @class = "nav-link" })
+                @Html.NavLink("Add/Remove Time", "Index", "RuleBases")
+                @Html.NavLink("Add/Remove Rules", "Index", "ManageRules")
+                @Html.NavLink("View Time History", "Index", "ScreenTimeHistory")
             </div>
         </div>
 
