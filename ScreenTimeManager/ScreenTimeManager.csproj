@@ -325,12 +325,7 @@
     <Content Include="Views\RuleBases\Index.cshtml" />
     <Content Include="Views\RuleBases\_Rule.cshtml" />
     <Content Include="Views\RuleBases\_ConfirmApplyRuleOverlay.cshtml" />
-    <Content Include="Views\ManageRules\Create.cshtml" />
-    <Content Include="Views\ManageRules\Delete.cshtml" />
-    <Content Include="Views\ManageRules\Details.cshtml" />
-    <Content Include="Views\ManageRules\Edit.cshtml" />
     <Content Include="Views\ManageRules\Index.cshtml" />
-    <Content Include="Views\ScreenTimeHistory\Details.cshtml" />
     <Content Include="Views\ScreenTimeHistory\Index.cshtml" />
     <Content Include="Views\ScreenTimeHistory\_Details.cshtml" />
     <Content Include="Views\RuleBases\_FixedInputModal.cshtml" />

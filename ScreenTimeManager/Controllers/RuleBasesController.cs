@@ -79,57 +79,6 @@ namespace ScreenTimeManager.Controllers
 			return PartialView(rule.RuleType == RuleType.Fixed ? "_FixedInputModal" : "_VariableInputModal", timeSubmission);
 	    }
 
-		///// <summary>
-		///// For applying rules to the database
-		///// </summary>
-		///// <param name="id">The ID of the rule being applied</param>
-		///// <param name="hoursApplied"></param>
-		///// <param name="minutesApplied"></param>
-		//[HttpPost]
-	 //   [ValidateAntiForgeryToken]
-	 //   public void ChangeTime(int? id, string hoursApplied, string minutesApplied)
-		//{
-		//	RuleBase rule = null;
-
-		//    using (var ctx = new ScreenTimeManagerContext())
-		//    {
-		//	    if (id == null)
-		//			throw new ModelValidationException("Cannot create new time history entry. Rule ID is null");
-
-		//		rule = ctx.Rules.Find(id);
-		//		// Just let it throw the exception. Need to ensure this exception is never thrown.
-
-		//	    long? tempMilliseconds = TotalScreenTimeManager.ConvertHoursMinutesToMilliseconds(hoursApplied, minutesApplied);
-
-		//	    //if (tempMilliseconds == null && rule.RuleType != RuleType.Variable)
-
-		//	    var tstc = TotalScreenTimeManager.GenerateTotalScreenTimeChanged(rule, tempMilliseconds);
-
-		//		TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
-		//    }
-
-		//    // Shouldn't.. does it?
-		//	if (db == null) throw new NullReferenceException();
-
-
-		//	//////////////////////////////////////// Should just say "I worked!" or "Validation error!"
-	 //   }
-
-  //      // GET: RuleBases/Details/5
-  //      public ActionResult Details(int? id)
-  //      {
-
-		//	if (id == null)
-		//		throw new Exception("Passed rule id was null");
-
-	 //       RuleBase rule;
-
-		//	using (var ctx = new ScreenTimeManagerContext())
-		//		rule = ctx.Rules.Find(id);
-
-		//	return PartialView("_ConfirmApplyRuleOverlay", rule);
-  //      }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
