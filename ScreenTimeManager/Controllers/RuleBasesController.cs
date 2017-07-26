@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.Models;
+using ScreenTimeManager.Models.Enums;
+using ScreenTimeManager.Utility;
 
 namespace ScreenTimeManager.Controllers
 {
@@ -21,121 +24,111 @@ namespace ScreenTimeManager.Controllers
             return View(db.Rules.ToList());
         }
 
-		// For Variable Rule
-		[HttpPost]
-	    [ValidateAntiForgeryToken]
-	    public void ChangeTime(int? id, string hoursApplied, string minutesApplied)
+	    public ActionResult ApplyTime(int? id)
 	    {
-		    using (var ctx = new ScreenTimeManagerContext())
+		    var rule = db.Rules.Find(id);
+
+			if (rule == null)
+				throw new ArgumentException("The rule ID does not correspond to a rule found in the database." +
+				                            " You shouldn't be able to get here if the rule doesn't exist.");
+			// We'll need the rule data to build the view
+			ViewBag.Rule = rule;
+
+		    TimeSubmission ts = new TimeSubmission()
 		    {
-			    
-		    }
+			    Hours = 0,
+			    Minutes = 0,
+				RuleBaseId = rule.Id
+		    };
 
-				//if hoursApplied and minutesApplied are null, must be fixed rule
+		    if (rule.RuleType == RuleType.Fixed)
+			    return PartialView("_FixedInputModal", ts);
+			if (rule.RuleType == RuleType.Variable)
+				return PartialView("_VariableInputModal", ts);
 
-				// Generate a TotalScreenTimeChanged object
-			
-			// Shouldn't.. does it?
-			if (db == null) throw new NullReferenceException();
-
-
-			//////////////////////////////////////// Should just say "I worked!" or "Validation error!"
+			throw new ArgumentException("The rule's RuleType (" + rule.RuleType + ") is not valid in this context. " +
+			                            "RuleType must be Fixed or Variable. You shouldn't be here. Some other code" +
+			                            " did something bad. Good luck!");
 	    }
 
-        // GET: RuleBases/Details/5
-        public ActionResult Details(int? id)
-        {
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+	    public ActionResult ApplyTime([Bind(Include = "RuleBaseId, Hours, Minutes")] TimeSubmission timeSubmission)
+	    {
+		    RuleBase rule = db.Rules.Find(timeSubmission.RuleBaseId);
 
-			if (id == null)
-				throw new Exception("Passed rule id was null");
+			if (rule == null)
+				throw new ArgumentException("The rule ID does not correspond to a rule found in the database." +
+				                            " You shouldn't be able to get here if the rule doesn't exist.");
 
-	        RuleBase rule;
+			if (ModelState.IsValid)
+			{
+				long? tempMilliseconds =
+					TotalScreenTimeManager.
+					ConvertHoursMinutesToMilliseconds(timeSubmission.Hours, timeSubmission.Minutes);
 
-			using (var ctx = new ScreenTimeManagerContext())
-				rule = ctx.Rules.Find(id);
+				var tstc = TotalScreenTimeManager.GenerateTotalScreenTimeChanged(rule, tempMilliseconds);
 
-			return PartialView("_ConfirmApplyRuleOverlay", rule);
-        }
+				TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
 
-        // GET: RuleBases/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
+			}
 
-        // POST: RuleBases/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,MyRuleType,RuleTitle,RuleDescription")] RuleBase ruleBase)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Rules.Add(ruleBase);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+		    ViewBag.Rule = rule;
 
-            return View(ruleBase);
-        }
+			return PartialView(rule.RuleType == RuleType.Fixed ? "_FixedInputModal" : "_VariableInputModal", timeSubmission);
+	    }
 
-        // GET: RuleBases/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RuleBase ruleBase = db.Rules.Find(id);
-            if (ruleBase == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ruleBase);
-        }
+		///// <summary>
+		///// For applying rules to the database
+		///// </summary>
+		///// <param name="id">The ID of the rule being applied</param>
+		///// <param name="hoursApplied"></param>
+		///// <param name="minutesApplied"></param>
+		//[HttpPost]
+	 //   [ValidateAntiForgeryToken]
+	 //   public void ChangeTime(int? id, string hoursApplied, string minutesApplied)
+		//{
+		//	RuleBase rule = null;
 
-        // POST: RuleBases/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,MyRuleType,RuleTitle,RuleDescription")] RuleBase ruleBase)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(ruleBase).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(ruleBase);
-        }
+		//    using (var ctx = new ScreenTimeManagerContext())
+		//    {
+		//	    if (id == null)
+		//			throw new ModelValidationException("Cannot create new time history entry. Rule ID is null");
 
-        // GET: RuleBases/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RuleBase ruleBase = db.Rules.Find(id);
-            if (ruleBase == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ruleBase);
-        }
+		//		rule = ctx.Rules.Find(id);
+		//		// Just let it throw the exception. Need to ensure this exception is never thrown.
 
-        // POST: RuleBases/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            RuleBase ruleBase = db.Rules.Find(id);
-            db.Rules.Remove(ruleBase);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+		//	    long? tempMilliseconds = TotalScreenTimeManager.ConvertHoursMinutesToMilliseconds(hoursApplied, minutesApplied);
+
+		//	    //if (tempMilliseconds == null && rule.RuleType != RuleType.Variable)
+
+		//	    var tstc = TotalScreenTimeManager.GenerateTotalScreenTimeChanged(rule, tempMilliseconds);
+
+		//		TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
+		//    }
+
+		//    // Shouldn't.. does it?
+		//	if (db == null) throw new NullReferenceException();
+
+
+		//	//////////////////////////////////////// Should just say "I worked!" or "Validation error!"
+	 //   }
+
+  //      // GET: RuleBases/Details/5
+  //      public ActionResult Details(int? id)
+  //      {
+
+		//	if (id == null)
+		//		throw new Exception("Passed rule id was null");
+
+	 //       RuleBase rule;
+
+		//	using (var ctx = new ScreenTimeManagerContext())
+		//		rule = ctx.Rules.Find(id);
+
+		//	return PartialView("_ConfirmApplyRuleOverlay", rule);
+  //      }
 
         protected override void Dispose(bool disposing)
         {

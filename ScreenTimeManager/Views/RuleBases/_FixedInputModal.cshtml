@@ -1,0 +1,48 @@
+﻿@model ScreenTimeManager.Models.TimeSubmission
+
+@{
+    Layout = null;
+}
+
+@* Reminder: ViewBag has the rule needed it to build this modal. ViewBag.Rule *@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <p class="modal-title" id="myModalLabel">Confirm Screen Time Change</p>
+</div>
+
+@if (Model == null) // TODO: DEBUG CODE
+{
+    throw new NullReferenceException();
+}
+
+@using (Html.BeginForm("ApplyTime", "RuleBases", null, FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+        <p><strong>@ViewBag.Rule.RuleTitle</strong></p>
+        <p>@ViewBag.Rule.RuleDescription</p>
+        
+        @Html.HiddenFor(model => model.RuleBaseId)
+        @Html.HiddenFor(model => model.Hours, htmlAttributes: new { Value = 0 })
+        @Html.HiddenFor(model => model.Minutes, htmlAttributes: new { Value = 0 })
+        
+        @* Use the ID's so javascript can make *@
+
+        <hr/>
+
+        <p>On submitting, <strong>___PLACEHOLDER___</strong> will be charged to the timer</p>        
+
+    </div>
+    <div class="modal-footer">
+        <div class="button-container">
+            <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
+        </div>
+
+        <div class="button-container">
+            <button class="confirm-apply" type="submit">Apply Rule</button> <!-- TODO: Change to id for javascript on click function-->
+        </div>
+    </div>
+}
+
+

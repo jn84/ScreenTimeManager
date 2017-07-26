@@ -2,6 +2,7 @@
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
+using System.Web.WebPages;
 using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
@@ -164,7 +165,7 @@ namespace ScreenTimeManager.Utility
 			}
 		}
 
-		//// TODO: Placeholder method. This will take (probably) a long time to execute after many records are added. Implement a running total.
+		//// TODO: Placeholder method. This will take (probably) a long time to execute after many records have been added. Implement a running total.
 		public static long GetTotalTime_Now()
 		{
 			long dbTotalMinusTimer;
@@ -180,6 +181,28 @@ namespace ScreenTimeManager.Utility
 			// This is how it works in the database, so it's consistent
 			// The compiler will convert it to plain subtraction anyway
 			return dbTotalMinusTimer + (-ElapsedTimer.GetTimeElapsedInSeconds());
+		}
+
+		public static long? ConvertHoursMinutesToMilliseconds(long? hours, long? minutes)
+		{
+
+			if (hours == null || minutes == null)
+				return null;
+
+			return (hours * 60 + minutes) * 60000;
+		}
+
+		public static long? ConvertHoursMinutesToMilliseconds(string hourString, string minuteString)
+		{
+			long hours, minutes;
+
+			if (hourString.IsEmpty() || minuteString.IsEmpty())
+				return null;
+
+			if (!long.TryParse(hourString, out hours) || !long.TryParse(minuteString, out minutes))
+				return null;
+
+			return (hours * 60 + minutes) * 60000;
 		}
 	}
 

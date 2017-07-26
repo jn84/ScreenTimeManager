@@ -322,10 +322,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\RuleBases\Create.cshtml" />
-    <Content Include="Views\RuleBases\Delete.cshtml" />
-    <Content Include="Views\RuleBases\Details.cshtml" />
-    <Content Include="Views\RuleBases\Edit.cshtml" />
     <Content Include="Views\RuleBases\Index.cshtml" />
     <Content Include="Views\RuleBases\_Rule.cshtml" />
     <Content Include="Views\RuleBases\_ConfirmApplyRuleOverlay.cshtml" />
@@ -337,8 +333,8 @@
     <Content Include="Views\ScreenTimeHistory\Details.cshtml" />
     <Content Include="Views\ScreenTimeHistory\Index.cshtml" />
     <Content Include="Views\ScreenTimeHistory\_Details.cshtml" />
-    <Content Include="Views\RuleBases\_FixedInput.cshtml" />
-    <Content Include="Views\RuleBases\_VariableInput.cshtml" />
+    <Content Include="Views\RuleBases\_FixedInputModal.cshtml" />
+    <Content Include="Views\RuleBases\_VariableInputModal.cshtml" />
     <Content Include="Views\ManageRules\_CreateFixedRuleModal.cshtml" />
     <Content Include="Views\ManageRules\_CreateVariableRuleModal.cshtml" />
     <Content Include="Views\ManageRules\_EditFixedRuleModal.cshtml" />
