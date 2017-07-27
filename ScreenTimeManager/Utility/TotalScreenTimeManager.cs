@@ -38,9 +38,6 @@ namespace ScreenTimeManager.Utility
 		private static void TimerStateChangedOrUpdated(object sender, ElapsedTimerEventArgs e)
 		{
 			AddOrUpdateTimerEntry(e.State, e.MillisecondsElapsed);
-
-			// Don't need to call the event here since the AddOrUpdate method wil ltake care of that at its closing
-			// OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(e.State));
 		}
 
 
@@ -66,9 +63,7 @@ namespace ScreenTimeManager.Utility
 
 			switch (rule.RuleType)
 			{
-
 				// Need an omnipresent RuleType for timer history
-
 				case RuleType.Fixed:
 					timeChanged.SecondsAdded = (int) rule.RuleModifier * (long) rule.FixedTimeEarned.TotalSeconds;
 					break;
@@ -105,19 +100,18 @@ namespace ScreenTimeManager.Utility
 			return (long)Math.Ceiling((modifiedSeconds * ratio) / 1000);
 		}
 
-		private static long HoursMinutesToMilliseconds(int hours, int minutes)
-		{
-			var span = new TimeSpan(0, hours, minutes, 0);
-
-			return span.Milliseconds;
-
-		}
-
 		// If everyong uses this, we'll all be consistent
-		public static string FormatTimeSpan(int milliseconds)
+		public static string FormatTimeSpan(long milliseconds)
 		{
-			var ts = new TimeSpan(0, 0, 0, 0, milliseconds);
-			return ts.ToString(ts.Days > 0 ? "dd'd 'hh'h 'mm'm 'ss's '" : "hh'h 'mm'm 'ss's'");
+			var ts = TimeSpan.FromMilliseconds(milliseconds);
+
+			Debug.WriteLine(ts.ToString());
+			Debug.WriteLine(ts.TotalMilliseconds);
+
+			return ts.ToString(
+				Math.Floor(Math.Abs(ts.TotalDays)) > 0 ? 
+				"ddd'd 'hh'h 'mm'm 'ss's '" : 
+				"hh'h 'mm'm 'ss's'");
 		}
 
 		public static void AddOrUpdateRuleAppliedEntry(TotalScreenTimeChanged changed)
@@ -207,13 +201,12 @@ namespace ScreenTimeManager.Utility
 			return dbTotalMinusTimer + (-ElapsedTimer.GetTimeElapsedInSeconds());
 		}
 
-		public static long? ConvertHoursMinutesToMilliseconds(long? hours, long? minutes)
+
+		public static long? ConvertHoursMinutesToMilliseconds(int hours, int minutes)
 		{
+			var span = new TimeSpan(0, hours, minutes, 0);
 
-			if (hours == null || minutes == null)
-				return null;
-
-			return (hours * 60 + minutes) * 60000;
+			return (long) span.TotalMilliseconds;
 		}
 
 		public static long? ConvertHoursMinutesToMilliseconds(string hourString, string minuteString)

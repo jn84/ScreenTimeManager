@@ -76,3 +76,27 @@
         }
     }
 }
+
+span.pendingTime
+{
+    font-weight: bold;
+}
+
+div.validation-message 
+{
+    padding-top: 2px;
+}
+
+.validation-error-text
+{
+    color: red;
+    margin: 10px 10px 10px 10px;
+    height:auto;
+}
+
+.description-text-area
+{
+    width: 100%;
+    height: 5em;
+}
+

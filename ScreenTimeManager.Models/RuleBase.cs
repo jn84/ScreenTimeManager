@@ -22,21 +22,31 @@ namespace ScreenTimeManager.Models
 
 		[Required]
 	    public RuleType RuleType { get; set; }
-		[Required]
+		[Required(ErrorMessage = "The rule must add or subtract time")]
 	    public RuleModifier RuleModifier { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "The rule must have a title")]
+		[MaxLength(63, ErrorMessage = "The title must be less than 63 characters")]
 	    public string RuleTitle { get; set; }
-		[Required]
+
+		[Required(ErrorMessage = "The rule must have a description")]
+		[DataType(DataType.MultilineText)]
 	    public string RuleDescription { get; set; }
 
-		[Required]
-	    public TimeSpan FixedTimeEarned { get; set; }
 
+		// I don't like the minimum being zero, but it keeps giving me trouble otherwise
 	    [Required]
-	    public int VariableRatioNumerator { get; set; }
-		[Required]
-	    public int VariableRatioDenominator { get; set; }
+	    [Range(typeof(TimeSpan), "00:00:01", "23:59:59", 
+			ErrorMessage = "Must be more than 0 and less than one day")]
+	    public TimeSpan FixedTimeEarned { get; set; } = TimeSpan.Parse("00:00:01");
+
+	    [Required(ErrorMessage = "Both ratio values must be populated")]
+	    [Range(1, 60, ErrorMessage = "Ratio values must be between 1 and 60")]
+	    public int VariableRatioNumerator { get; set; } = 1;
+
+		[Required(ErrorMessage = "Both ratio values must be populated")]
+		[Range(1, 60, ErrorMessage = "Ratio values must be between 1 and 60")]
+	    public int VariableRatioDenominator { get; set; } = 1;
 
 		public virtual ICollection<TotalScreenTimeChanged> UsedInChangeEntries { get; set; }
     }

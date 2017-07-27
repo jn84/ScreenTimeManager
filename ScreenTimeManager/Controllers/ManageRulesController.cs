@@ -37,10 +37,29 @@ namespace ScreenTimeManager.Controllers
         // GET: ManageRules/Create
         public ActionResult Create(int ruleType)
         {
-	        if (ruleType == (int)RuleType.Fixed)
-		        return PartialView("_CreateFixedRuleModal");
-			else
-				return PartialView("_CreateVariableRuleModal");
+			// We give it a rule to build from to fill out the default values
+
+	        RuleBase newRule = new RuleBase()
+	        {
+		        RuleTitle = "",
+				RuleDescription = "",
+				RuleModifier = RuleModifier.Add,
+				VariableRatioNumerator = 1,
+				VariableRatioDenominator = 1,
+				FixedTimeEarned = TimeSpan.FromTicks(0),
+
+	        };
+
+	        if (ruleType == (int) RuleType.Fixed)
+	        {
+				newRule.RuleType = RuleType.Fixed;
+		        return PartialView("_CreateFixedRuleModal", newRule);
+	        }
+	        else
+	        {
+		        newRule.RuleType = RuleType.Variable;
+				return PartialView("_CreateVariableRuleModal", newRule);
+	        }
         }
 
         // POST: ManageRules/Create

@@ -33,16 +33,24 @@ namespace ScreenTimeManager.Controllers
 
 			// WHAT A MESS
 
+			Debug.WriteLine(formData);
+
 			var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(formData);
 			int ruleId;
-			long hours, minutes;
+			int hours, minutes;
+			RuleBase rule;
 
 			if (!int.TryParse(data["RuleBaseId"], out ruleId) ||
-			    !long.TryParse(data["Hours"],     out hours)  ||
-			    !long.TryParse(data["Minutes"],   out minutes))
+			    !int.TryParse(data["Hours"],     out hours)  ||
+			    !int.TryParse(data["Minutes"],   out minutes))
 			{
 				return Json(new { success = false });
 			}
+
+			rule = db.Rules.Find(ruleId);
+
+			if (rule == null)
+				return Json(new { success = false });
 
 			long? unmodifiedMilliseconds = TotalScreenTimeManager.ConvertHoursMinutesToMilliseconds(hours, minutes);
 
@@ -51,7 +59,7 @@ namespace ScreenTimeManager.Controllers
 
 			var resultMilliseconds =
 				TotalScreenTimeManager.GetModifiedTimeInMillisecnds(
-					db.Rules.Find(ruleId),
+					rule,
 					(long) unmodifiedMilliseconds);
 
 			// Who ya gonna call? TotalScreenTimeManager!
@@ -60,7 +68,8 @@ namespace ScreenTimeManager.Controllers
 			{
 				success = true,
 				// Why are we using longs if we'll just willy nilly cast everything to int?
-				timespan = TotalScreenTimeManager.FormatTimeSpan((int) resultMilliseconds),
+				timespan = TotalScreenTimeManager.FormatTimeSpan(resultMilliseconds),
+				modifier = rule.RuleModifier == RuleModifier.Add ? "add" : "subtract",
 				redirectUrl = Url.Action("Index")
 			});
 		}

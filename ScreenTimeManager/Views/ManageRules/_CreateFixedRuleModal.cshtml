@@ -14,43 +14,43 @@
         @Html.AntiForgeryToken()
     
         <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.ValidationSummary(true, "", new { @class = "validation-error-text" })
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.RuleModifier, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new { @class = "form-control", Value = RuleModifier.Add })
-                    @Html.ValidationMessageFor(model => model.RuleModifier, "", new { @class = "text-danger" })
+            <div>
+                <p>Give this rule a title</p>
+                <div>
+                    @Html.EditorFor(model => model.RuleTitle, new { htmlAttributes = new { @class = "", placeholder = "Enter a title here" } })
                 </div>
+                @Html.ValidationMessageFor(model => model.RuleTitle, "", new { @class = "validation-error-text" })
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.RuleTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.RuleTitle, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RuleTitle, "", new { @class = "text-danger" })
+            <div>
+                <p>Give this rule a description</p>
+                <div>
+                    @Html.EditorFor(model => model.RuleDescription, new { htmlAttributes = new { @class = "description-text-area", placeholder = "Enter a description here" } })
                 </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.RuleDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.RuleDescription, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RuleDescription, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.FixedTimeEarned, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.FixedTimeEarned, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.FixedTimeEarned, "", new { @class = "text-danger" })
-                </div>
+                @Html.ValidationMessageFor(model => model.RuleDescription, "", new { @class = "validation-error-text" })
             </div>
             
-            @Html.HiddenFor(model => model.RuleType, new { Value = RuleType.Fixed })
-            @Html.HiddenFor(model => model.VariableRatioNumerator, new { Value = 1 })
-            @Html.HiddenFor(model => model.VariableRatioDenominator, new { Value = 1 })
+            <div >
+                <p>Will this rule add or subtract time?</p>
+                <div>
+                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new {@class = "", Value = RuleModifier.Add})
+                </div>
+                @Html.ValidationMessageFor(model => model.RuleModifier, "", new {@class = "validation-error-text"})
+            </div>
+
+            <div >
+                <p>How much time will this rule apply? Format: hh:mm:ss or hh:mm</p>
+                <div>
+                    @Html.EditorFor(model => model.FixedTimeEarned, new {htmlAttributes = new {@class = ""}})
+                </div>
+                @Html.ValidationMessageFor(model => model.FixedTimeEarned, "", new { @class = "validation-error-text" })
+            </div>
+            
+            @Html.HiddenFor(model => model.RuleType)
+            @Html.HiddenFor(model => model.VariableRatioNumerator)
+            @Html.HiddenFor(model => model.VariableRatioDenominator)
         </div>
 
     </div>

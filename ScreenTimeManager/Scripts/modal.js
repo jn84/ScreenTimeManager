@@ -67,14 +67,21 @@ function bindForm(dialog) {
         timeoutId = null;
 
         $.ajax({
-            url: "RuleBases/UpdatePendingTime",
+            url: "RuleBases/UpdatePendingTime", // How to make this relative/variable?
             type: "POST",
             data: { "formData" : jsonifyForm },
             success: function (result) {
+                var spanRef = $("span#pendingTime");
                 if (result.success) {
-                    $("span#pendingTime").text(result.timespan);
+                    if (result.modifier === "add") {
+                        spanRef.text("+ " + result.timespan);
+                        spanRef.css("color", "green");
+                    } else {
+                        spanRef.text("- " + result.timespan);
+                        spanRef.css("color", "red");
+                    }
                 } else {
-                    $("span#pendingTime").text("I AM ERROR");
+                    spanRef.text("I AM ERROR");
                 }
             }
         });
