@@ -8,51 +8,52 @@ $(function () {
     parseCounter();
 });
 
-var bindTimer = function () {
+var bindTimer = function() {
     var totalTimerSeconds = 0;
 
     var timerIntervalId = null;
 
     var timerHub = $.connection.timerSyncHub;
 
-    var startTimer = function () {
-        return setInterval(function () {
-            totalTimerSeconds--;
-            parseCounter(totalTimerSeconds);
-        }, 1000);
-    }
+    var startTimer = function() {
+        return setInterval(function() {
+                totalTimerSeconds--;
+                parseCounter(totalTimerSeconds);
+            },
+            1000);
+    };
 
-    var stopTimer = function (intervalId) {
+    var stopTimer = function(intervalId) {
         clearInterval(intervalId);
         return null;
-    }
+    };
 
-    timerHub.client.doTimerStateUpdate = function (isRunning, totalSeconds) {
+    timerHub.client.doTimerStateUpdate = function(isRunning, totalSeconds) {
 
         updateTimerView(isRunning);
 
-        if (isRunning && timerIntervalId == null) {
+        if (isRunning && timerIntervalId === null) {
             timerIntervalId = startTimer();
-        } else if (!isRunning && timerIntervalId != null) {
+        } else if (!isRunning && timerIntervalId !== null) {
             timerIntervalId = stopTimer(timerIntervalId);
         }
 
         totalTimerSeconds = totalSeconds;
         parseCounter(totalTimerSeconds);
-    }
+    };
 
     // Rework so that the server triggers a change in button state
-    $("button#btn-timer-toggle").click(function () {
+    $("button#btn-timer-toggle").click(function() {
         timerHub.server.toggleTimerState();
     });
 
     $.connection.hub.start().done(function() {
         timerHub.server.syncTimer();
     });
-}
+};
 
 
-var updateTimerView = function (isRunning) {
+var updateTimerView = function(isRunning) {
 
     var button = $("button#btn-timer-toggle");
 
@@ -63,10 +64,10 @@ var updateTimerView = function (isRunning) {
     } else {
         button.removeClass("btn-stop");
         button.addClass("btn-start");
-        button.html("Start");        
+        button.html("Start");
     }
     button.blur();
-}
+};
 
 var parseCounter = function(inputSeconds) {
     if (inputSeconds < 0) {

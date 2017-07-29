@@ -52,7 +52,7 @@ function bindForm(dialog) {
     }
 
     function beginUpdateTimeout() {
-        if (timeoutId == null) {
+        if (timeoutId === null) {
             // TODO: Find a reasonable value for the timeout length. Maybe it doesn't really matter
             timeoutId = setTimeout(updatePendingTime, 1500);
             return;
@@ -100,7 +100,7 @@ function bindForm(dialog) {
                 if (result.success) {
                     $("#myModal").modal("hide");
                     // Send to appropriate url
-                    if (result.redirectUrl == null) {
+                    if (result.redirectUrl === null) {
                         location.reload();
                     } else {
                         location.replace(result.redirectUrl);

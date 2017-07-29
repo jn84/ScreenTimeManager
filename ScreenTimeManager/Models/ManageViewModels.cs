@@ -20,6 +20,7 @@ namespace ScreenTimeManager.Models
         public IList<AuthenticationDescription> OtherLogins { get; set; }
     }
 
+	// What's this one do?
     public class FactorViewModel
     {
         public string Purpose { get; set; }

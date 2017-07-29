@@ -17,63 +17,67 @@
 </head>
 
 <body>
-    <div id="myModal" class="modal fade in">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div id="myModalContent">
-                    
-                </div>
+<div id="myModal" class="modal fade in">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="myModalContent">
+
             </div>
         </div>
     </div>
-    <div class="body">
-        <div class="title-bar">
-            <h1>Screen Time Manager</h1>
-        </div>
-        <div class="main-bar">
-            <div class="counter">
-                <div class="number-group hours">
-                    <p class="time-number hours-tens">0</p>
-                    <p class="time-number hours-ones">0</p>
-                </div>
-                <div class="number-group minutes">
-                    <p class="time-number minutes-tens">0</p>
-                    <p class="time-number minutes-ones">0</p>
-                </div>
-                <div class="number-group seconds">
-                    <p class="time-number seconds-tens">0</p>
-                    <p class="time-number seconds-ones">0</p>
-                </div>
+</div>
+    @* TODO: Properly implement the login/account info into the layout *@
+<div class="body">
+    <div>
+    @Html.Partial("_LoginPartial")
+    </div>
+    <div class="title-bar">
+        <h1>Screen Time Manager</h1>
+    </div>
+    <div class="main-bar">
+        <div class="counter">
+            <div class="number-group hours">
+                <p class="time-number hours-tens">0</p>
+                <p class="time-number hours-ones">0</p>
             </div>
-            <div class="toggle-timer">
-                <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
+            <div class="number-group minutes">
+                <p class="time-number minutes-tens">0</p>
+                <p class="time-number minutes-ones">0</p>
             </div>
-            <div class="navigation-menu">
-                @Html.NavLink("Add/Remove Time", "Index", "RuleBases")
-                @Html.NavLink("Add/Remove Rules", "Index", "ManageRules")
-                @Html.NavLink("View Time History", "Index", "ScreenTimeHistory")
+            <div class="number-group seconds">
+                <p class="time-number seconds-tens">0</p>
+                <p class="time-number seconds-ones">0</p>
             </div>
         </div>
-
-        <div class="main-content">
-            @RenderBody()
+        <div class="toggle-timer">
+            <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
         </div>
-
-
-        <div class="footer">
-
+        <div class="navigation-menu">
+            @Html.NavLink("Add/Remove Time", "Index", "RuleBases")
+            @Html.NavLink("Add/Remove Rules", "Index", "ManageRules")
+            @Html.NavLink("View Time History", "Index", "ScreenTimeHistory")
         </div>
+    </div>
+
+    <div class="main-content">
+        @RenderBody()
+    </div>
+
+
+    <div class="footer">
 
     </div>
 
-    <!-- Scripts -->
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/Timer")
-    @Scripts.Render("~/bundles/Modal")
-    @Scripts.Render("~/scripts/jquery.signalR-2.2.2.js")
-    @Scripts.Render("~/signalr/hubs")
-    @RenderSection("scripts", required: false)
+</div>
+
+<!-- Scripts -->
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/Timer")
+@Scripts.Render("~/bundles/Modal")
+@Scripts.Render("~/scripts/jquery.signalR-2.2.2.js")
+@Scripts.Render("~/signalr/hubs")
+@RenderSection("scripts", required: false)
 </body>
 
 </html>

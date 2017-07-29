@@ -49,9 +49,8 @@ namespace ScreenTimeManager.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,6 +63,12 @@ namespace ScreenTimeManager.Models
 
     public class RegisterViewModel
     {
+		[Required]
+		[StringLength(20, ErrorMessage = "The username must be at least {2} characters long", MinimumLength = 6)]
+		[Display(Name = "Username")]
+		[RegularExpression("^[a-zA-Z0-9_.-]*$", ErrorMessage = "The username may only contain alphanumeric characters, underscores, and dashes")]
+		public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

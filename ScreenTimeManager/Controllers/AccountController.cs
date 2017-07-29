@@ -72,7 +72,10 @@ namespace ScreenTimeManager.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+			// Why does this generated code function incorrectly?
+			// UserName needs to be the same as Email. Yuck
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -148,8 +151,12 @@ namespace ScreenTimeManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+	            new ApplicationUser
+		            { };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
+				
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -160,7 +167,7 @@ namespace ScreenTimeManager.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "RuleBases");
                 }
                 AddErrors(result);
             }
@@ -389,7 +396,7 @@ namespace ScreenTimeManager.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "RuleBases");
         }
 
         //
@@ -446,7 +453,7 @@ namespace ScreenTimeManager.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "RuleBases");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
