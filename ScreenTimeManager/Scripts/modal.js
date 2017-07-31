@@ -28,7 +28,7 @@ function bindForm(dialog) {
 
     // Submit the form to the server with a standard (see: easily styled) button, rather
     // than via a form input tag
-    $("button.confirm-apply").on("click", function (e) {
+    $("button#modal-submit").on("click", function (e) {
         e.preventDefault();
         $("form").submit();
     });
