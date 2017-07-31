@@ -1,4 +1,5 @@
 ﻿@using System.Diagnostics.Eventing.Reader
+@using ScreenTimeManager.Helpers
 @using ScreenTimeManager.Models.Enums
 @model IEnumerable<ScreenTimeManager.Models.RuleBase>
 
@@ -7,71 +8,91 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<p>
-    @Html.ActionLink("Create Fixed Rule", "Create", "ManageRules",  new { ruleType = (int)RuleType.Fixed }, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
-</p>
-<br/>
-<p>
-    @Html.ActionLink("Create Variable Rule", "Create", "ManageRules", new { ruleType = (int)RuleType.Variable }, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })
-</p>
-<br/>
-<table class="table">
+@if (User.IsInRole("Admin") || User.IsInRole("Parent"))
+{
+    <p>
+        @Html.ActionLink("Create Fixed Rule", "Create", "ManageRules", new {ruleType = (int) RuleType.Fixed}, htmlAttributes: new {data_modal = "", @class = "link-apply-rule"})
+    </p>
+    <br/>
+    <p>
+        @Html.ActionLink("Create Variable Rule", "Create", "ManageRules", new {ruleType = (int) RuleType.Variable}, htmlAttributes: new {data_modal = "", @class = "link-apply-rule"})
+    </p>
+    <br/>
+}
+<div class="rule-table">
+<h1 class="rule-table-header">Fixed Rules</h1>
+<table class="rule-table"> @*BOOTSTRAP INFECTING EVERYTHING*@
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.RuleType)
-        </th>
-        <th>
+        <th class="rule-table">
             @Html.DisplayNameFor(model => model.RuleTitle)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RuleDescription)
-        </th>
-        <th>
+        <th class ="rule-table">
             @Html.DisplayNameFor(model => model.FixedTimeEarned)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VariableRatioNumerator)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VariableRatioDenominator)
-        </th>
-        <th></th>
+        @if (User.IsInRole("Admin") || User.IsInRole("Parent")) { <th>Options</th> }
     </tr>
     
-    <!-- Rules should not actually be deleted. Just marked as no longer in use. Older time changes might need to use their data-->
-
-    @foreach (var item in Model)
+    @foreach (var item in Model.Where(r => r.RuleType == RuleType.Fixed))
     {
-        if (item.IsExpired || item.IsHidden) // If the rule is expired, dont show it. It exists only for historical purposes
+        // If the rule is expired, dont show it. It exists only for historical purposes
+        // If the rule is hidden, it's a special case rule (such as the timer)
+        if (item.IsExpired || item.IsHidden)
         {
             continue;
         }
-        <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.RuleType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RuleTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RuleDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FixedTimeEarned)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VariableRatioNumerator)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VariableRatioDenominator)
-        </td>
-        <td>@*Html.ActionLink("Create Variable Rule", "Create", "ManageRules", new { ruleType = (int)RuleType.Variable }, htmlAttributes: new { data_modal = "", @class = "link-apply-rule" })*@
-            <p>@Html.ActionLink("Edit", "Edit", "ManageRules", new {id = item.Id }, htmlAttributes: new { data_modal= "" } );</p>
-            <p>@Html.ActionLink("Details", "Details", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "" }) </p>
-            <p>@Html.ActionLink("Delete", "Delete", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "" }) </p>
-        </td>
-    </tr>
-}
-
+        <tr class="table-rule-entry">
+            <td>
+                @Html.DisplayFor(modelItem => item.RuleTitle)
+            </td>
+            <td>
+                <p>@(item.RuleModifier == RuleModifier.Add ? "Adds" : "Deducts") @item.FixedTimeEarned.ToString()</p>
+            </td>
+            <td class="rule-options-table-cell">
+                <p>@Html.ActionLink("Edit", "Edit", "ManageRules", new {id = item.Id }, htmlAttributes: new { data_modal= "", @class = "rule-options-link" } ).If(User.IsInRole("Admin") || User.IsInRole("Parent"))</p>
+                <p>@Html.ActionLink("Delete", "Delete", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "", @class = "rule-options-link" }).If(User.IsInRole("Admin") || User.IsInRole("Parent")) </p>
+            </td>
+        </tr>
+    }
 </table>
+</div>
+    
+<div class="rule-table">
+    <h1 class="rule-table-header">Variable Rules</h1>
+    <table class="rule-table">
+        @*BOOTSTRAP INFECTING EVERYTHING*@
+        <tr>
+            <th class="rule-table">
+                @Html.DisplayNameFor(model => model.RuleTitle)
+            </th>
+            <th class="rule-table">
+                <p>Time Earning Ratio</p>
+            </th>
+            @if (User.IsInRole("Admin") || User.IsInRole("Parent"))
+            {
+        <th>Options</th> }
+        </tr>
+
+        @foreach (var item in Model.Where(r => r.RuleType == RuleType.Variable))
+        {
+            // If the rule is expired, dont show it. It exists only for historical purposes
+            // If the rule is hidden, it's a special case rule (such as the timer)
+            if (item.IsExpired || item.IsHidden)
+            {
+                continue;
+            }
+            <tr class="table-rule-entry">
+                <td>
+                    @Html.DisplayFor(modelItem => item.RuleTitle)
+                </td>
+                <td>
+                    <p>@(item.RuleModifier == RuleModifier.Add ? "Earns" : "Deducts") @item.VariableRatioDenominator minutes for every @item.VariableRatioNumerator minutes applied</p>
+                </td>
+                <td class="rule-options-table-cell">
+                    <p>@Html.ActionLink("Edit", "Edit", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "", @class = "rule-options-link" }).If(User.IsInRole("Admin") || User.IsInRole("Parent"))</p>
+                    <p>@Html.ActionLink("Delete", "Delete", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "", @class = "rule-options-link" }).If(User.IsInRole("Admin") || User.IsInRole("Parent")) </p>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

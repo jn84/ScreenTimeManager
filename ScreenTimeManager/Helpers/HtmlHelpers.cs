@@ -26,5 +26,10 @@ namespace ScreenTimeManager.Helpers
 
 			return htmlHelper.ActionLink(linkText, actionName, controllerName, null, new { @class = "nav-link" });
 		}
+
+		public static MvcHtmlString If(this MvcHtmlString value, bool evaluation)
+		{
+			return evaluation ? value : MvcHtmlString.Empty;
+		}
 	}
 }

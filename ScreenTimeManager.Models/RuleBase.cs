@@ -2,6 +2,7 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ScreenTimeManager.Models
@@ -21,14 +22,17 @@ namespace ScreenTimeManager.Models
 		public bool IsHidden { get; set; }
 
 		[Required]
+		[DisplayName("Type")]
 	    public RuleType RuleType { get; set; }
 		[Required(ErrorMessage = "The rule must add or subtract time")]
 	    public RuleModifier RuleModifier { get; set; }
 
+		[DisplayName("Title")]
 		[Required(ErrorMessage = "The rule must have a title")]
 		[MaxLength(63, ErrorMessage = "The title must be less than 63 characters")]
 	    public string RuleTitle { get; set; }
 
+		[DisplayName("Description")]
 		[Required(ErrorMessage = "The rule must have a description")]
 		[DataType(DataType.MultilineText)]
 	    public string RuleDescription { get; set; }
@@ -36,6 +40,7 @@ namespace ScreenTimeManager.Models
 
 		// I don't like the minimum being zero, but it keeps giving me trouble otherwise
 	    [Required]
+		[DisplayName("Time Applied")]
 	    [Range(typeof(TimeSpan), "00:00:01", "23:59:59", 
 			ErrorMessage = "Must be more than 0 and less than one day")]
 	    public TimeSpan FixedTimeEarned { get; set; } = TimeSpan.Parse("00:00:01");

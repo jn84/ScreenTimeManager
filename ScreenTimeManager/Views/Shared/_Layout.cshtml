@@ -28,8 +28,8 @@
 </div>
     @* TODO: Properly implement the login/account info into the layout *@
 <div class="body">
-    <div>
-    @Html.Partial("_LoginPartial")
+    <div class="account-bar">
+        @Html.Partial("_LoginPartial")
     </div>
     <div class="title-bar">
         <h1>Screen Time Manager</h1>
@@ -49,13 +49,17 @@
                 <p class="time-number seconds-ones">0</p>
             </div>
         </div>
-        <div class="toggle-timer">
-            <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
-        </div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Parent"))
+        {
+            <div class="toggle-timer">
+                <button class="btn-counter btn-start" name="button" id="btn-timer-toggle">Start</button>
+            </div>
+        }
         <div class="navigation-menu">
             @Html.NavLink("Add/Remove Time", "Index", "RuleBases")
-            @Html.NavLink("Add/Remove Rules", "Index", "ManageRules")
+            @Html.NavLink("Add/Remove Rules", "Index", "ManageRules").If(User.IsInRole("Admin") || User.IsInRole("Parent"))
             @Html.NavLink("View Time History", "Index", "ScreenTimeHistory")
+            @* Manage Users NavLink *@
         </div>
     </div>
 

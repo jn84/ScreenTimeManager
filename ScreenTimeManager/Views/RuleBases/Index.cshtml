@@ -1,16 +1,19 @@
-﻿@model IEnumerable<ScreenTimeManager.Models.RuleBase>
+﻿@using ScreenTimeManager.Models
+@model IEnumerable<RuleBase>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-@foreach (var item in Model)
-{
-    if (item.IsExpired || item.IsHidden)
+@if(User.IsInRole("Admin") || User.IsInRole("Parent"))
     {
-        continue;
+    foreach(RuleBase item in Model)
+        {
+            if (item.IsExpired || item.IsHidden)
+            {
+                continue;
+            }
+            Html.RenderPartial("_Rule", item);
+        }
     }
-    Html.RenderPartial("_Rule", item);
-}
