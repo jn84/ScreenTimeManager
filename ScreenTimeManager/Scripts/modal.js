@@ -86,7 +86,7 @@ function bindForm(dialog) {
     // than via a form input tag
     $("button#modal-submit").on("click", function (e) {
         e.preventDefault();
-        $("form").submit();
+        $("form#modalForm").submit();
     });
 
     // any <form> tag, the context in which that form tag is found
