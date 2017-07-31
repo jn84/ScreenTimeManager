@@ -34,8 +34,9 @@ namespace ScreenTimeManager.Controllers
             return View(db.Rules.ToList());
         }
 
-        // GET: ManageRules/Create
-        public ActionResult Create(int ruleType)
+		// GET: ManageRules/Create
+		[Authorize(Roles = "Admin,Parent")]
+		public ActionResult Create(int ruleType)
         {
 			// We give it a rule to build from to fill out the default values
 
@@ -66,7 +67,8 @@ namespace ScreenTimeManager.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Parent")]
+		[ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator,RuleModifier")] RuleBase ruleBase)
         {
 			ValidateRule(ruleBase);
@@ -84,8 +86,9 @@ namespace ScreenTimeManager.Controllers
 			return PartialView("_CreateVariableRuleModal", ruleBase);
         }
 
-        // GET: ManageRules/Edit/5
-        public ActionResult Edit(int? id)
+		// GET: ManageRules/Edit/5
+		[Authorize(Roles = "Admin,Parent")]
+		public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -134,8 +137,9 @@ namespace ScreenTimeManager.Controllers
 	        return PartialView("_EditVariableRuleModal", ruleBase);
 		}
 
-        // GET: ManageRules/Delete/5
-        public ActionResult Delete(int? id)
+		// GET: ManageRules/Delete/5
+		[Authorize(Roles = "Admin,Parent")]
+		public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -153,7 +157,8 @@ namespace ScreenTimeManager.Controllers
 
         // POST: ManageRules/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Parent")]
+		[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
 	        RuleBase ruleBase = db.Rules.Find(id);

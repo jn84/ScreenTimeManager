@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ScreenTimeManager.Controllers
 {
@@ -152,8 +153,10 @@ namespace ScreenTimeManager.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
-	            new ApplicationUser
-		            { };
+
+				// Default role
+				// Admin panel, when built/implemented, can change roles
+				user.Roles.Add( new IdentityUserRole { RoleId = "Child" });
 
                 var result = await UserManager.CreateAsync(user, model.Password);
 				

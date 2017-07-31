@@ -30,11 +30,6 @@ namespace ScreenTimeManager.Controllers
 		// Don't bother with antiforgery since we're not changing the server state
 	    public ActionResult UpdatePendingTime(string formData)
 		{
-
-			// WHAT A MESS
-
-			Debug.WriteLine(formData);
-
 			var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(formData);
 			int ruleId;
 			int hours, minutes;
@@ -74,7 +69,8 @@ namespace ScreenTimeManager.Controllers
 			});
 		}
 
-	    public ActionResult ApplyTime(int? id)
+	    [Authorize(Roles = "Admin,Parent")]
+		public ActionResult ApplyTime(int? id)
 	    {
 		    var rule = db.Rules.Find(id);
 
@@ -103,6 +99,7 @@ namespace ScreenTimeManager.Controllers
 	    }
 
 		[HttpPost]
+		[Authorize(Roles = "Admin,Parent")]
 		[ValidateAntiForgeryToken]
 	    public ActionResult ApplyTime([Bind(Include = "RuleBaseId, Hours, Minutes")] TimeSubmission timeSubmission)
 	    {
