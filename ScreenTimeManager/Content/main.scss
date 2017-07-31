@@ -403,11 +403,21 @@ a.rule-options-link
     border-radius: 2px;
     margin: 0px;
     text-align: center;
-    display: block;
+    display:inline-block;
 
     &:hover
     {
         background-color: white;
+    }
+}
+
+a.delete
+{
+    background-color: pink;
+
+    &:hover
+    {
+        background-color: darken(red, 20%);
     }
 }
 
@@ -423,6 +433,7 @@ h1.rule-table-header
     width: 100%;
     border: solid black 1px;
     color: black;
+    text-align-last: center;
     line-height: 2;
     font-size: 1.5em;
     align-items: center;
@@ -456,6 +467,11 @@ tr.table-rule-entry
     color: white;
     border-bottom: solid white 1px;
     line-height: 2;
+
+    &:hover
+    {
+        background-color: lighten($title-background-color, 10%);
+    }
 }
 
 // complete to scale items for mobile/desktop

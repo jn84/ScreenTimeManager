@@ -280,9 +280,14 @@ a.rule-options-link {
   border-radius: 2px;
   margin: 0px;
   text-align: center;
-  display: block; }
+  display: inline-block; }
   a.rule-options-link:hover {
     background-color: white; }
+
+a.delete {
+  background-color: pink; }
+  a.delete:hover {
+    background-color: #990000; }
 
 td.rule-options-table-cell {
   display: flex;
@@ -292,6 +297,7 @@ h1.rule-table-header {
   width: 100%;
   border: solid black 1px;
   color: black;
+  text-align-last: center;
   line-height: 2;
   font-size: 1.5em;
   align-items: center;
@@ -319,6 +325,8 @@ tr.table-rule-entry {
   color: white;
   border-bottom: solid white 1px;
   line-height: 2; }
+  tr.table-rule-entry:hover {
+    background-color: #2b2b2b; }
 
 @media screen and (min-width: 1080px) {
   div.title-bar {

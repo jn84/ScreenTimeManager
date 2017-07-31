@@ -1,82 +1,4 @@
-﻿@*@model ScreenTimeManager.Models.RuleBase
-
-<div>
-    <h4>RuleBase</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.RuleType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RuleType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RuleModifier)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RuleModifier)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RuleTitle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RuleTitle)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RuleDescription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RuleDescription)
-        </dd>
-        
-        @if (Model.RuleType == RuleType.Fixed)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.FixedTimeEarned)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.FixedTimeEarned)
-            </dd>
-        }
-        @if (Model.RuleType == RuleType.Variable)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.VariableRatioNumerator)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.VariableRatioNumerator)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.VariableRatioDenominator)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.VariableRatioDenominator)
-            </dd>
-        }
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
-</div>*@
-
-@using ScreenTimeManager.Models.Enums
+﻿@using ScreenTimeManager.Models.Enums
 @model ScreenTimeManager.Models.RuleBase
 
 
@@ -157,10 +79,10 @@
     <!--Need javascript to submit the form -> Previous code works here. No additional code needed. -->
     <div class="modal-footer">
         <div class="button-container">
-            <button class="confirm-apply" type="button" data-dismiss="modal">Cancel</button>
+            <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
         </div>
         <div class="button-container">
-            <button class="cancel-apply" value="Delete" type="submit">Delete</button> <!-- TODO: Change to id for javascript on click function-->
+            <button class="confirm-apply" value="Delete" type="submit">Delete</button> <!-- TODO: Change to id for javascript on click function-->
         </div>
     </div>
 }
