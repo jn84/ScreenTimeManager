@@ -24,15 +24,6 @@ function bindForm(dialog) {
     // So that the interval can be reset when the modal input is modified
     var timeoutId = null;
 
-
-
-    // Submit the form to the server with a standard (see: easily styled) button, rather
-    // than via a form input tag
-    $("button#modal-submit").on("click", function (e) {
-        e.preventDefault();
-        $("form").submit();
-    });
-
     ///// BEGIN: Applies only to variable rules
 
     // AHA moment. Learning javascript. Events will "fire" immediately if the function used is passed with parentheses
@@ -44,6 +35,8 @@ function bindForm(dialog) {
     function jsonifyForm() {
         var rawData = $("input.modal-input").serializeArray();
         var output = {};
+
+        // convert to key/value pairs
         $.each(rawData, function() {
             output[this.name] = this.value;
         });
@@ -88,7 +81,14 @@ function bindForm(dialog) {
     }
 
     ///// END: Applies only to variable rules
-    
+
+    // Submit the form to the server with a standard (see: easily styled) button, rather
+    // than via a form input tag
+    $("button#modal-submit").on("click", function (e) {
+        e.preventDefault();
+        $("form").submit();
+    });
+
     // any <form> tag, the context in which that form tag is found
     $("form#modalForm", dialog).submit(function () { // Why is this not called when hitting the submit button?
         //alert("entered submit function");

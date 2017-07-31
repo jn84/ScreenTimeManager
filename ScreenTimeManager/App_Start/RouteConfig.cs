@@ -18,6 +18,7 @@ namespace ScreenTimeManager
 				url: "{controller}/{action}/{id}",
 				defaults: new { controller = "RuleBases", action = "Index", id = UrlParameter.Optional }
 			);
+
 		}
 	}
 }

@@ -108,6 +108,7 @@ namespace ScreenTimeManager.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+		[Authorize(Roles = "Admin,Parent")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,RuleType,RuleTitle,RuleDescription,FixedTimeEarned,VariableRatioNumerator,VariableRatioDenominator,RuleModifier")] RuleBase ruleBase)
         {
@@ -124,7 +125,7 @@ namespace ScreenTimeManager.Controllers
 				db.Rules.Add(ruleBase);
                 db.SaveChanges();
 
-				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
+				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index", "ManageRules") });
 			}
 
 			if (ruleBase.RuleType == RuleType.Fixed)

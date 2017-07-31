@@ -1,5 +1,8 @@
 ﻿"use strict";
 
+var numerator;
+var denominator;
+
 $(function () {
     $.ajaxSetup({ cache: false }); ///////////////////////////////////// Document never ready
 
@@ -16,37 +19,76 @@ $(function () {
 
         return false;
     });
-
-    // AHA moment. Learning javascript. Events will "fire" immediately if the function used is pass with parentheses
-    // as it sees the paramater as the result of the function. Do it without the parentheses, and it will see it as
-    // a reference to the function (the function itself is now the paramater)
 });
 
-////////////////////////////////////////////////////////////// we need the ratio. Store it in the page source? I think this might be the best choice
-function updatePendingTime() {
-    // calculte here
-
-    var numer = parseInt($("meta.ratio-data").attr("numerator"));
-    var denom = parseInt($("meta.ratio-data").attr("denominator"));
-
-    alert("Num: " + numer + "    Denom: " + denom);
-
-    //var result;
-
-    //$("span#pendingTime").text(result);
-}
-
 function bindForm(dialog) {
-    $("button.confirm-apply").on("click", function (e) {
+
+    // So that the interval can be reset when the modal input is modified
+    var timeoutId = null;
+
+    ///// BEGIN: Applies only to variable rules
+
+    // AHA moment. Learning javascript. Events will "fire" immediately if the function used is passed with parentheses
+    // as it sees the paramater as the result of the function. Do it without the parentheses, and it will see it as
+    // a reference to the function (the function itself is now the paramater)
+    $("#myModalContent").on("input", "#minutes-applied", beginUpdateTimeout);
+    $("#myModalContent").on("input", "#hours-applied", beginUpdateTimeout);
+
+    function jsonifyForm() {
+        var rawData = $("input.modal-input").serializeArray();
+        var output = {};
+
+        // convert to key/value pairs
+        $.each(rawData, function () {
+            output[this.name] = this.value;
+        });
+        return JSON.stringify(output);
+    }
+
+    function beginUpdateTimeout() {
+        if (timeoutId === null) {
+            // TODO: Find a reasonable value for the timeout length. Maybe it doesn't really matter
+            timeoutId = setTimeout(updatePendingTime, 1500);
+            return;
+        }
+        // reset interval
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(updatePendingTime, 1500);
+    }
+
+    function updatePendingTime() {
+
+        timeoutId = null;
+
+        $.ajax({
+            url: "RuleBases/UpdatePendingTime", // How to make this relative/variable?
+            type: "POST",
+            data: { "formData": jsonifyForm },
+            success: function success(result) {
+                var spanRef = $("span#pendingTime");
+                if (result.success) {
+                    if (result.modifier === "add") {
+                        spanRef.text("+ " + result.timespan);
+                        spanRef.css("color", "green");
+                    } else {
+                        spanRef.text("- " + result.timespan);
+                        spanRef.css("color", "red");
+                    }
+                } else {
+                    spanRef.text("I AM ERROR");
+                }
+            }
+        });
+    }
+
+    ///// END: Applies only to variable rules
+
+    // Submit the form to the server with a standard (see: easily styled) button, rather
+    // than via a form input tag
+    $("button#modal-submit").on("click", function (e) {
         e.preventDefault();
         $("form").submit();
     });
-
-    // need the ratio numbers
-
-    $("#myModalContent").on("input", "#hoursApplied #minutesApplied", updatePendingTime);
-
-    //$("#myModalContent").on("input", "input", updatePendingTime);
 
     // any <form> tag, the context in which that form tag is found
     $("form#modalForm", dialog).submit(function () {
@@ -57,15 +99,19 @@ function bindForm(dialog) {
             type: this.method,
             data: $(this).serialize(),
             success: function success(result) {
-                alert(result);
                 if (result.success) {
                     $("#myModal").modal("hide");
-                    //Refresh
-                    location.reload();
+                    // Send to appropriate url
+                    if (result.redirectUrl === null) {
+                        location.reload();
+                    } else {
+                        location.replace("/RuleBases");
+                    }
+                    // There was a validation error or something, so update the modal
                 } else {
-                    $("#myModalContent").html(result);
-                    bindForm();
-                }
+                        $("#myModalContent").html(result);
+                        bindForm();
+                    }
             }
         });
         return false;
