@@ -10,14 +10,10 @@
 
 @if (User.IsInRole("Admin") || User.IsInRole("Parent"))
 {
-    <p>
-        @Html.ActionLink("Create Fixed Rule", "Create", "ManageRules", new {ruleType = (int) RuleType.Fixed}, htmlAttributes: new {data_modal = "", @class = "link-apply-rule"})
-    </p>
-    <br/>
-    <p>
-        @Html.ActionLink("Create Variable Rule", "Create", "ManageRules", new {ruleType = (int) RuleType.Variable}, htmlAttributes: new {data_modal = "", @class = "link-apply-rule"})
-    </p>
-    <br/>
+    <div class="create-rule">
+        @Html.ActionLink("Create Fixed Rule", "Create", "ManageRules", new {ruleType = (int) RuleType.Fixed}, htmlAttributes: new {data_modal = "", @class = "link-create-rule"})
+        @Html.ActionLink("Create Variable Rule", "Create", "ManageRules", new {ruleType = (int) RuleType.Variable}, htmlAttributes: new {data_modal = "", @class = "link-create-rule"})
+    </div>
 }
 <div class="rule-table">
 <h1 class="rule-table-header">Fixed Rules</h1>
