@@ -1,6 +1,8 @@
 ﻿@using System.Diagnostics.Eventing.Reader
 @using ScreenTimeManager.Helpers
+@using ScreenTimeManager.Models
 @using ScreenTimeManager.Models.Enums
+@using ScreenTimeManager.Utility
 @model IEnumerable<ScreenTimeManager.Models.RuleBase>
 
 @{
@@ -44,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.RuleTitle)
             </td>
             <td>
-                <p>@(item.RuleModifier == RuleModifier.Add ? "Adds" : "Deducts") @item.FixedTimeEarned.ToString()</p>
+                <p>@TotalScreenTimeManager.BuildRuleDetailString(item)</p>
             </td>
             <td class="rule-options-table-cell">
                 @Html.ActionLink("Edit", "Edit", "ManageRules", new {id = item.Id }, htmlAttributes: new { data_modal= "", @class = "rule-options-link" } ).If(User.IsInRole("Admin") || User.IsInRole("Parent"))
@@ -84,7 +86,7 @@
                     @Html.DisplayFor(modelItem => item.RuleTitle)
                 </td>
                 <td>
-                    <p>@(item.RuleModifier == RuleModifier.Add ? "Earns" : "Deducts") @item.VariableRatioNumerator minutes for every @item.VariableRatioDenominator minutes applied</p>
+                    <p>@TotalScreenTimeManager.BuildRuleDetailString(item)</p>
                 </td>
                 <td class="rule-options-table-cell">
                     @Html.ActionLink("Edit", "Edit", "ManageRules", new { id = item.Id }, htmlAttributes: new { data_modal = "", @class = "rule-options-link" }).If(User.IsInRole("Admin") || User.IsInRole("Parent"))

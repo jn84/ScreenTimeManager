@@ -221,6 +221,30 @@ namespace ScreenTimeManager.Utility
 
 			return (hours * 60 + minutes) * 60000;
 		}
+
+		private static string MinutePlurality(int val)
+		{
+			return val == 1 ? "minute" : "minutes";
+		}
+
+		public static string BuildRuleDetailString(RuleBase rule)
+		{
+			string temp = (rule.RuleModifier == RuleModifier.Add ? "Earns " : "Deducts ");
+
+			if (rule.RuleType == RuleType.Fixed)
+			{
+				temp += FormatTimeSpan((long)rule.FixedTimeEarned.TotalMilliseconds);
+			}
+
+			else if (rule.RuleType == RuleType.Variable)
+			{
+				temp += rule.VariableRatioNumerator + " " + 
+					MinutePlurality(rule.VariableRatioNumerator) + 
+					" for every " + rule.VariableRatioDenominator + " " 
+					+ MinutePlurality(rule.VariableRatioDenominator) + " applied";
+			}
+			return temp;
+		}
 	}
 
 	// This is only used via the timer

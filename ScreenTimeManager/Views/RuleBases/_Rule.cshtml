@@ -1,6 +1,7 @@
 ﻿@using Microsoft.Web.Mvc
 @using MvcContrib.UI.InputBuilder.Views
 @using ScreenTimeManager.Models.Enums
+@using ScreenTimeManager.Utility
 @model ScreenTimeManager.Models.RuleBase
 
 <div class="rule-container">
@@ -14,14 +15,7 @@
         <div class="rule-content">
         <div class="rule-settings">
             <p class="rule-detail">Details: @Model.RuleDescription</p>
-
-            @if (Model.RuleType.Equals(RuleType.Fixed))
-            {
-                <p class="rule-detail">Applying this rule will add @Model.FixedTimeEarned</p>}
-            else
-            {
-                <p class="rule-detail">Applying this rule will add @Model.VariableRatioNumerator minute(s) for every @Model.VariableRatioDenominator minutes spent on task</p>
-            }
+            <p class="rule-detail">@TotalScreenTimeManager.BuildRuleDetailString(Model)</p>
         </div>
             <div class="rule-apply-save">
                 @Html.ActionLink("Use This Rule", "ApplyTime", "RuleBases", new {id = Model.Id}, new {data_modal = "", @class = "link-apply-rule"})
