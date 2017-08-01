@@ -35,7 +35,7 @@
             <div >
                 <p>Will this rule add or subtract time?</p>
                 <div>
-                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new {@class = "", Value = RuleModifier.Add})
+                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new {@class = ""})
                 </div>
                 @Html.ValidationMessageFor(model => model.RuleModifier, "", new {@class = "validation-error-text"})
             </div>

@@ -39,14 +39,14 @@
             <div >
                 <p>Will this rule add or subtract time?</p>
                 <div>
-                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new {@class = "", Value = "1" })
+                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new {@class = ""})
                 </div>
                 @Html.ValidationMessageFor(model => model.RuleModifier, "", new { @class = "validation-error-text" })
             </div>
             
             <p>
                 For every
-                @Html.EditorFor(model => model.VariableRatioNumerator, new {htmlAttributes = new {@class = "", min = "1", max = "60", Value = "1"}})
+                @Html.EditorFor(model => model.VariableRatioNumerator, new {htmlAttributes = new {@class = "", min = "1", max = "60"}})
                 minute(s) spent on this task
             </p>
             <div>
@@ -54,7 +54,7 @@
             </div>
             <p>
                 earn 
-                @Html.EditorFor(model => model.VariableRatioDenominator, new { htmlAttributes = new { @class = "", min = "1", max = "60", Value = "1" } })
+                @Html.EditorFor(model => model.VariableRatioDenominator, new { htmlAttributes = new { @class = "", min = "1", max = "60"} })
                 minute(s) of time.
             </p>
             <div>
