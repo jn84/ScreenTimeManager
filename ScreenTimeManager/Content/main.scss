@@ -22,6 +22,11 @@ body
     font-family: "Roboto", serif;
 }
 
+a.account-text
+{
+    font-size: 2em;
+}
+
 div.rule-apply {
     height: 200px;
     width: 300px;
@@ -196,7 +201,7 @@ div.rule-container
     align-content: center;
     border: 1px solid black;
     border-radius: 10px;
-    margin: 0px 15px 0px 15px;
+    margin: 2px 15px 2px 15px;
     padding-top: 0px;
     overflow: hidden;
     background: $main-content-background-color;
@@ -210,6 +215,7 @@ a.link1
 div.rule-title
 {
     width: 100%;
+    color: black;
     background-color: $header-background-color;
 }
 
@@ -238,7 +244,6 @@ textarea.rule-variable-input
 div.rule-apply-save
 {
     width: 100%;
-    height: 70px;
     background-color: #111111;
 }
 
@@ -250,6 +255,19 @@ a.link-apply-rule
     text-decoration: none;
     background: green;
     border: green;
+    display: block;
+    text-align: center;
+    line-height: 4;
+
+    &:hover
+    {
+        background-color: lighten(green, 60%);
+    }
+
+    &:active
+    {
+        background-color: darken(green, 10%);
+    }
 }
 
 // Accordion code based on: https://codepen.io/raubaca/pen/PZzpVe?editors=1100
@@ -425,31 +443,64 @@ td.rule-options-table-cell
 {
     display: flex;
     flex-direction: row;
+    padding: 5px;
 }
 
+div.create-rule
+{
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+}
+
+a.link-create-rule
+{
+    height: 100%;
+    width: 100%;
+    color: black;
+    text-decoration: none;
+    background: $header-background-color;
+    border: solid darken($header-background-color, 20%) 1px;
+    border-radius: $rule-element-border-radius;
+    display: block;
+    text-align: center;
+    line-height: 4;
+    margin: 5px;
+
+    &:hover
+    {
+        background-color: lighten($header-background-color, 10%);
+    }
+
+    &:active
+    {
+        background-color: darken($header-background-color, 10%);
+    }
+}
+
+div.rule-table
+{
+    border: solid black 1px;
+    border-radius: $rule-element-border-radius;
+    overflow: hidden;
+    margin: 5px;
+}
 
 h1.rule-table-header
 {
     width: 100%;
-    border: solid black 1px;
     color: black;
     text-align-last: center;
     line-height: 2;
     font-size: 1.5em;
     align-items: center;
     border-bottom: none;
-    border-top-left-radius: $rule-element-border-radius;
-    border-top-right-radius: $rule-element-border-radius;
     background-color: $header-background-color;
 }
 
 table.rule-table
 {
     width: 100%;
-    border: solid black 1px;
-    border-top: none;
-    border-bottom-left-radius: $rule-element-border-radius;
-    border-bottom-right-radius: $rule-element-border-radius;
     table-layout: fixed;
     overflow: hidden;
 }
@@ -459,6 +510,8 @@ th.rule-table
     width: 33%;
     background-color: $header-background-color;
     color: black;
+    line-height: 1.5;
+    padding: 2px;
 }
 
 tr.table-rule-entry

@@ -221,6 +221,23 @@ namespace ScreenTimeManager.Utility
 
 			return (hours * 60 + minutes) * 60000;
 		}
+
+		public static string GetRuleDetailString(RuleBase rule)
+		{
+			string temp = "";
+
+			if (rule.RuleModifier == RuleModifier.Add)
+				temp += "Adds ";
+
+			if (rule.RuleType == RuleType.Fixed)
+			{
+				temp += FormatTimeSpan(rule.FixedTimeEarned.Milliseconds);
+			}
+
+			if (rule.RuleType == RuleType.Variable) ;
+
+			return temp;
+		}
 	}
 
 	// This is only used via the timer
