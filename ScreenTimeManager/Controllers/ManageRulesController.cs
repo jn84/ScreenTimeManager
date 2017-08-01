@@ -176,9 +176,6 @@ namespace ScreenTimeManager.Controllers
 	    {
 			if ((int)rule.RuleModifier != -1 && (int)rule.RuleModifier != 1)
 			    ModelState.AddModelError("RuleModifier", @"Please select a value");
-
-		    if (rule.FixedTimeEarned >= TimeSpan.FromDays(1))
-			    ModelState.AddModelError("FixedTimeEarned", @"Please enter a value less than 1 day (hh:mm:ss)");
 		}
 
         protected override void Dispose(bool disposing)

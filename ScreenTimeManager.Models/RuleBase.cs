@@ -41,7 +41,7 @@ namespace ScreenTimeManager.Models
 		// I don't like the minimum being zero, but it keeps giving me trouble otherwise
 	    [Required]
 		[DisplayName("Time Applied")]
-	    [Range(typeof(TimeSpan), "00:00:01", "23:59:59", 
+	    [Range(typeof(TimeSpan), "00:00:00", "23:59:59", 
 			ErrorMessage = "Must be more than 0 and less than one day")]
 	    public TimeSpan FixedTimeEarned { get; set; } = TimeSpan.Parse("00:00:01");
 
