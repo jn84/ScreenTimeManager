@@ -1,4 +1,5 @@
 ﻿@using MvcContrib.UI.InputBuilder.Views
+@using ScreenTimeManager.Models
 @model ScreenTimeManager.Models.TimeSubmission
 
 @{
@@ -50,7 +51,7 @@
 
         <hr/>
 
-        <p>Time Charged: <span class="pendingTime" id="pendingTime">0h 0m 0s</span></p>
+        @Html.Partial("_PendingTime", (RuleBase) ViewBag.Rule)
 
     </div>
 

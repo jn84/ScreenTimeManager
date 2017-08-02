@@ -351,6 +351,7 @@
     <Content Include="Views\ManageRules\_EditFixedRuleModal.cshtml" />
     <Content Include="Views\ManageRules\_EditVariableRuleModal.cshtml" />
     <Content Include="Views\ManageRules\_DeleteRuleModal.cshtml" />
+    <Content Include="Views\RuleBases\_PendingTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

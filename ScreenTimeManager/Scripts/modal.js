@@ -66,13 +66,17 @@ function bindForm(dialog) {
             success: function (result) {
                 var spanRef = $("span#pendingTime");
                 if (result.success) {
-                    if (result.modifier === "add") {
+                    if (result.modifier === "add") {            // Time is positive
                         spanRef.text("+ " + result.timespan);
-                        spanRef.css("color", "green");
+                        spanRef.addClass("pendingTime-add");    
+                        spanRef.removeClass("pendingTime-neutral");
+                        spanRef.removeClass("pendingTime-subtract");
                     } else {
                         spanRef.text("- " + result.timespan);
-                        spanRef.css("color", "red");
-                    }
+                        spanRef.addClass("pendingTime-subtract");
+                        spanRef.removeClass("pendingTime-neutral");
+                        spanRef.removeClass("pendingTime-add");
+                    } 
                 } else {
                     spanRef.text("I AM ERROR");
                 }

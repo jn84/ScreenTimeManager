@@ -82,6 +82,21 @@ span.pendingTime
     font-weight: bold;
 }
 
+span.pendingTime-neutral
+{
+    color: white;
+}
+
+span.pendingTime-add
+{
+    color: green;
+}
+
+span.pendingTime-subtract
+{
+    color: red;
+}
+
 div.validation-message
 {
     padding-top: 2px;

@@ -1,4 +1,7 @@
-﻿@model ScreenTimeManager.Models.TimeSubmission
+﻿@using MvcContrib.UI.InputBuilder.Views
+@using ScreenTimeManager.Models
+@using ScreenTimeManager.Utility
+@model ScreenTimeManager.Models.TimeSubmission
 
 @{
     Layout = null;
@@ -9,11 +12,6 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <p class="modal-title" id="myModalLabel">Confirm Screen Time Change</p>
 </div>
-
-@if (Model == null) // TODO: DEBUG CODE
-{
-    throw new NullReferenceException();
-}
 
 @using (Html.BeginForm("ApplyTime", "RuleBases", null, FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
 {
@@ -30,8 +28,8 @@
         @* Use the ID's so javascript can make *@
 
         <hr/>
-
-        <p>On submitting, <strong>___PLACEHOLDER___</strong> will be charged to the timer</p>        
+        
+        @Html.Partial("_PendingTime", (RuleBase) ViewBag.Rule)
 
     </div>
     <div class="modal-footer">
