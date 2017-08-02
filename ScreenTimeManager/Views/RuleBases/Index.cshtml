@@ -8,7 +8,7 @@
 
 @if(User.IsInRole("Admin") || User.IsInRole("Parent"))
     {
-    foreach(RuleBase item in Model)
+    foreach(RuleBase item in Model.OrderBy(r => r.RuleTitle))
         {
             if (item.IsExpired || item.IsHidden)
             {
