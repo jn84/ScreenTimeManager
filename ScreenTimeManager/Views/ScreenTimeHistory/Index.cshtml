@@ -1,6 +1,6 @@
 ﻿@using ScreenTimeManager.DataModel.DataContexts
 @using ScreenTimeManager.Models
-@model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
+@model IEnumerable<TotalScreenTimeChanged>
 
 @{
     ViewBag.Title = "Index";
@@ -35,11 +35,11 @@
                     @{ RuleBase ruleBase = ctx.Rules.Find(item.RuleUsedId); }
                     @if (ruleBase != null)
                     {
-                    @Html.Encode(ruleBase.RuleTitle)
+                        @Html.Encode(ruleBase.RuleTitle)
                     }
                     else
                     {
-                    @Html.Encode(@"Unknown rule")
+                        @Html.Encode(@"Unknown rule")
                     }
                 </td>
                 <td>
