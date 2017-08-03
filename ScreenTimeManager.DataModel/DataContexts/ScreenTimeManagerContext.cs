@@ -10,6 +10,12 @@ namespace ScreenTimeManager.DataModel.DataContexts
 		public DbSet<TotalScreenTimeChanged> TimeChanged { get; set; }
 		public DbSet<RuleBase> Rules { get; set; }
 
+
+		public ScreenTimeManagerContext() : base("name=DefaultConnection")
+		{
+			
+		}
+
 		public override int SaveChanges()
 		{
 			foreach (var timeChange in ChangeTracker.Entries<TotalScreenTimeChanged>()
