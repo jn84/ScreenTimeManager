@@ -24,6 +24,8 @@ namespace ScreenTimeManager.DataModel.Migrations
 	        IList<RuleBase> ruleList = new List<RuleBase>();
 
 	        // Keep this rule in production
+			// Nothing works without this rule.
+			// IT IS REQUIRED
 	        ruleList.Add(new RuleBase()
 	        {
 		        RuleType = RuleType.Timer,
@@ -48,7 +50,7 @@ namespace ScreenTimeManager.DataModel.Migrations
 
 			// If I understand my research correctly, this should seed the database if it's empty, and update the entries (rather than adding new ones) if it is not.
 	        foreach (var rule in ruleList)
-		        context.Rules.AddOrUpdate(r => new { r.RuleTitle, r.RuleDescription, r.RuleType });
+		        context.Rules.AddOrUpdate(r => new { r.RuleTitle, r.RuleDescription, r.RuleType }, rule);
 
 	        context.SaveChanges();
 
