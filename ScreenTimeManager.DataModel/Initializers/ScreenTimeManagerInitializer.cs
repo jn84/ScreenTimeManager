@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ScreenTimeManager.DataModel.DataContexts;
+using ScreenTimeManager.DataModel.Migrations;
 using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
 
 namespace ScreenTimeManager.DataModel.Initializers
 {
+	#if DEBUG
 	public class ScreenTimeManagerInitializer : System.Data.Entity.DropCreateDatabaseAlways<ScreenTimeManagerContext>
 	{
 		protected override void Seed(ScreenTimeManagerContext context)
@@ -150,5 +153,14 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			context.SaveChanges();
 		}
+		
 	}
+	#endif
+
+	#if RELEASE
+	public class ScreenTimeManagerInitializer : System.Data.Entity.MigrateDatabaseToLatestVersion<ScreenTimeManagerContext, Configuration>
+	{
+		// https://galleryserverpro.com/using-entity-framework-code-first-migrations-to-auto-create-and-auto-update-an-application/
+	}
+	#endif
 }

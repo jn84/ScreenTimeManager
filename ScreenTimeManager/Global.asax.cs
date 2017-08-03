@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,9 +19,8 @@ namespace ScreenTimeManager
 
 	        using (ScreenTimeManagerContext ctx = new ScreenTimeManagerContext())
 	        {
-		        ctx.Database.ExecuteSqlCommand(
-					TransactionalBehavior.DoNotEnsureTransaction,
-			        $"ALTER DATABASE [{ctx.Database.Connection.Database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
+				SetSingleUser(ctx);
+		        
 				ctx.Database.Initialize(true);
 	        }
 
@@ -29,5 +29,13 @@ namespace ScreenTimeManager
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+		[Conditional("DEBUG")]
+	    private void SetSingleUser(ScreenTimeManagerContext ctx)
+	    {
+			ctx.Database.ExecuteSqlCommand(
+				TransactionalBehavior.DoNotEnsureTransaction,
+				$"ALTER DATABASE [{ctx.Database.Connection.Database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
+		}
     }
 }
