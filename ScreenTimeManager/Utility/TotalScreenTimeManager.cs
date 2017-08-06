@@ -29,7 +29,7 @@ namespace ScreenTimeManager.Utility
 		// ### End Event Code
 
 
-		// This guy listens to the timer, then notifies the hub about necessary info
+		// This guy listens to the timer, then notifies the signalr hub about necessary info
 		static TotalScreenTimeManager()
 		{
 			ElapsedTimer.ElapsedTimerNotifier += TimerStateChangedOrUpdated;
@@ -49,9 +49,6 @@ namespace ScreenTimeManager.Utility
 		// Nullable to eliminate confusion about whether or not we need to add or update
 		private static int? _lastTimeHistoryId = null;
 
-		private static long? _timerBeginTotalSeconds = null;
-
-
 		// timeApplied is nullable since not all rules have an input for it (variable rules)
 		public static TotalScreenTimeChanged GenerateTotalScreenTimeChanged(RuleBase rule, long? timeAppliedMilliseconds)
 		{
@@ -70,6 +67,7 @@ namespace ScreenTimeManager.Utility
 				case RuleType.Timer:
 				case RuleType.Variable:
 					if (timeAppliedMilliseconds == null)
+						// Shouldn't happen. But who knows?
 						throw new Exception("Time applied cannot be null for RuleType.Variable or RuleType.Timer: RuleType was " + rule);
 
 					timeChanged.SecondsAdded = 
@@ -84,9 +82,13 @@ namespace ScreenTimeManager.Utility
 
 		public static long GetModifiedTimeInMillisecnds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
+			// Apply the positive or negative factor from RuleModifier
 			double modifiedMilliseconds = (int)rule.RuleModifier * timeAppliedInMilliseconds;
+
+			// Calculate the ratio factor to apply to the applied time span
 			double ratio = (double)rule.VariableRatioNumerator / rule.VariableRatioDenominator;
 
+			// Get the final result
 			// Behold my kindness: we always round up
 			return (long)Math.Ceiling(modifiedMilliseconds * ratio);
 		}
@@ -139,6 +141,12 @@ namespace ScreenTimeManager.Utility
 				// This rule SHOULD exist (and everything is kind of pointless without it) but yuck
 				// Either way, we need a reference to this rule, and it needs to be present in the database
 				//// for historical purposes
+				// 
+				// After further consideration, this doesn't seem too bad.
+				// As long as the database initialization functions correctly on first start
+				// there shouldn't be any issues... unless somehow the rule is edited/deleted
+
+				// It should be the only rule with that RuleType
 				var rule = ctx.Rules.First(r => r.RuleType == RuleType.Timer);
 
 				switch (state)
@@ -148,16 +156,21 @@ namespace ScreenTimeManager.Utility
 						timeChanged = GenerateTotalScreenTimeChanged(rule, timeElapsedMilliseconds);
 						ctx.TimeChanged.Add(timeChanged);
 						ctx.SaveChanges();
+						// Save a reference to the database entry for the currently running timer
+						// This way it can be updated periodically, and closed out with the final value.
 						_lastTimeHistoryId = timeChanged.Id;
 						_timerState = TimerState.Running;
-						_timerBeginTotalSeconds = GetTotalTime_Now();
 						break;
 
 					case TimerState.Running:
 						// Update the current one
 						timeChanged = ctx.TimeChanged.Find(_lastTimeHistoryId);
+
+						// The timerstate claims that the timer is running, but the entry doesn't exist in the database. Boo!
 						if (timeChanged == null)
-							throw new Exception("Timer state is listed as running, but the TotalScreenTimeChanged object was not found in the database.");
+							throw new Exception("Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
+
+						// Update the entry in the database. 
 						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
 						ctx.SaveChanges();
 						break;
@@ -170,6 +183,7 @@ namespace ScreenTimeManager.Utility
 						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
 						ctx.SaveChanges();
 
+						// Reset the state
 						_lastTimeHistoryId = null;
 						_timerState = TimerState.Stopped;
 						break;
@@ -201,7 +215,7 @@ namespace ScreenTimeManager.Utility
 			return dbTotalMinusTimer + (-ElapsedTimer.GetTimeElapsedInSeconds());
 		}
 
-
+		// Utility methods related to handing timer events
 		public static long? ConvertHoursMinutesToMilliseconds(int hours, int minutes)
 		{
 			var span = new TimeSpan(0, hours, minutes, 0);
@@ -227,6 +241,9 @@ namespace ScreenTimeManager.Utility
 			return val == 1 ? "minute" : "minutes";
 		}
 
+
+		// Using the given rule, builds a string describing what the rule will do when applied
+		// No one needs to construct this information on thier own, they can just pass the rule and use the value given
 		public static string BuildRuleDetailString(RuleBase rule)
 		{
 			string temp = (rule.RuleModifier == RuleModifier.Add ? "Earns " : "Deducts ");
