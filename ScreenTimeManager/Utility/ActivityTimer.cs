@@ -5,8 +5,7 @@ using System.Web;
 
 namespace ScreenTimeManager.Utility
 {
-	public class MaintenanceScheduler
+	public class ActivityTimer
 	{
-		
 	}
 }

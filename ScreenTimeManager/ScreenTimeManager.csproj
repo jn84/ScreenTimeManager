@@ -225,8 +225,9 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\ActivityTimer.cs" />
     <Compile Include="Utility\ElapsedTimer.cs" />
-    <Compile Include="Utility\MaintenanceScheduler.cs" />
+    <Compile Include="Utility\Scheduler.cs" />
     <Compile Include="Utility\TotalScreenTimeManager.cs" />
   </ItemGroup>
   <ItemGroup>
