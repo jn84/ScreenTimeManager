@@ -258,15 +258,15 @@ div.footer {
 
 tr.history-add {
   color: black;
-  background-color: #477b47; }
+  background-color: #6d866d; }
   tr.history-add:hover {
-    background-color: #5a9b5a; }
+    background-color: #368336; }
 
 tr.history-subtract {
   color: black;
-  background-color: #ad4747; }
+  background-color: #a06d6d; }
   tr.history-subtract:hover {
-    background-color: #c06767; }
+    background-color: #cf3636; }
 
 a.history-detail-link {
   height: 100%;
@@ -366,7 +366,7 @@ tr.table-rule-entry {
 
 @media screen and (min-width: 1080px) {
   div.title-bar {
-    font-size: 5vw; }
+    font-size: 3vw; }
   div.counter {
     font-size: 70px; }
   .body {

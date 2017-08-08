@@ -274,6 +274,7 @@
     <Content Include="Content\modal.scss" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Resources\logo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
