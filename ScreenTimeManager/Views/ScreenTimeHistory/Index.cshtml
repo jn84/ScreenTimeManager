@@ -33,14 +33,7 @@
                 </td>
                 <td>
                     @{ RuleBase ruleBase = ctx.Rules.Find(item.RuleUsedId); }
-                    @if (ruleBase != null)
-                    {
-                    @Html.Encode(ruleBase.RuleTitle)
-                    }
-                    else
-                    {
-                    @Html.Encode(@"Unknown rule")
-                    }
+                    @(ruleBase != null ? Html.Encode(ruleBase.RuleTitle) : Html.Encode(@"Unknown rule"))
                 </td>
                 <td>
                     @Html.ActionLink("Details", "Details", new {id = item.Id}, htmlAttributes: new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
