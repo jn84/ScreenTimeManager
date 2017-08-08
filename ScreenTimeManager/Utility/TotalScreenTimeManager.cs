@@ -55,7 +55,6 @@ namespace ScreenTimeManager.Utility
 			var timeChanged = new TotalScreenTimeChanged
 			{
 				RuleUsedId = rule.Id,
-				RecordAddedDateTime = DateTime.Now
 			};
 
 			switch (rule.RuleType)

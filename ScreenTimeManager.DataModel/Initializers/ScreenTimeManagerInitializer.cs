@@ -84,7 +84,6 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			timeChangeList.Add(new TotalScreenTimeChanged()
 			{
-				RecordAddedDateTime = DateTime.Now,
 				RuleUsedId = allRules[i].Id,
 				SecondsAdded = (long)(new TimeSpan(0, 0, 30, 0).TotalSeconds)
 			});
@@ -96,7 +95,6 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			timeChangeList.Add(new TotalScreenTimeChanged()
 			{
-				RecordAddedDateTime = DateTime.Now,
 				RuleUsedId = allRules[i].Id,
 				SecondsAdded = (long)(new TimeSpan(0, 0, 20, 0).TotalSeconds)
 			});
@@ -107,7 +105,6 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			timeChangeList.Add(new TotalScreenTimeChanged()
 			{
-				RecordAddedDateTime = DateTime.Now,
 				RuleUsedId = allRules[i].Id,
 				SecondsAdded = (long)(new TimeSpan(0, 1, 13, 22).TotalSeconds)
 			});
@@ -118,7 +115,6 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			timeChangeList.Add(new TotalScreenTimeChanged()
 			{
-				RecordAddedDateTime = DateTime.Now,
 				RuleUsedId = allRules[i].Id,
 				SecondsAdded = (long)(new TimeSpan(0, 0, 30, 0).TotalSeconds)
 			});
@@ -129,7 +125,6 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			timeChangeList.Add(new TotalScreenTimeChanged()
 			{
-				RecordAddedDateTime = DateTime.Now,
 				RuleUsedId = allRules[i].Id,
 				SecondsAdded = (long)(new TimeSpan(0, 0, 20, 0).TotalSeconds)
 			});
@@ -140,7 +135,6 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			timeChangeList.Add(new TotalScreenTimeChanged()
 			{
-				RecordAddedDateTime = DateTime.Now,
 				RuleUsedId = allRules[i].Id,
 				SecondsAdded = (long)(new TimeSpan(0, 0, 31, 4).TotalSeconds)
 			});

@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201708032305488_AddedSubmissionNotePropertyToTotalScreenTimeChanged.Designer.cs">
       <DependentUpon>201708032305488_AddedSubmissionNotePropertyToTotalScreenTimeChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708081526589_AddedTimeHistoryDateTableAndModifiedRelationships.cs" />
+    <Compile Include="Migrations\201708081526589_AddedTimeHistoryDateTableAndModifiedRelationships.Designer.cs">
+      <DependentUpon>201708081526589_AddedTimeHistoryDateTableAndModifiedRelationships.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataContexts\ScreenTimeManagerContext.cs" />
@@ -133,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708032305488_AddedSubmissionNotePropertyToTotalScreenTimeChanged.resx">
       <DependentUpon>201708032305488_AddedSubmissionNotePropertyToTotalScreenTimeChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708081526589_AddedTimeHistoryDateTableAndModifiedRelationships.resx">
+      <DependentUpon>201708081526589_AddedTimeHistoryDateTableAndModifiedRelationships.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

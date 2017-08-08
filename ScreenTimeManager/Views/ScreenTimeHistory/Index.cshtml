@@ -13,7 +13,7 @@
             @Html.Encode(@"Time Charged")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RecordAddedDateTime)
+            @Html.DisplayNameFor(model => model.RecordAddedTime)
         </th>
         <th>
             @Html.Encode(@"Rule")
@@ -29,7 +29,7 @@
                     @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RecordAddedDateTime)
+                    @Html.DisplayFor(modelItem => item.RecordAddedTime)
                 </td>
                 <td>
                     @{ RuleBase ruleBase = ctx.Rules.Find(item.RuleUsedId); }

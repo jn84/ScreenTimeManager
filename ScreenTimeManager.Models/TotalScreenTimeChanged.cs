@@ -23,7 +23,7 @@ namespace ScreenTimeManager.Models
 
 		[Required]
 		[Column(TypeName = "Time")]
-		public DateTime RecordAddedTime { get; set; }
+		public TimeSpan RecordAddedTime { get; set; }
 
 		// The rule used for this entry into the history
 		// At least one, but not more than one
