@@ -215,7 +215,33 @@ div.rule-title
 {
     width: 100%;
     color: black;
-    background-color: $header-background-color;
+
+    & input
+    {
+        position: absolute;
+        opacity: 0;
+    }
+
+    & label
+    {
+        position: relative;
+        display: block;
+        padding: 0 0 0 1em;
+        background: $header-background-color;
+        font-weight: bold;
+        line-height: 3;
+        cursor: pointer;
+
+        &.add
+        {
+            background-color: mix($header-background-color, green, 80%);
+        }
+
+        &.subtract
+        {
+            background-color: mix($header-background-color, red, 80%);
+        }
+    }
 }
 
 // within .rule-content
@@ -270,23 +296,6 @@ a.link-apply-rule
 }
 
 // Accordion code based on: https://codepen.io/raubaca/pen/PZzpVe?editors=1100
-.rule-title input
-{
-    position: absolute;
-    opacity: 0;
-}
-
-.rule-title label
-{
-    position: relative;
-    display: block;
-    padding: 0 0 0 1em;
-    background: $header-background-color;
-    font-weight: bold;
-    line-height: 3;
-    cursor: pointer;
-}
-
 .rule-content
 {
     display: flex;

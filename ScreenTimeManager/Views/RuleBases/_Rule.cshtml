@@ -9,7 +9,7 @@
     <div class="rule-title">
         <input id="tab-@Model.Id" type="radio" name="tabs">
 
-        <label for="tab-@Model.Id">
+        <label for="tab-@Model.Id" class="@(Model.RuleModifier == RuleModifier.Add ? "add" : "subtract" )">
             @Model.RuleTitle
         </label>
         <div class="rule-content">

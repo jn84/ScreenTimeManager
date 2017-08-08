@@ -148,8 +148,22 @@ a.link1 {
 
 div.rule-title {
   width: 100%;
-  color: black;
-  background-color: #586eff; }
+  color: black; }
+  div.rule-title input {
+    position: absolute;
+    opacity: 0; }
+  div.rule-title label {
+    position: relative;
+    display: block;
+    padding: 0 0 0 1em;
+    background: #586eff;
+    font-weight: bold;
+    line-height: 3;
+    cursor: pointer; }
+    div.rule-title label.add {
+      background-color: #4672cc; }
+    div.rule-title label.subtract {
+      background-color: #7958cc; }
 
 div.rule-settings {
   display: flex;
@@ -183,19 +197,6 @@ a.link-apply-rule {
     background-color: #b3ffb3; }
   a.link-apply-rule:active {
     background-color: #004d00; }
-
-.rule-title input {
-  position: absolute;
-  opacity: 0; }
-
-.rule-title label {
-  position: relative;
-  display: block;
-  padding: 0 0 0 1em;
-  background: #586eff;
-  font-weight: bold;
-  line-height: 3;
-  cursor: pointer; }
 
 .rule-content {
   display: flex;

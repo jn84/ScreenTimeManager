@@ -7,8 +7,13 @@
 }
 
 @if(User.IsInRole("Admin") || User.IsInRole("Parent"))
+{
+    @*The sorting and arranging should probably be done in the controller*@
+    @*This way, the controller could rearrange on request*@
+    @*Order by name, then separate into groups by add/subtract*@
+    foreach(var group in Model.OrderBy(r => r.RuleTitle).GroupBy(r => r.RuleModifier))
     {
-    foreach(RuleBase item in Model.OrderBy(r => r.RuleTitle))
+        foreach (RuleBase item in group)
         {
             if (item.IsExpired || item.IsHidden)
             {
@@ -17,3 +22,4 @@
             Html.RenderPartial("_Rule", item);
         }
     }
+}
