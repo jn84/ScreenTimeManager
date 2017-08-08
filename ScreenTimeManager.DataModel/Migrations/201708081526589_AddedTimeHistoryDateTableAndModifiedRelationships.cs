@@ -1,3 +1,6 @@
+using System.Data.Entity.Core.Common.CommandTrees;
+using System.Net.Sockets;
+
 namespace ScreenTimeManager.DataModel.Migrations
 {
     using System;
@@ -10,14 +13,14 @@ namespace ScreenTimeManager.DataModel.Migrations
             DropForeignKey("dbo.TotalScreenTimeChangeds", "RuleBase_Id", "dbo.RuleBases");
             DropIndex("dbo.TotalScreenTimeChangeds", new[] { "RuleBase_Id" });
 
-			// We don't want to drop this column, just make it the new FK column
-			// The contents of the RuleBase_Id column are empty/null anyway
-            DropColumn("dbo.TotalScreenTimeChangeds", "RuleUsedId");
+			// The FK column RuleBase_Id was never actually used.. oops. All entries are null
+			// All the FK data is actually stored in RuleUsedId
+			// In other words, we can safely drop this column, and just make RuleUsedId the new FK entry
+            DropColumn("dbo.TotalScreenTimeChangeds", "RuleBase_Id");
 
-
-            RenameColumn(table: "dbo.TotalScreenTimeChangeds", name: "RuleBase_Id", newName: "RuleUsedId");
-
-
+			// We don't need to rename this column, since we've deleted it
+            // RenameColumn(table: "dbo.TotalScreenTimeChangeds", name: "RuleBase_Id", newName: "RuleUsedId");
+			
 			CreateTable(
                 "dbo.TimeHistoryDates",
                 c => new
@@ -28,14 +31,27 @@ namespace ScreenTimeManager.DataModel.Migrations
                 .PrimaryKey(t => t.Id);
 
 			// Here, we need to add the rows in TimeHistoryDates based on the data in TotalScreenTimeChanged table
+
+			Sql(@"INSERT INTO dbo.TimeHistoryDates ( EntriesDate )
+					SELECT DISTINCT CAST(RecordAddedDateTime as date)
+					FROM dbo.TotalScreenTimeChangeds;");
             
             AddColumn("dbo.TotalScreenTimeChangeds", "TimeHistoryDateId", c => c.Int(nullable: false));
 
 			// Here, the TotalScreenTimeChanged entries need to have the appropriate TimeHistoryDateId applied
 
+			Sql(@"UPDATE tstc
+					SET tstc.TimeHistoryDateId = thd.Id
+					FROM dbo.TotalScreenTimeChangeds AS tstc
+						INNER JOIN dbo.TimeHistoryDates AS thd
+						ON CAST(tstc.RecordAddedDateTime AS date) = thd.EntriesDate;");
+
             AddColumn("dbo.TotalScreenTimeChangeds", "RecordAddedTime", c => c.Time(nullable: false, precision: 7));
 
 			// RecordAddedTime should be populated with the same row's RecordAddedDateTime column's time value
+
+			Sql(@"UPDATE TotalScreenTimeChangeds 
+					SET RecordAddedTime = CAST(RecordAddedDateTime AS time);");
 
             AlterColumn("dbo.TotalScreenTimeChangeds", "RuleUsedId", c => c.Int(nullable: false));
             CreateIndex("dbo.TotalScreenTimeChangeds", "TimeHistoryDateId");
