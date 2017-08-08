@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Enums\RuleModifier.cs" />
     <Compile Include="Enums\RuleType.cs" />
+    <Compile Include="TimeHistoryDate.cs" />
     <Compile Include="TimeSubmission.cs" />
     <Compile Include="TotalScreenTimeChanged.cs" />
     <Compile Include="RuleBase.cs" />

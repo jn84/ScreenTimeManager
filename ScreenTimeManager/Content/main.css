@@ -33,9 +33,6 @@ div.title-bar {
   display: flex;
   justify-content: space-around;
   background: #111111;
-  color: #777777;
-  font-size: 7vw;
-  padding: 25px 0px 25px 0px;
   border-top: 3px gray solid;
   border-bottom: 3px gray solid; }
 

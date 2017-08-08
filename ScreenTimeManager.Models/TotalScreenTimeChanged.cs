@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
@@ -15,14 +16,22 @@ namespace ScreenTimeManager.Models
 		[Required]
 		public long SecondsAdded { get; set; }
 
+		public int TimeHistoryDateId { get; set; }
+
+		[ForeignKey("TimeHistoryDateId")]
+		public TimeHistoryDate TimeHistoryDate { get; set; }
+
 		[Required]
-		public DateTime RecordAddedDateTime { get; set; }
+		[Column(TypeName = "Time")]
+		public DateTime RecordAddedTime { get; set; }
 
 		// The rule used for this entry into the history
 		// At least one, but not more than one
 		[Required]
 		public int RuleUsedId { get; set; }
 
+		[ForeignKey("RuleUsedId")]
+		public RuleBase Rule { get; set; }
 
 		public string SubmissionNote { get; set; }
 	}

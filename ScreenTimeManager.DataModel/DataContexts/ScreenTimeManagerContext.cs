@@ -9,6 +9,7 @@ namespace ScreenTimeManager.DataModel.DataContexts
 	{
 		public DbSet<TotalScreenTimeChanged> TimeChanged { get; set; }
 		public DbSet<RuleBase> Rules { get; set; }
+		public DbSet<TimeHistoryDate> HistoryDates { get; set; }
 
 
 		public ScreenTimeManagerContext() : base("name=DefaultConnection")
