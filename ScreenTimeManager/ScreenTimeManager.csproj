@@ -227,7 +227,6 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\ActivityTimer.cs" />
     <Compile Include="Utility\ElapsedTimer.cs" />
-    <Compile Include="Utility\Scheduler.cs" />
     <Compile Include="Utility\TotalScreenTimeManager.cs" />
   </ItemGroup>
   <ItemGroup>

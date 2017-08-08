@@ -6,7 +6,10 @@ $button-font-size: 20px;
 $main-content-background-color: #666666;
 $title-background-color: #111111;
 $header-background-color: #586eff;
+$base-gray: #777777;
+    
 $rule-element-border-radius: 5px;
+
 
 body
 {
@@ -100,6 +103,7 @@ button.btn-start
 {
     background: green;
     border-color: green;
+    color: black;
 
     &:hover
     {
@@ -112,10 +116,11 @@ button.btn-start
     }
 }
 
-.btn-stop
+button.btn-stop
 {
     background: red;
     border-color: red;
+    color: black;
 
     &:hover
     {
@@ -381,22 +386,22 @@ div.footer
 tr.history-add
 {
     color: black;
-    background-color: green;
+    background-color: mix($base-gray, green, 60%);
 
     &:hover
     {
-        background-color: lightgreen;
+        background-color: lighten(mix($base-gray, green, 60%), 10%);
     }
 }
 
 tr.history-subtract
 {
     color: black;
-    background-color: red;
+    background-color: mix($base-gray, red, 60%);
 
     &:hover
     {
-        background-color: pink;
+        background-color: lighten(mix($base-gray, red, 60%), 10%);
     }
 }
 

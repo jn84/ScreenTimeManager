@@ -70,18 +70,20 @@ button.btn-counter {
 
 button.btn-start {
   background: green;
-  border-color: green; }
+  border-color: green;
+  color: black; }
   button.btn-start:hover {
     background: lightgreen; }
   button.btn-start:active {
     background: brown; }
 
-.btn-stop {
+button.btn-stop {
   background: red;
-  border-color: red; }
-  .btn-stop:hover {
+  border-color: red;
+  color: black; }
+  button.btn-stop:hover {
     background: pink; }
-  .btn-stop:active {
+  button.btn-stop:active {
     background: brown; }
 
 div.counter-button-group {
@@ -256,15 +258,15 @@ div.footer {
 
 tr.history-add {
   color: black;
-  background-color: green; }
+  background-color: #477b47; }
   tr.history-add:hover {
-    background-color: lightgreen; }
+    background-color: #5a9b5a; }
 
 tr.history-subtract {
   color: black;
-  background-color: red; }
+  background-color: #ad4747; }
   tr.history-subtract:hover {
-    background-color: pink; }
+    background-color: #c06767; }
 
 a.history-detail-link {
   height: 100%;
