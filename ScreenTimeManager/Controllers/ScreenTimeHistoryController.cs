@@ -29,6 +29,11 @@ namespace ScreenTimeManager.Controllers
 		        return View(h.EntriesForThisDate.ToList());
 	        }
 
+	        var hbList = db.HistoryDates.OrderBy(hb => hb.EntriesDate).ToList();
+
+			foreach (var th in hbList)
+				Debug.WriteLine(th.EntriesDate);
+
             return View(db.TimeChanged.ToList());
         }
 
