@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -16,8 +17,18 @@ namespace ScreenTimeManager.Controllers
         private ScreenTimeManagerContext db = new ScreenTimeManagerContext();
 
         // GET: ScreenTimeHistory
-        public ActionResult Index()
+        public ActionResult Index(int? dateId)
         {
+			// If dateId is null, give back today's date
+
+	        if (dateId == null)
+	        {
+		        var h = db.HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today);
+		        Debug.WriteLine(h != null ? "Got today's entries: OK" : "Got today's entries: NOT OK");
+
+		        return View(h.EntriesForThisDate.ToList());
+	        }
+
             return View(db.TimeChanged.ToList());
         }
 
