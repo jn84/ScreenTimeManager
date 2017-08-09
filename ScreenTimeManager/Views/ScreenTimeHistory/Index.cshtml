@@ -1,7 +1,6 @@
-﻿@using ScreenTimeManager.DataModel.DataContexts
-@using ScreenTimeManager.Helpers
+﻿@using ScreenTimeManager.Helpers
 @using ScreenTimeManager.Models
-@model IEnumerable<TotalScreenTimeChanged>
+@model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
 
 @{
     ViewBag.Title = "Index";
@@ -9,9 +8,9 @@
 }
 
 <div class="time-history-page-nav">
-        @Html.PagedDateActionLink(ViewBag.PreviousDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
-        @Html.PagedDateActionLink(ViewBag.SelectedDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
-        @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
+    @Html.PagedDateActionLink(ViewBag.PreviousDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
+    @Html.PagedDateActionLink(ViewBag.SelectedDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
+    @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
 </div>
 
 
@@ -28,22 +27,22 @@
         </th>
         <th></th>
     </tr>
-        @foreach (var item in Model)
-        {
-            <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
-                <td>
-                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
-                    @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
-                </td>
-                <td>
-                    @Html.Encode(item.Rule.RuleTitle)
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new {id = item.Id}, htmlAttributes: new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
-                </td>
-            </tr>
-        }
+    @foreach (TotalScreenTimeChanged item in Model)
+    {
+        <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
+            <td>
+                @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
+                @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
+            </td>
+            <td>
+                @Html.Encode(item.Rule.RuleTitle)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new {id = item.Id}, new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
+            </td>
+        </tr>
+    }
 </table>

@@ -1,5 +1,4 @@
-﻿@using MvcContrib.UI.InputBuilder.Views
-@using ScreenTimeManager.Models
+﻿@using ScreenTimeManager.Models
 @model ScreenTimeManager.Models.TimeSubmission
 
 @{
@@ -18,34 +17,36 @@
     throw new NullReferenceException();
 }
 
-@using (Html.BeginForm("ApplyTime", "RuleBases", null, FormMethod.Post, new { id = "modalForm" }))
+@using (Html.BeginForm("ApplyTime", "RuleBases", null, FormMethod.Post, new {id = "modalForm"}))
 {
     <div class="modal-body">
 
         @Html.AntiForgeryToken()
-        <p><strong>@ViewBag.Rule.RuleTitle</strong></p>
+        <p>
+            <strong>@ViewBag.Rule.RuleTitle</strong>
+        </p>
         <p>@ViewBag.Rule.RuleDescription</p>
 
         <hr/>
 
-        @Html.HiddenFor(model => model.RuleBaseId, htmlAttributes: new { @class = "modal-input" })
+        @Html.HiddenFor(model => model.RuleBaseId, new {@class = "modal-input"})
 
         <div >
             <div>
-                @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "modal-input", min = 0, max = 23, id = "hours-applied" } })
-                @Html.LabelFor(model => model.Hours, htmlAttributes: new { @class = "control-label" })    
+                @Html.EditorFor(model => model.Hours, new {htmlAttributes = new {@class = "modal-input", min = 0, max = 23, id = "hours-applied"}})
+                @Html.LabelFor(model => model.Hours, new {@class = "control-label"})
             </div>
             <div class="validation-message">
-                @Html.ValidationMessageFor(model => model.Hours, "", new { @class = "validation-error-text" })
+                @Html.ValidationMessageFor(model => model.Hours, "", new {@class = "validation-error-text"})
             </div>
         </div>
         <div >
             <div>
-                @Html.EditorFor(model => model.Minutes, new { htmlAttributes = new { @class = "modal-input", min = 0, max = 59, id = "minutes-applied" } })
-                @Html.LabelFor(model => model.Minutes, htmlAttributes: new { @class = "control-label" })    
+                @Html.EditorFor(model => model.Minutes, new {htmlAttributes = new {@class = "modal-input", min = 0, max = 59, id = "minutes-applied"}})
+                @Html.LabelFor(model => model.Minutes, new {@class = "control-label"})
             </div>
             <div class="validation-message">
-                @Html.ValidationMessageFor(model => model.Minutes, "", new { @class = "validation-error-text" })
+                @Html.ValidationMessageFor(model => model.Minutes, "", new {@class = "validation-error-text"})
             </div>
         </div>
 
@@ -65,5 +66,3 @@
         </div>
     </div>
 }
-
-

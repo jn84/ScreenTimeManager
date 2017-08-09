@@ -1,6 +1,4 @@
-﻿@using Microsoft.Web.Mvc
-@using MvcContrib.UI.InputBuilder.Views
-@using ScreenTimeManager.Models.Enums
+﻿@using ScreenTimeManager.Models.Enums
 @using ScreenTimeManager.Utility
 @model ScreenTimeManager.Models.RuleBase
 
@@ -9,14 +7,14 @@
     <div class="rule-title">
         <input id="tab-@Model.Id" type="radio" name="tabs">
 
-        <label for="tab-@Model.Id" class="@(Model.RuleModifier == RuleModifier.Add ? "add" : "subtract" )">
+        <label for="tab-@Model.Id" class="@(Model.RuleModifier == RuleModifier.Add ? "add" : "subtract")">
             @Model.RuleTitle
         </label>
         <div class="rule-content">
-        <div class="rule-settings">
-            <p class="rule-detail">Details: @Model.RuleDescription</p>
-            <p class="rule-detail">@TotalScreenTimeManager.BuildRuleDetailString(Model)</p>
-        </div>
+            <div class="rule-settings">
+                <p class="rule-detail">Details: @Model.RuleDescription</p>
+                <p class="rule-detail">@TotalScreenTimeManager.BuildRuleDetailString(Model)</p>
+            </div>
             <div class="rule-apply-save">
                 @Html.ActionLink("Use This Rule", "ApplyTime", "RuleBases", new {id = Model.Id}, new {data_modal = "", @class = "link-apply-rule"})
             </div>

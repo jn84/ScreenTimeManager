@@ -7,73 +7,73 @@
     <p class="modal-title" id="myModalLabel">Delete Rule</p>
 </div>
 
-    <div class="modal-body">
-        <dl class="dl-horizontal">
+<div class="modal-body">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RuleType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RuleType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RuleModifier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RuleModifier)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RuleTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RuleTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RuleDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RuleDescription)
+        </dd>
+
+        @if (Model.RuleType == RuleType.Fixed)
+        {
             <dt>
-                @Html.DisplayNameFor(model => model.RuleType)
+                @Html.DisplayNameFor(model => model.FixedTimeEarned)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.RuleType)
+                @Html.DisplayFor(model => model.FixedTimeEarned)
             </dd>
-
+        }
+        @if (Model.RuleType == RuleType.Variable)
+        {
             <dt>
-                @Html.DisplayNameFor(model => model.RuleModifier)
+                @Html.DisplayNameFor(model => model.VariableRatioNumerator)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.RuleModifier)
+                @Html.DisplayFor(model => model.VariableRatioNumerator)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.RuleTitle)
+                @Html.DisplayNameFor(model => model.VariableRatioDenominator)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.RuleTitle)
+                @Html.DisplayFor(model => model.VariableRatioDenominator)
             </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.RuleDescription)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.RuleDescription)
-            </dd>
-        
-            @if (Model.RuleType == RuleType.Fixed)
-            {
-                <dt>
-                    @Html.DisplayNameFor(model => model.FixedTimeEarned)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.FixedTimeEarned)
-                </dd>
-            }
-            @if (Model.RuleType == RuleType.Variable)
-            {
-                <dt>
-                    @Html.DisplayNameFor(model => model.VariableRatioNumerator)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.VariableRatioNumerator)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.VariableRatioDenominator)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.VariableRatioDenominator)
-                </dd>
-            }
-        </dl>
+        }
+    </dl>
 
 
-    </div>
-@using (Html.BeginForm("Delete", "ManageRules", new { id = Model.Id }, FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
+</div>
+@using (Html.BeginForm("Delete", "ManageRules", new {id = Model.Id}, FormMethod.Post, new {id = "modalForm"}))
 {
     @Html.AntiForgeryToken()
     <!--Need javascript to submit the form -> Previous code works here. No additional code needed. -->
@@ -86,4 +86,3 @@
         </div>
     </div>
 }
-

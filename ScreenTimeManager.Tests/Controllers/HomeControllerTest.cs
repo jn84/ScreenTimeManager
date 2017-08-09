@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ScreenTimeManager;
-using ScreenTimeManager.Controllers;
-
-namespace ScreenTimeManager.Tests.Controllers
+﻿namespace ScreenTimeManager.Tests.Controllers
 {
 	//[TestClass]
 	//public class HomeControllerTest

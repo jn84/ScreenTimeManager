@@ -2,31 +2,32 @@
 @using ScreenTimeManager.Utility
 @model ScreenTimeManager.Models.RuleBase
 
-    @if (Model.RuleType == RuleType.Fixed)
+@if (Model.RuleType == RuleType.Fixed)
+{
+    if (Model.RuleModifier == RuleModifier.Add)
     {
-        if (Model.RuleModifier == RuleModifier.Add)
-        {
-            <p>Time Charged: 
-                <span class="pendingTime pendingTime-add">
-                  @("+ " + TotalScreenTimeManager.FormatTimeSpan((long) Model.FixedTimeEarned.TotalMilliseconds))
-                </span>
-            </p>
-        }
-
-        if (Model.RuleModifier == RuleModifier.Subtract)
-        {
-            <p>Time Charged: 
-                <span class="pendingTime pendingTime-subtract">
-                    @("- " + TotalScreenTimeManager.FormatTimeSpan((long)Model.FixedTimeEarned.TotalMilliseconds))
-                </span>
-            </p>
-        }
-    }
-     
-    @if (Model.RuleType == RuleType.Variable)
-    {
-        <p>Time Charged: <span class="pendingTime pendingTime-neutral" id="pendingTime">0h 0m 0s</span>
+        <p>
+            Time Charged:
+            <span class="pendingTime pendingTime-add">
+                @("+ " + TotalScreenTimeManager.FormatTimeSpan((long) Model.FixedTimeEarned.TotalMilliseconds))
+            </span>
         </p>
     }
 
+    if (Model.RuleModifier == RuleModifier.Subtract)
+    {
+        <p>
+            Time Charged:
+            <span class="pendingTime pendingTime-subtract">
+                @("- " + TotalScreenTimeManager.FormatTimeSpan((long) Model.FixedTimeEarned.TotalMilliseconds))
+            </span>
+        </p>
+    }
+}
 
+@if (Model.RuleType == RuleType.Variable)
+{
+    <p>
+        Time Charged: <span class="pendingTime pendingTime-neutral" id="pendingTime">0h 0m 0s</span>
+    </p>
+}

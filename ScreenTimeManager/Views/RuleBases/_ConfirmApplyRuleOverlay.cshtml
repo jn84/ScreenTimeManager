@@ -1,6 +1,4 @@
-﻿@using ScreenTimeManager.DataModel.DataContexts
-@using ScreenTimeManager.Models.Enums
-@using WebGrease.Css
+﻿@using ScreenTimeManager.Models.Enums
 @model ScreenTimeManager.Models.RuleBase
 
 <div class="modal-header">
@@ -13,33 +11,35 @@
     throw new NullReferenceException();
 }
 
-@using (Html.BeginForm("ChangeTime", "RuleBases", new { id = Model.Id }, FormMethod.Post, new { id="modalForm" }))
+@using (Html.BeginForm("ChangeTime", "RuleBases", new {id = Model.Id}, FormMethod.Post, new {id = "modalForm"}))
 {
     <div class="modal-body">
 
         @Html.AntiForgeryToken()
-        <p><strong>@Model.RuleTitle</strong></p>
+        <p>
+            <strong>@Model.RuleTitle</strong>
+        </p>
         <p>@Model.RuleDescription</p>
-        
+
         <!-- Render partial here-->
-        
+
         <!-- <hr/> -->
 
         <!-- Summary of what will be added-->
-        
+
         @switch (Model.RuleType)
         {
             case RuleType.Fixed:
-                {
-                    Html.RenderPartial("_FixedInput", Model);
-                    break;
-                }
+            {
+                Html.RenderPartial("_FixedInput", Model);
+                break;
+            }
             case RuleType.Variable:
-                {
-                    Html.RenderPartial("_VariableInput", Model);
-                    break;
-                }
-                // TODO: Add a partial page to indicate an error (unusable ruletype) for default
+            {
+                Html.RenderPartial("_VariableInput", Model);
+                break;
+            }
+            // TODO: Add a partial page to indicate an error (unusable ruletype) for default
         }
 
     </div>
@@ -52,5 +52,3 @@
         </div>
     </div>
 }
-
-

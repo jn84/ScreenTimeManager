@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ScreenTimeManager.Models
 {
@@ -21,5 +16,14 @@ namespace ScreenTimeManager.Models
 		[Range(0, 59, ErrorMessage = "The value must be between 0 and 59 minutes")]
 		public int Minutes { get; set; }
 
+		public static TimeSubmission Create(int ruleId)
+		{
+			return new TimeSubmission
+			{
+				Hours = 0,
+				Minutes = 0,
+				RuleBaseId = ruleId
+			};
+		}
 	}
 }

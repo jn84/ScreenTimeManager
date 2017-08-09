@@ -4,7 +4,7 @@ var seconds = 360000000;
 
 //console.log("JavaScript is amazing!");
 
-$(function () {
+$(function() {
     bindTimer();
 
     parseCounter();
@@ -17,11 +17,11 @@ var bindTimer = function bindTimer() {
 
     var timerHub = $.connection.timerSyncHub;
 
-    $.connection.hub.start().done(function () {
+    $.connection.hub.start().done(function() {
 
         timerHub.server.syncTimer();
 
-        timerHub.client.doTimerStateUpdate = function (isRunning) {
+        timerHub.client.doTimerStateUpdate = function(isRunning) {
 
             updateTimerView(isRunning);
 
@@ -36,13 +36,13 @@ var bindTimer = function bindTimer() {
             }
         };
 
-        timerHub.client.doTimerValueUpdate = function (totalSeconds) {
+        timerHub.client.doTimerValueUpdate = function(totalSeconds) {
             totalTimerSeconds = totalSeconds;
             parseCounter(totalTimerSeconds);
         };
 
         // Rework so that the server triggers a change in button state
-        $("button#btn-timer-toggle").click(function () {
+        $("button#btn-timer-toggle").click(function() {
             timerHub.server.toggleTimerState();
         });
     });
@@ -102,13 +102,13 @@ var parseCounter = function parseCounter(inputSeconds) {
 };
 
 var startTimer = function startTimer() {
-    return setInterval(function () {
-        seconds = decrement(seconds);
-    }, 1000);
+    return setInterval(function() {
+            seconds = decrement(seconds);
+        },
+        1000);
 };
 
 var stopTimer = function stopTimer(intervalId) {
     clearInterval(intervalId);
     return null;
 };
-

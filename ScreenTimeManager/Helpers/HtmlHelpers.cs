@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using ScreenTimeManager.Models;
@@ -22,11 +19,9 @@ namespace ScreenTimeManager.Helpers
 			string currentController = htmlHelper.ViewContext.RouteData.GetRequiredString("controller");
 
 			if (actionName == currentAction && controllerName == currentController)
-			{
-				return htmlHelper.ActionLink(linkText, actionName, controllerName, null, new { @class = "nav-link-active" });
-			}
+				return htmlHelper.ActionLink(linkText, actionName, controllerName, null, new {@class = "nav-link-active"});
 
-			return htmlHelper.ActionLink(linkText, actionName, controllerName, null, new { @class = "nav-link" });
+			return htmlHelper.ActionLink(linkText, actionName, controllerName, null, new {@class = "nav-link"});
 		}
 
 		public static MvcHtmlString PagedDateActionLink(
@@ -38,16 +33,16 @@ namespace ScreenTimeManager.Helpers
 			if (historyDate == null)
 				return htmlHelper.ActionLink(
 					" ",
-					null, 
 					null,
 					null,
-					new { @class = "history-paged-link-null" });
+					null,
+					new {@class = "history-paged-link-null"});
 
 			return htmlHelper.ActionLink(
-				historyDate.EntriesDate.ToString("MMM dd, yyyy"), 
-				actionName, controllerName, 
-				new { dateId = historyDate.Id }, 
-				new { @class = "history-paged-link" });
+				historyDate.EntriesDate == DateTime.Today ? "Today" : historyDate.EntriesDate.ToString("MMM dd, yyyy"),
+				actionName, controllerName,
+				new {dateId = historyDate.Id},
+				new {@class = "history-paged-link"});
 		}
 
 		public static MvcHtmlString If(this MvcHtmlString value, bool evaluation)
@@ -61,9 +56,7 @@ namespace ScreenTimeManager.Helpers
 		{
 			object o = expression.Compile().Invoke(htmlHelper.ViewData.Model);
 			if (o is TimeSpan)
-			{
-				return new MvcHtmlString(DateTime.Today.Add((TimeSpan)o).ToString("h\\:mm\\:ss tt"));
-			}
+				return new MvcHtmlString(DateTime.Today.Add((TimeSpan) o).ToString("h\\:mm\\:ss tt"));
 			return htmlHelper.DisplayFor(expression);
 		}
 	}

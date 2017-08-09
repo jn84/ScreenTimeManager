@@ -1,26 +1,20 @@
-using System.Collections.Generic;
-using ScreenTimeManager.Models;
-using ScreenTimeManager.Models.Enums;
+using System.Data.Entity.Migrations;
+using ScreenTimeManager.DataModel.DataContexts;
 
 namespace ScreenTimeManager.DataModel.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+	public sealed class Configuration : DbMigrationsConfiguration<ScreenTimeManagerContext>
+	{
+		public Configuration()
+		{
+			AutomaticMigrationsEnabled = false;
+		}
 
-	public sealed class Configuration : DbMigrationsConfiguration<DataContexts.ScreenTimeManagerContext>
-    {
-        public Configuration()
-        {
-            AutomaticMigrationsEnabled = false;
-        }
-
-        protected override void Seed(DataContexts.ScreenTimeManagerContext context)
-        {
-			#if RELEASE
-			// use AddOrUpdate to seed here
-			// Seeds here should only be for production code
+		protected override void Seed(ScreenTimeManagerContext context)
+		{
+#if RELEASE
+// use AddOrUpdate to seed here
+// Seeds here should only be for production code
 	        IList<RuleBase> ruleList = new List<RuleBase>();
 
 	        // Keep this rule in production
@@ -56,5 +50,5 @@ namespace ScreenTimeManager.DataModel.Migrations
 
 			#endif
 		}
-    }
+	}
 }

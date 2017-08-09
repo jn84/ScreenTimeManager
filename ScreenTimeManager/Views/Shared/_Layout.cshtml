@@ -1,16 +1,14 @@
-﻿@using Microsoft.Web.Mvc
-@using ScreenTimeManager.Helpers;
-
+﻿@using ScreenTimeManager.Helpers
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-    <!--  Meta  -->
-    <meta charset="UTF-8" />
+    <!-- Meta -->
+    <meta charset="UTF-8"/>
     <title>Screen Time Manager</title>
 
-    <!--  Styles  -->
+    <!-- Styles -->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     @Styles.Render("~/Content/css")
@@ -27,7 +25,7 @@
         </div>
     </div>
 </div>
-    @* TODO: Properly implement the login/account info into the layout *@
+@* TODO: Properly implement the login/account info into the layout *@
 <div class="body">
     <div class="account-bar">
         @Html.Partial("_LoginPartial")
@@ -82,7 +80,7 @@
 @Scripts.Render("~/bundles/Modal")
 @Scripts.Render("~/scripts/jquery.signalR-2.2.2.js")
 @Scripts.Render("~/signalr/hubs")
-@RenderSection("scripts", required: false)
+@RenderSection("scripts", false)
 </body>
 
 </html>

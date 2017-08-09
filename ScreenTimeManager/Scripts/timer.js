@@ -2,7 +2,7 @@ var seconds = 360000000;
 
 //console.log("JavaScript is amazing!");
 
-$(function () {
+$(function() {
     bindTimer();
 
     parseCounter();
@@ -99,4 +99,3 @@ var parseCounter = function(inputSeconds) {
     $("p.seconds-tens").html(Math.abs(secondstens));
     $("p.seconds-ones").html(Math.abs(secondsones));
 };
-

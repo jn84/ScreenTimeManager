@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ScreenTimeManager.Utility
+﻿namespace ScreenTimeManager.Utility
 {
-	public class ActivityTimer
-	{
-	}
+	public class ActivityTimer { }
 }

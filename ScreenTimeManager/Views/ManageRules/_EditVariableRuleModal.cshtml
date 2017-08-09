@@ -2,7 +2,6 @@
 @model ScreenTimeManager.Models.RuleBase
 
 
-
 <!-- EDITING A RULE SHOULD CREATE A NEW RULE AND MARK THE OLD RULE EXPIRED-->
 
 
@@ -11,39 +10,39 @@
     <p class="modal-title" id="myModalLabel">Editing </p>
 </div>
 
-@using (Html.BeginForm("Edit", "ManageRules", FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
+@using (Html.BeginForm("Edit", "ManageRules", FormMethod.Post, new {id = "modalForm"}))
 {
     <div class="modal-body">
 
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "validation-error-text" })
+            @Html.ValidationSummary(true, "", new {@class = "validation-error-text"})
 
             <div >
                 <p>Give this rule a title</p>
                 <div>
-                    @Html.EditorFor(model => model.RuleTitle, new {htmlAttributes = new {@class = "", placeholder = "Enter a title here" } })
+                    @Html.EditorFor(model => model.RuleTitle, new {htmlAttributes = new {@class = "", placeholder = "Enter a title here"}})
                 </div>
-                @Html.ValidationMessageFor(model => model.RuleTitle, "", new { @class = "validation-error-text" })
+                @Html.ValidationMessageFor(model => model.RuleTitle, "", new {@class = "validation-error-text"})
             </div>
 
             <div >
                 <p>Give this rule a description</p>
                 <div>
-                    @Html.EditorFor(model => model.RuleDescription, new {htmlAttributes = new {@class = "description-text-area", placeholder = "Enter a description here" } })
+                    @Html.EditorFor(model => model.RuleDescription, new {htmlAttributes = new {@class = "description-text-area", placeholder = "Enter a description here"}})
                 </div>
-                @Html.ValidationMessageFor(model => model.RuleDescription, "", new { @class = "validation-error-text" })
+                @Html.ValidationMessageFor(model => model.RuleDescription, "", new {@class = "validation-error-text"})
             </div>
-            
+
             <div >
                 <p>Will this rule add or subtract time?</p>
                 <div>
-                    @Html.EnumDropDownListFor(model => model.RuleModifier, htmlAttributes: new {@class = ""})
+                    @Html.EnumDropDownListFor(model => model.RuleModifier, new {@class = ""})
                 </div>
-                @Html.ValidationMessageFor(model => model.RuleModifier, "", new { @class = "validation-error-text" })
+                @Html.ValidationMessageFor(model => model.RuleModifier, "", new {@class = "validation-error-text"})
             </div>
-            
+
             <p>
                 For every
                 @Html.EditorFor(model => model.VariableRatioNumerator, new {htmlAttributes = new {@class = "", min = "1", max = "60"}})
@@ -53,16 +52,16 @@
                 @Html.ValidationMessageFor(model => model.VariableRatioNumerator, "", new {@class = "validation-error-text"})
             </div>
             <p>
-                earn 
-                @Html.EditorFor(model => model.VariableRatioDenominator, new { htmlAttributes = new { @class = "", min = "1", max = "60"} })
+                earn
+                @Html.EditorFor(model => model.VariableRatioDenominator, new {htmlAttributes = new {@class = "", min = "1", max = "60"}})
                 minute(s) of time.
             </p>
             <div>
-                @Html.ValidationMessageFor(model => model.VariableRatioDenominator, "", new { @class = "validation-error-text" })
+                @Html.ValidationMessageFor(model => model.VariableRatioDenominator, "", new {@class = "validation-error-text"})
             </div>
 
-            @Html.HiddenFor(model => model.RuleType, new { Value = RuleType.Variable })
-            @Html.HiddenFor(model => model.FixedTimeEarned, new { Value = "00:00:00" })
+            @Html.HiddenFor(model => model.RuleType, new {Value = RuleType.Variable})
+            @Html.HiddenFor(model => model.FixedTimeEarned, new {Value = "00:00:00"})
 
         </div>
         <!-- Show example after separator -->

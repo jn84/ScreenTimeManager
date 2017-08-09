@@ -16,15 +16,14 @@ namespace ScreenTimeManager.Utility
 		// Fire an event whenever screen time changes
 		public delegate void TotalScreenTimeChangedEventHandler(object sender, TotalScreenTimeChangedEventArgs e);
 
-		// Why = delegate {}
-		// https://stackoverflow.com/questions/289002/how-to-raise-custom-event-from-a-static-class
-		public static event TotalScreenTimeChangedEventHandler TotalScreenTimeChangedNotifier = delegate { };
 
-		private static void OnTotalScreenTimeChangedNotify(TotalScreenTimeChangedEventArgs e)
-		{
-			// Sender is null since "this" is static
-			TotalScreenTimeChangedNotifier.Invoke(null, e);
-		}
+		// // // // // Timer specific variables
+		// If the timer is NOT running, create a new record
+		// If the timer IS running, update the last used ScreenTimeHistory object with the new time elapsed
+		private static TimerState _timerState = TimerState.Stopped;
+
+		// Nullable to eliminate confusion about whether or not we need to add or update
+		private static int? _lastTimeHistoryId;
 
 		// ### End Event Code
 
@@ -35,26 +34,27 @@ namespace ScreenTimeManager.Utility
 			ElapsedTimer.ElapsedTimerNotifier += TimerStateChangedOrUpdated;
 		}
 
+		// Why = delegate {}
+		// https://stackoverflow.com/questions/289002/how-to-raise-custom-event-from-a-static-class
+		public static event TotalScreenTimeChangedEventHandler TotalScreenTimeChangedNotifier = delegate { };
+
+		private static void OnTotalScreenTimeChangedNotify(TotalScreenTimeChangedEventArgs e)
+		{
+			// Sender is null since "this" is static
+			TotalScreenTimeChangedNotifier.Invoke(null, e);
+		}
+
 		private static void TimerStateChangedOrUpdated(object sender, ElapsedTimerEventArgs e)
 		{
 			AddOrUpdateTimerEntry(e.State, e.MillisecondsElapsed);
 		}
-
-
-		// // // // // Timer specific variables
-		// If the timer is NOT running, create a new record
-		// If the timer IS running, update the last used ScreenTimeHistory object with the new time elapsed
-		private static TimerState _timerState = TimerState.Stopped;
-
-		// Nullable to eliminate confusion about whether or not we need to add or update
-		private static int? _lastTimeHistoryId = null;
 
 		// timeApplied is nullable since not all rules have an input for it (variable rules)
 		public static TotalScreenTimeChanged GenerateTotalScreenTimeChanged(RuleBase rule, long? timeAppliedMilliseconds)
 		{
 			var timeChanged = new TotalScreenTimeChanged
 			{
-				RuleUsedId = rule.Id,
+				RuleUsedId = rule.Id
 			};
 
 			switch (rule.RuleType)
@@ -69,12 +69,11 @@ namespace ScreenTimeManager.Utility
 						// Shouldn't happen. But who knows?
 						throw new Exception("Time applied cannot be null for RuleType.Variable or RuleType.Timer: RuleType was " + rule);
 
-					timeChanged.SecondsAdded = 
-							GetModifiedTimeInSeconds(rule, (long) timeAppliedMilliseconds);
+					timeChanged.SecondsAdded =
+						GetModifiedTimeInSeconds(rule, (long) timeAppliedMilliseconds);
 					break;
 				default:
 					throw new Exception("This should not have happened. RuleType was null or had another unexpected value.");
-
 			}
 			return timeChanged;
 		}
@@ -82,37 +81,35 @@ namespace ScreenTimeManager.Utility
 		public static long GetModifiedTimeInMillisecnds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
 			// Apply the positive or negative factor from RuleModifier
-			double modifiedMilliseconds = (int)rule.RuleModifier * timeAppliedInMilliseconds;
+			double modifiedMilliseconds = (int) rule.RuleModifier * timeAppliedInMilliseconds;
 
 			// Calculate the ratio factor to apply to the applied time span
-			double ratio = (double)rule.VariableRatioNumerator / rule.VariableRatioDenominator;
+			double ratio = (double) rule.VariableRatioNumerator / rule.VariableRatioDenominator;
 
 			// Get the final result
 			// Behold my kindness: we always round up
-			return (long)Math.Ceiling(modifiedMilliseconds * ratio);
+			return (long) Math.Ceiling(modifiedMilliseconds * ratio);
 		}
 
 		public static long GetModifiedTimeInSeconds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
-			double modifiedSeconds = (int)rule.RuleModifier * timeAppliedInMilliseconds;
-			double ratio = (double)rule.VariableRatioNumerator / rule.VariableRatioDenominator;
+			double modifiedSeconds = (int) rule.RuleModifier * timeAppliedInMilliseconds;
+			double ratio = (double) rule.VariableRatioNumerator / rule.VariableRatioDenominator;
 
 			// Behold my kindness: we always round up
-			return (long)Math.Ceiling((modifiedSeconds * ratio) / 1000);
+			return (long) Math.Ceiling(modifiedSeconds * ratio / 1000);
 		}
 
 		// If everyong uses this, we'll all be consistent
 		public static string FormatTimeSpan(long milliseconds)
 		{
-			var ts = TimeSpan.FromMilliseconds(milliseconds);
+			TimeSpan ts = TimeSpan.FromMilliseconds(milliseconds);
 
 			Debug.WriteLine(ts.ToString());
 			Debug.WriteLine(ts.TotalMilliseconds);
 
 			return ts.ToString(
-				Math.Floor(Math.Abs(ts.TotalDays)) > 0 ? 
-				"ddd'd 'hh'h 'mm'm 'ss's '" : 
-				"hh'h 'mm'm 'ss's'");
+				Math.Floor(Math.Abs(ts.TotalDays)) > 0 ? "ddd'd 'hh'h 'mm'm 'ss's '" : "hh'h 'mm'm 'ss's'");
 		}
 
 		public static void AddOrUpdateRuleAppliedEntry(TotalScreenTimeChanged changed)
@@ -127,7 +124,6 @@ namespace ScreenTimeManager.Utility
 			}
 
 			OnTotalScreenTimeChangedNotify(new TotalScreenTimeChangedEventArgs(_timerState, GetTotalTime_Now()));
-
 		}
 
 		public static void AddOrUpdateTimerEntry(TimerState state, long timeElapsedMilliseconds)
@@ -146,7 +142,7 @@ namespace ScreenTimeManager.Utility
 				// there shouldn't be any issues... unless somehow the rule is edited/deleted
 
 				// It should be the only rule with that RuleType
-				var rule = ctx.Rules.First(r => r.RuleType == RuleType.Timer);
+				RuleBase rule = ctx.Rules.First(r => r.RuleType == RuleType.Timer);
 
 				switch (state)
 				{
@@ -167,7 +163,8 @@ namespace ScreenTimeManager.Utility
 
 						// The timerstate claims that the timer is running, but the entry doesn't exist in the database. Boo!
 						if (timeChanged == null)
-							throw new Exception("Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
+							throw new Exception(
+								"Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
 
 						// Update the entry in the database. 
 						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
@@ -178,7 +175,8 @@ namespace ScreenTimeManager.Utility
 						// Finalize the current one
 						timeChanged = ctx.TimeChanged.Find(_lastTimeHistoryId);
 						if (timeChanged == null)
-							throw new Exception("Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
+							throw new Exception(
+								"Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
 						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
 						ctx.SaveChanges();
 
@@ -202,16 +200,14 @@ namespace ScreenTimeManager.Utility
 			long dbTotalMinusTimer;
 			using (var ctx = new ScreenTimeManagerContext())
 			{
-				dbTotalMinusTimer = ctx.TimeChanged.
-					Where(tstc => tstc.Id != _lastTimeHistoryId).
-					Sum(tstc => tstc.SecondsAdded);
+				dbTotalMinusTimer = ctx.TimeChanged.Where(tstc => tstc.Id != _lastTimeHistoryId).Sum(tstc => tstc.SecondsAdded);
 			}
 
 			// Why + (-val): It makes it clearer (to me) what exactly is happening
 			// We add a value to the record, that happens to be a negative value
 			// This is how it works in the database, so it's consistent
 			// The compiler will convert it to plain subtraction anyway
-			return dbTotalMinusTimer + (-ElapsedTimer.GetTimeElapsedInSeconds());
+			return dbTotalMinusTimer + -ElapsedTimer.GetTimeElapsedInSeconds();
 		}
 
 		// Utility methods related to handing timer events
@@ -245,20 +241,16 @@ namespace ScreenTimeManager.Utility
 		// No one needs to construct this information on thier own, they can just pass the rule and use the value given
 		public static string BuildRuleDetailString(RuleBase rule)
 		{
-			string temp = (rule.RuleModifier == RuleModifier.Add ? "Earns " : "Deducts ");
+			string temp = rule.RuleModifier == RuleModifier.Add ? "Earns " : "Deducts ";
 
 			if (rule.RuleType == RuleType.Fixed)
-			{
-				temp += FormatTimeSpan((long)rule.FixedTimeEarned.TotalMilliseconds);
-			}
+				temp += FormatTimeSpan((long) rule.FixedTimeEarned.TotalMilliseconds);
 
 			else if (rule.RuleType == RuleType.Variable)
-			{
-				temp += rule.VariableRatioNumerator + " " + 
-					MinutePlurality(rule.VariableRatioNumerator) + 
-					" for every " + rule.VariableRatioDenominator + " " 
-					+ MinutePlurality(rule.VariableRatioDenominator) + " applied";
-			}
+				temp += rule.VariableRatioNumerator + " " +
+				        MinutePlurality(rule.VariableRatioNumerator) +
+				        " for every " + rule.VariableRatioDenominator + " "
+				        + MinutePlurality(rule.VariableRatioDenominator) + " applied";
 			return temp;
 		}
 	}
@@ -268,15 +260,14 @@ namespace ScreenTimeManager.Utility
 
 	public class TotalScreenTimeChangedEventArgs : EventArgs
 	{
-		public TimerState CurrentTimerState { get; }
-
-		public long TotalSecondsAvailable { get; }
-
 		public TotalScreenTimeChangedEventArgs(TimerState state, long totalSecondsAvailable)
 		{
 			CurrentTimerState = state;
 			TotalSecondsAvailable = totalSecondsAvailable;
 		}
+
+		public TimerState CurrentTimerState { get; }
+
+		public long TotalSecondsAvailable { get; }
 	}
 }
-

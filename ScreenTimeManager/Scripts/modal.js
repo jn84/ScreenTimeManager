@@ -1,22 +1,25 @@
 ﻿var numerator;
 var denominator;
 
-$(function () {
-    $.ajaxSetup({ cache: false });        ///////////////////////////////////// Document never ready
+$(function() {
+    $.ajaxSetup({ cache: false }); ///////////////////////////////////// Document never ready
 
-    $("a[data-modal]").on("click", function (e) {
-        $("#myModalContent").load(this.href, function () {
+    $("a[data-modal]").on("click",
+        function(e) {
+            $("#myModalContent").load(this.href,
+                function() {
 
-            $("#myModal").modal({
-                backdrop: "static",
-                keyboard: true
-            }, "show");
+                    $("#myModal").modal({
+                            backdrop: "static",
+                            keyboard: true
+                        },
+                        "show");
 
-            bindForm(this);
+                    bindForm(this);
+                });
+
+            return false;
         });
-
-        return false;
-    });
 });
 
 function bindForm(dialog) {
@@ -37,9 +40,10 @@ function bindForm(dialog) {
         var output = {};
 
         // convert to key/value pairs
-        $.each(rawData, function() {
-            output[this.name] = this.value;
-        });
+        $.each(rawData,
+            function() {
+                output[this.name] = this.value;
+            });
         return JSON.stringify(output);
 
     }
@@ -62,13 +66,13 @@ function bindForm(dialog) {
         $.ajax({
             url: "RuleBases/UpdatePendingTime", // How to make this relative/variable?
             type: "POST",
-            data: { "formData" : jsonifyForm },
-            success: function (result) {
+            data: { "formData": jsonifyForm },
+            success: function(result) {
                 var spanRef = $("span#pendingTime");
                 if (result.success) {
-                    if (result.modifier === "add") {            // Time is positive
+                    if (result.modifier === "add") { // Time is positive
                         spanRef.text("+ " + result.timespan);
-                        spanRef.addClass("pendingTime-add");    
+                        spanRef.addClass("pendingTime-add");
                         spanRef.removeClass("pendingTime-neutral");
                         spanRef.removeClass("pendingTime-subtract");
                     } else {
@@ -76,7 +80,7 @@ function bindForm(dialog) {
                         spanRef.addClass("pendingTime-subtract");
                         spanRef.removeClass("pendingTime-neutral");
                         spanRef.removeClass("pendingTime-add");
-                    } 
+                    }
                 } else {
                     spanRef.text("I AM ERROR");
                 }
@@ -88,19 +92,20 @@ function bindForm(dialog) {
 
     // Submit the form to the server with a standard (see: easily styled) button, rather
     // than via a form input tag
-    $("button#modal-submit").on("click", function (e) {
-        e.preventDefault();
-        $("form#modalForm").submit();
-    });
+    $("button#modal-submit").on("click",
+        function(e) {
+            e.preventDefault();
+            $("form#modalForm").submit();
+        });
 
     // any <form> tag, the context in which that form tag is found
-    $("form#modalForm", dialog).submit(function () { // Why is this not called when hitting the submit button?
+    $("form#modalForm", dialog).submit(function() { // Why is this not called when hitting the submit button?
         //alert("entered submit function");
         $.ajax({
             url: this.action,
             type: this.method,
             data: $(this).serialize(),
-            success: function (result) {
+            success: function(result) {
                 if (result.success) {
                     $("#myModal").modal("hide");
                     // Send to appropriate url
@@ -109,7 +114,7 @@ function bindForm(dialog) {
                     } else {
                         location.replace(result.redirectUrl);
                     }
-                // There was a validation error or something, so update the modal
+                    // There was a validation error or something, so update the modal
                 } else {
                     $("#myModalContent").html(result);
                     bindForm();

@@ -1,6 +1,4 @@
-﻿@using MvcContrib.UI.InputBuilder.Views
-@using ScreenTimeManager.Models
-@using ScreenTimeManager.Utility
+﻿@using ScreenTimeManager.Models
 @model ScreenTimeManager.Models.TimeSubmission
 
 @{
@@ -13,22 +11,24 @@
     <p class="modal-title" id="myModalLabel">Confirm Screen Time Change</p>
 </div>
 
-@using (Html.BeginForm("ApplyTime", "RuleBases", null, FormMethod.Post, htmlAttributes: new { id = "modalForm" }))
+@using (Html.BeginForm("ApplyTime", "RuleBases", null, FormMethod.Post, new {id = "modalForm"}))
 {
     <div class="modal-body">
 
         @Html.AntiForgeryToken()
-        <p><strong>@ViewBag.Rule.RuleTitle</strong></p>
+        <p>
+            <strong>@ViewBag.Rule.RuleTitle</strong>
+        </p>
         <p>@ViewBag.Rule.RuleDescription</p>
-        
+
         @Html.HiddenFor(model => model.RuleBaseId)
-        @Html.HiddenFor(model => model.Hours, htmlAttributes: new { Value = 0 })
-        @Html.HiddenFor(model => model.Minutes, htmlAttributes: new { Value = 0 })
-        
+        @Html.HiddenFor(model => model.Hours, new {Value = 0})
+        @Html.HiddenFor(model => model.Minutes, new {Value = 0})
+
         @* Use the ID's so javascript can make *@
 
         <hr/>
-        
+
         @Html.Partial("_PendingTime", (RuleBase) ViewBag.Rule)
 
     </div>
@@ -42,5 +42,3 @@
         </div>
     </div>
 }
-
-

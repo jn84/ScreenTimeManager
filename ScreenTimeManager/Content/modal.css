@@ -1,69 +1,71 @@
 ﻿.modal-content {
-  background-color: #111111;
-  border: gray 1px solid;
-  font-family: "Roboto", serif;
-  color: #909090;
-  z-index: 5;
-  overflow: hidden; }
+    background-color: #111111;
+    border: gray 1px solid;
+    color: #909090;
+    font-family: "Roboto", serif;
+    overflow: hidden;
+    z-index: 5;
+}
 
 .modal-header {
-  font-size: 130%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px; }
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 130%;
+}
 
-.modal-body {
-  background-color: #222222; }
+.modal-body { background-color: #222222; }
 
 .modal-footer {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  display: flex;
-  flex: 0 0 100%;
-  flex-direction: row;
-  padding: 0px 0px 0px 0px; }
-  .modal-footer div.button-container {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex: 0 0 100%;
+    flex-direction: row;
+    padding: 0px 0px 0px 0px;
+}
+
+.modal-footer div.button-container {
+    color: #111111;
     flex: 1;
     height: 100%;
     width: 100%;
-    color: #111111; }
-  .modal-footer button {
-    width: 100%;
+}
+
+.modal-footer button {
+    border: 0px solid;
     height: 70px;
-    border: 0px solid; }
-  .modal-footer button.confirm-apply {
-    background-color: green; }
-    .modal-footer button.confirm-apply:hover {
-      background-color: lightgreen; }
-    .modal-footer button.confirm-apply:active {
-      background-color: brown; }
-  .modal-footer button.cancel-apply {
-    background-color: red; }
-    .modal-footer button.cancel-apply:hover {
-      background-color: pink; }
-    .modal-footer button.cancel-apply:active {
-      background-color: brown; }
+    width: 100%;
+}
 
-span.pendingTime {
-  font-weight: bold; }
+.modal-footer button.confirm-apply { background-color: green; }
 
-span.pendingTime-neutral {
-  color: white; }
+.modal-footer button.confirm-apply:hover { background-color: lightgreen; }
 
-span.pendingTime-add {
-  color: green; }
+.modal-footer button.confirm-apply:active { background-color: brown; }
 
-span.pendingTime-subtract {
-  color: red; }
+.modal-footer button.cancel-apply { background-color: red; }
 
-div.validation-message {
-  padding-top: 2px; }
+.modal-footer button.cancel-apply:hover { background-color: pink; }
+
+.modal-footer button.cancel-apply:active { background-color: brown; }
+
+span.pendingTime { font-weight: bold; }
+
+span.pendingTime-neutral { color: white; }
+
+span.pendingTime-add { color: green; }
+
+span.pendingTime-subtract { color: red; }
+
+div.validation-message { padding-top: 2px; }
 
 .validation-error-text {
-  color: red;
-  margin: 10px 10px 10px 10px;
-  height: auto; }
+    color: red;
+    height: auto;
+    margin: 10px 10px 10px 10px;
+}
 
 .description-text-area {
-  width: 100%;
-  height: 5em; }
-
+    height: 5em;
+    width: 100%;
+}

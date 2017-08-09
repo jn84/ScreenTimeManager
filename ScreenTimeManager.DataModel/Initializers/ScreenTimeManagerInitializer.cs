@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ScreenTimeManager.DataModel.DataContexts;
-using ScreenTimeManager.DataModel.Migrations;
 using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
 
 namespace ScreenTimeManager.DataModel.Initializers
 {
-	#if DEBUG
-	public class ScreenTimeManagerInitializer : System.Data.Entity.DropCreateDatabaseAlways<ScreenTimeManagerContext>
+#if DEBUG
+
+	public class ScreenTimeManagerInitializer : DropCreateDatabaseAlways<ScreenTimeManagerContext>
 	{
 		protected override void Seed(ScreenTimeManagerContext context)
 		{
@@ -21,7 +19,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 			IList<RuleBase> ruleList = new List<RuleBase>();
 
 			// Keep this rule in production
-			ruleList.Add(new RuleBase()
+			ruleList.Add(new RuleBase
 			{
 				RuleType = RuleType.Timer,
 				RuleModifier = RuleModifier.Subtract,
@@ -33,7 +31,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 			});
 
 			// Keep this rule in production
-			ruleList.Add(new RuleBase()
+			ruleList.Add(new RuleBase
 			{
 				RuleType = RuleType.Fixed,
 				RuleModifier = RuleModifier.Add,
@@ -42,17 +40,16 @@ namespace ScreenTimeManager.DataModel.Initializers
 				FixedTimeEarned = new TimeSpan(0, 0, 30, 0)
 			});
 
-			ruleList.Add(new RuleBase()
+			ruleList.Add(new RuleBase
 			{
 				RuleType = RuleType.Fixed,
 				RuleModifier = RuleModifier.Add,
 				RuleTitle = "Changed Litter",
 				RuleDescription = "Earn 20 minutes for cleaning/changing all the litter boxes",
 				FixedTimeEarned = new TimeSpan(0, 0, 20, 0)
-
 			});
 
-			ruleList.Add(new RuleBase()
+			ruleList.Add(new RuleBase
 			{
 				RuleType = RuleType.Variable,
 				RuleModifier = RuleModifier.Add,
@@ -62,7 +59,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 				VariableRatioDenominator = 4
 			});
 
-			ruleList.Add(new RuleBase()
+			ruleList.Add(new RuleBase
 			{
 				RuleType = RuleType.Variable,
 				RuleModifier = RuleModifier.Subtract,
@@ -73,72 +70,72 @@ namespace ScreenTimeManager.DataModel.Initializers
 			});
 
 			//foreach (var rule in ruleList)
-		    context.Rules.AddRange(ruleList);
+			context.Rules.AddRange(ruleList);
 
 			context.SaveChanges();
 
 			IList<TotalScreenTimeChanged> timeChangeList = new List<TotalScreenTimeChanged>();
 
-			var allRules = context.Rules.ToList();
-			var i = 0;
+			List<RuleBase> allRules = context.Rules.ToList();
+			int i = 0;
 
-			timeChangeList.Add(new TotalScreenTimeChanged()
+			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long)(new TimeSpan(0, 0, 30, 0).TotalSeconds)
+				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds
 			});
 
-			if ((i + 1) == allRules.Count)
+			if (i + 1 == allRules.Count)
 				i = 0;
 			else
 				i++;
 
-			timeChangeList.Add(new TotalScreenTimeChanged()
+			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long)(new TimeSpan(0, 0, 20, 0).TotalSeconds)
+				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds
 			});
-			if ((i + 1) == allRules.Count)
+			if (i + 1 == allRules.Count)
 				i = 0;
 			else
 				i++;
 
-			timeChangeList.Add(new TotalScreenTimeChanged()
+			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long)(new TimeSpan(0, 1, 13, 22).TotalSeconds)
+				SecondsAdded = (long) new TimeSpan(0, 1, 13, 22).TotalSeconds
 			});
-			if ((i + 1) == allRules.Count)
+			if (i + 1 == allRules.Count)
 				i = 0;
 			else
 				i++;
 
-			timeChangeList.Add(new TotalScreenTimeChanged()
+			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long)(new TimeSpan(0, 0, 30, 0).TotalSeconds)
+				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds
 			});
-			if ((i + 1) == allRules.Count)
+			if (i + 1 == allRules.Count)
 				i = 0;
 			else
 				i++;
 
-			timeChangeList.Add(new TotalScreenTimeChanged()
+			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long)(new TimeSpan(0, 0, 20, 0).TotalSeconds)
+				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds
 			});
-			if ((i + 1) == allRules.Count)
+			if (i + 1 == allRules.Count)
 				i = 0;
 			else
 				i++;
 
-			timeChangeList.Add(new TotalScreenTimeChanged()
+			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long)(new TimeSpan(0, 0, 31, 4).TotalSeconds)
+				SecondsAdded = (long) new TimeSpan(0, 0, 31, 4).TotalSeconds
 			});
-			if ((i + 1) == allRules.Count)
+			if (i + 1 == allRules.Count)
 				i = 0;
 			else
 				i++;
@@ -147,11 +144,11 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			context.SaveChanges();
 		}
-		
 	}
-	#endif
 
-	#if RELEASE
+#endif
+
+#if RELEASE
 	public class ScreenTimeManagerInitializer : System.Data.Entity.MigrateDatabaseToLatestVersion<ScreenTimeManagerContext, Configuration>
 	{
 		// https://galleryserverpro.com/using-entity-framework-code-first-migrations-to-auto-create-and-auto-update-an-application/
