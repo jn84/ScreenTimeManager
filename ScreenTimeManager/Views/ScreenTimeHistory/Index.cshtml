@@ -11,7 +11,7 @@
 <p>
     @Html.PagedDateActionLink(ViewData["PreviousDate"] as TimeHistoryDate, "Index", "ScreenTimeHistory");
     @Html.Display("SelectedDate");
-    @Html.PagedDateActionLink(ViewBag["NextDate"] as TimeHistoryDate, "Index", "ScreenTimeHistory");
+    @Html.PagedDateActionLink(ViewData["NextDate"] as TimeHistoryDate, "Index", "ScreenTimeHistory");
 </p>
 
 <table class="table">
