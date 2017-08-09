@@ -380,6 +380,64 @@ div.footer
     background: $title-background-color;
 }
 
+div.time-history-page-nav
+{
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+}
+
+a.history-paged-link
+{
+    height: 100%;
+    width: 100%;
+    color: black;
+    text-decoration: none;
+    background: $header-background-color;
+    border: solid darken($header-background-color, 20%) 1px;
+    border-radius: $rule-element-border-radius;
+    display: block;
+    text-align: center;
+    line-height: 4;
+    margin: 5px;
+
+    &:hover
+    {
+        background-color: lighten($header-background-color, 10%);
+    }
+
+    &:active
+    {
+        background-color: darken($header-background-color, 10%);
+    }
+}
+
+a.history-paged-link-null
+{
+    height: 100%;
+    width: 100%;
+    color: black;
+    text-decoration: none;
+    background: $main-content-background-color;
+    border: solid darken($main-content-background-color, 20%) 1px;
+    border-radius: $rule-element-border-radius;
+    display: block;
+    text-align: center;
+    line-height: 4;
+    margin: 5px;
+    visibility: hidden;
+
+    &:hover
+    {
+        background-color: lighten($main-content-background-color, 10%);
+    }
+
+    &:active
+    {
+        background-color: darken($main-content-background-color, 10%);
+    }
+}
+
 tr.history-add
 {
     color: black;

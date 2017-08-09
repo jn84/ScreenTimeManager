@@ -20,49 +20,44 @@ namespace ScreenTimeManager.Controllers
         public ActionResult Index(int? dateId)
         {
 			// If dateId is null, give back today's date
+	        int selectedIndex = 0;
 
-	        TimeHistoryDate 
-				previousDate = null, 
-				selectedDate = null, 
-				nextDate = null;
+	        TimeHistoryDate previousDate, selectedDate, nextDate;
+
+			// Ick. Maybe a way to only grab the three we need?
+			// TODO: Rework this. Grabbing the whole list is a waste
+	        var hbList = db.HistoryDates.OrderBy(hb => hb.EntriesDate).ToList();
 
 	        if (dateId == null || db.HistoryDates.Find(dateId) == null)
 	        {
 		        // Tries to find entries for today
 		        // If there's no entries yet today, do what? For now, get the last valid date
-				// The list should never be empty..
 		        TimeHistoryDate h =
 			        db.HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today) ??
 			        db.HistoryDates.OrderBy(hd => hd.EntriesDate).Last();
-		        selectedDate = h;
 
+		        selectedIndex = hbList.IndexOf(h);
 	        }
 	        else
 	        {
-		        selectedDate = db.HistoryDates.Find(dateId);
+		        selectedIndex = hbList.FindIndex(hb => hb.Id == dateId);
 	        }
 
-			previousDate = db.HistoryDates
-		        .OrderBy(thd => thd.EntriesDate)
-		        .TakeWhile(thd => thd.EntriesDate != selectedDate.EntriesDate)
-				.ToList() // Eww
-		        .Last();
+	        // Hmm...
+	        if (selectedIndex - 1 > -1)
+		        ViewBag.PreviousDate = hbList[selectedIndex - 1];
+	        else
+		        ViewBag.PreviousDate = null;
 
-			nextDate = db.HistoryDates
-				.OrderByDescending(thd => thd.EntriesDate)
-				.TakeWhile(thd => thd.EntriesDate != selectedDate.EntriesDate)
-				.ToList() // Yuck
-				.Last();
 
-			// Hmm...
-			ViewData["PreviousDate"] = previousDate;
-	        ViewData["SelectedDate"] = selectedDate;
-	        ViewData["PreviousDate"] = nextDate;
+			ViewBag.SelectedDate = hbList[selectedIndex];
 
-			// So what if it's null?
-			// The view will generate differently if it is.
-			// If should never be null unless the TimeHistoryDates table is empty.
-			return View("Index", selectedDate?.EntriesForThisDate);
+	        if (selectedIndex + 1 < hbList.Count)
+		        ViewBag.NextDate = hbList[selectedIndex + 1];
+	        else
+		        ViewBag.NextDate = null;
+
+	        return View(hbList[selectedIndex].EntriesForThisDate);
 		}
 
         // GET: ScreenTimeHistory/Details/5

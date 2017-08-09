@@ -253,6 +253,46 @@ div.footer {
   border-right: none;
   background: #111111; }
 
+div.time-history-page-nav {
+  display: flex;
+  flex-direction: row;
+  margin: 5px; }
+
+a.history-paged-link {
+  height: 100%;
+  width: 100%;
+  color: black;
+  text-decoration: none;
+  background: #586eff;
+  border: solid #0020f1 1px;
+  border-radius: 5px;
+  display: block;
+  text-align: center;
+  line-height: 4;
+  margin: 5px; }
+  a.history-paged-link:hover {
+    background-color: #8b9aff; }
+  a.history-paged-link:active {
+    background-color: #2542ff; }
+
+a.history-paged-link-null {
+  height: 100%;
+  width: 100%;
+  color: black;
+  text-decoration: none;
+  background: #666666;
+  border: solid #333333 1px;
+  border-radius: 5px;
+  display: block;
+  text-align: center;
+  line-height: 4;
+  margin: 5px;
+  visibility: hidden; }
+  a.history-paged-link-null:hover {
+    background-color: gray; }
+  a.history-paged-link-null:active {
+    background-color: #4d4d4d; }
+
 tr.history-add {
   color: black;
   background-color: #6d866d; }

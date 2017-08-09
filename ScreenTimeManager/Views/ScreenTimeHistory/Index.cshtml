@@ -8,11 +8,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<p>
-    @Html.PagedDateActionLink(ViewData["PreviousDate"] as TimeHistoryDate, "Index", "ScreenTimeHistory");
-    @Html.Display("SelectedDate");
-    @Html.PagedDateActionLink(ViewData["NextDate"] as TimeHistoryDate, "Index", "ScreenTimeHistory");
-</p>
+<div class="time-history-page-nav">
+        @Html.PagedDateActionLink(ViewBag.PreviousDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
+        @Html.PagedDateActionLink(ViewBag.SelectedDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
+        @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
+</div>
+
 
 <table class="table">
     <tr>

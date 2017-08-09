@@ -36,7 +36,12 @@ namespace ScreenTimeManager.Helpers
 			string controllerName)
 		{
 			if (historyDate == null)
-				return MvcHtmlString.Empty;
+				return htmlHelper.ActionLink(
+					" ",
+					null, 
+					null,
+					null,
+					new { @class = "history-paged-link-null" });
 
 			return htmlHelper.ActionLink(
 				historyDate.EntriesDate.ToString("MMM dd, yyyy"), 
