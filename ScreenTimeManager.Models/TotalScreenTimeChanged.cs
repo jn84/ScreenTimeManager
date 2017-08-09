@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlTypes;
@@ -18,12 +19,17 @@ namespace ScreenTimeManager.Models
 
 		public int TimeHistoryDateId { get; set; }
 
+		[DisplayName("Date Added")]
 		[ForeignKey("TimeHistoryDateId")]
-		public TimeHistoryDate TimeHistoryDate { get; set; }
+		public virtual TimeHistoryDate TimeHistoryDate { get; set; }
 
 		[Required]
+		[DisplayName("Added")]
+		[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
+		
+
 
 		// The rule used for this entry into the history
 		// At least one, but not more than one
@@ -31,7 +37,7 @@ namespace ScreenTimeManager.Models
 		public int RuleUsedId { get; set; }
 
 		[ForeignKey("RuleUsedId")]
-		public RuleBase Rule { get; set; }
+		public virtual RuleBase Rule { get; set; }
 
 		public string SubmissionNote { get; set; }
 	}

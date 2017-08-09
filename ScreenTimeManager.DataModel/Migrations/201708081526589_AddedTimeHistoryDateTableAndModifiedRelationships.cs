@@ -61,6 +61,7 @@ namespace ScreenTimeManager.DataModel.Migrations
             DropColumn("dbo.TotalScreenTimeChangeds", "RecordAddedDateTime");
         }
         
+		// This will break everything.
         public override void Down()
         {
             AddColumn("dbo.TotalScreenTimeChangeds", "RecordAddedDateTime", c => c.DateTime(nullable: false));

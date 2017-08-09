@@ -1,6 +1,7 @@
 ﻿@using ScreenTimeManager.DataModel.DataContexts
+@using ScreenTimeManager.Helpers
 @using ScreenTimeManager.Models
-@model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
+@model IEnumerable<TotalScreenTimeChanged>
 
 @{
     ViewBag.Title = "Index";
@@ -20,26 +21,22 @@
         </th>
         <th></th>
     </tr>
-    @using (var ctx = new ScreenTimeManagerContext())
-    {
-        foreach (var item in Model)
+        @foreach (var item in Model)
         {
             <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
                 <td>
                     @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RecordAddedTime)
+                    @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
+                    @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
                 </td>
                 <td>
-                    @{ RuleBase ruleBase = ctx.Rules.Find(item.RuleUsedId); }
-                    @(ruleBase != null ? Html.Encode(ruleBase.RuleTitle) : Html.Encode(@"Unknown rule"))
+                    @Html.Encode(item.Rule.RuleTitle)
                 </td>
                 <td>
                     @Html.ActionLink("Details", "Details", new {id = item.Id}, htmlAttributes: new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
                 </td>
             </tr>
         }
-    }
-
 </table>
