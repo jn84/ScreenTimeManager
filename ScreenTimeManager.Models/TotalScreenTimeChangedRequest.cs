@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +10,8 @@ using ScreenTimeManager.Models.Interfaces;
 
 namespace ScreenTimeManager.Models
 {
-	public class TotalScreenTimeChanged : IDateTimeCreated
+	// Model for Child user add/remove time requests
+	public class TotalScreenTimeChangedRequest : IDateTimeCreated
 	{
 		[Key]
 		public int Id { get; set; }
@@ -30,8 +30,6 @@ namespace ScreenTimeManager.Models
 		[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
-		
-
 
 		// The rule used for this entry into the history
 		// At least one, but not more than one
@@ -42,8 +40,6 @@ namespace ScreenTimeManager.Models
 		public virtual RuleBase Rule { get; set; }
 
 		public string SubmissionNote { get; set; }
-
-		public string ApprovedBy { get; set; }
 
 		public string RequestedBy { get; set; }
 	}

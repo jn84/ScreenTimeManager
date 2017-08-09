@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using ScreenTimeManager.Models;
+using ScreenTimeManager.Models.Interfaces;
 
 namespace ScreenTimeManager.DataModel.DataContexts
 {
@@ -10,6 +11,7 @@ namespace ScreenTimeManager.DataModel.DataContexts
 		public DbSet<TotalScreenTimeChanged> TimeChanged { get; set; }
 		public DbSet<RuleBase> Rules { get; set; }
 		public DbSet<TimeHistoryDate> HistoryDates { get; set; }
+		public DbSet<TotalScreenTimeChangedRequest> TimeRequests { get; set; }
 
 
 		public ScreenTimeManagerContext() : base("name=DefaultConnection")
@@ -20,7 +22,9 @@ namespace ScreenTimeManager.DataModel.DataContexts
 		// Can we fit all the date handling code here?
 		public override int SaveChanges()
 		{
-			foreach (var timeChange in ChangeTracker.Entries<TotalScreenTimeChanged>()
+			// This should be interface based
+
+			foreach (var entry in ChangeTracker.Entries<IDateTimeCreated>()
 				.Where(m => m.State.Equals(EntityState.Added))
 				.Select(e => e.Entity))
 			{
@@ -41,10 +45,10 @@ namespace ScreenTimeManager.DataModel.DataContexts
 
 				HistoryDates.Attach(date);
 
-				timeChange.TimeHistoryDateId = date.Id;
-				timeChange.TimeHistoryDate = date;
+				entry.TimeHistoryDateId = date.Id;
+				entry.TimeHistoryDate = date;
 
-				timeChange.RecordAddedTime = DateTime.Now.TimeOfDay;
+				entry.RecordAddedTime = DateTime.Now.TimeOfDay;
 			}
 
 			return base.SaveChanges();
