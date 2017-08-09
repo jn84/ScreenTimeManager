@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using ScreenTimeManager.Models;
 
 namespace ScreenTimeManager.Helpers
 {
@@ -26,6 +27,22 @@ namespace ScreenTimeManager.Helpers
 			}
 
 			return htmlHelper.ActionLink(linkText, actionName, controllerName, null, new { @class = "nav-link" });
+		}
+
+		public static MvcHtmlString PagedDateActionLink(
+			this HtmlHelper htmlHelper,
+			TimeHistoryDate historyDate,
+			string actionName,
+			string controllerName)
+		{
+			if (historyDate == null)
+				return MvcHtmlString.Empty;
+
+			return htmlHelper.ActionLink(
+				historyDate.EntriesDate.ToString("MMM dd, yyyy"), 
+				actionName, controllerName, 
+				new { dateId = historyDate.Id }, 
+				new { @class = "history-paged-link" });
 		}
 
 		public static MvcHtmlString If(this MvcHtmlString value, bool evaluation)

@@ -11,17 +11,6 @@ using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
 
 
-//
-//
-//
-//
-//	Next to do: Implement a controller method (and possibly a universal class in DataModel or Model) to get calculated time samples
-//
-//
-//
-//
-
-
 namespace ScreenTimeManager.Controllers
 {
     public class ManageRulesController : Controller
@@ -40,16 +29,7 @@ namespace ScreenTimeManager.Controllers
         {
 			// We give it a rule to build from to fill out the default values
 
-	        RuleBase newRule = new RuleBase()
-	        {
-		        RuleTitle = "",
-				RuleDescription = "",
-				RuleModifier = RuleModifier.Add,
-				VariableRatioNumerator = 1,
-				VariableRatioDenominator = 1,
-				FixedTimeEarned = TimeSpan.FromTicks(0),
-
-	        };
+	        RuleBase newRule = RuleBase.Create();
 
 	        if (ruleType == (int) RuleType.Fixed)
 	        {

@@ -54,5 +54,18 @@ namespace ScreenTimeManager.Models
 	    public int VariableRatioDenominator { get; set; } = 1;
 
 		public virtual ICollection<TotalScreenTimeChanged> UsedInChangeEntries { get; set; }
+
+	    public static RuleBase Create()
+	    {
+			return new RuleBase()
+			{
+				RuleTitle = "",
+				RuleDescription = "",
+				RuleModifier = RuleModifier.Add,
+				VariableRatioNumerator = 1,
+				VariableRatioDenominator = 1,
+				FixedTimeEarned = TimeSpan.FromTicks(0),
+			};
+		}
     }
 }

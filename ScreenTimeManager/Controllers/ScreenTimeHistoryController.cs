@@ -20,22 +20,45 @@ namespace ScreenTimeManager.Controllers
         public ActionResult Index(int? dateId)
         {
 			// If dateId is null, give back today's date
+	        int selectedIndex = 0;
 
-	        if (dateId == null)
-	        {
-		        var h = db.HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today);
-		        Debug.WriteLine(h != null ? "Got today's entries: OK" : "Got today's entries: NOT OK");
+	        TimeHistoryDate previousDate, selectedDate, nextDate;
 
-		        return View(h.EntriesForThisDate.ToList());
-	        }
-
+			// Ick. Maybe a way to only grab the three we need?
+			// TODO: Rework this. Grabbing the whole list is a waste
 	        var hbList = db.HistoryDates.OrderBy(hb => hb.EntriesDate).ToList();
 
-			foreach (var th in hbList)
-				Debug.WriteLine(th.EntriesDate);
+	        if (dateId == null || db.HistoryDates.Find(dateId) == null)
+	        {
+		        // Tries to find entries for today
+		        // If there's no entries yet today, do what? For now, get the last valid date
+		        TimeHistoryDate h =
+			        db.HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today) ??
+			        db.HistoryDates.OrderBy(hd => hd.EntriesDate).Last();
 
-            return View(db.TimeChanged.ToList());
-        }
+		        selectedIndex = hbList.IndexOf(h);
+	        }
+	        else
+	        {
+		        selectedIndex = hbList.FindIndex(hb => hb.Id == dateId);
+	        }
+
+	        // Hmm...
+	        if (selectedIndex - 1 > -1)
+		        ViewData["PreviousDate"] = hbList[selectedIndex - 1];
+	        else
+		        ViewData["PreviousDate"] = null;
+
+
+			ViewData["SelectedDate"] = hbList[selectedIndex];
+
+	        if (selectedIndex + 1 < hbList.Count)
+		        ViewData["NextDate"] = hbList[selectedIndex + 1];
+	        else
+		        ViewData["NextDate"] = null;
+
+	        return View(hbList[selectedIndex].EntriesForThisDate);
+		}
 
         // GET: ScreenTimeHistory/Details/5
         public ActionResult Details(int? id)
