@@ -34,7 +34,7 @@ namespace ScreenTimeManager.Controllers
 		        // If there's no entries yet today, do what? For now, get the last valid date
 		        TimeHistoryDate h =
 			        db.HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today) ??
-			        db.HistoryDates.OrderBy(hd => hd.EntriesDate).Last();
+			        db.HistoryDates.OrderBy(hd => hd.EntriesDate).AsEnumerable().Last();
 
 		        selectedIndex = hbList.IndexOf(h);
 	        }
