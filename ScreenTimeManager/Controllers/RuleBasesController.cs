@@ -104,7 +104,9 @@ namespace ScreenTimeManager.Controllers
 				long? tempMilliseconds =
 					TotalScreenTimeManager.ConvertHoursMinutesToMilliseconds(timeSubmission.Hours, timeSubmission.Minutes);
 
-				TotalScreenTimeChanged tstc = TotalScreenTimeManager.GenerateTotalScreenTimeChanged(rule, tempMilliseconds);
+				TotalScreenTimeChanged tstc = 
+					TotalScreenTimeManager
+					.GenerateTotalScreenTimeChangedApproved(rule, tempMilliseconds, User.Identity.Name, "");
 
 				TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
 
@@ -156,9 +158,11 @@ namespace ScreenTimeManager.Controllers
 				long? tempMilliseconds =
 					TotalScreenTimeManager.ConvertHoursMinutesToMilliseconds(timeSubmission.Hours, timeSubmission.Minutes);
 
-				TotalScreenTimeChanged tstc = TotalScreenTimeManager.GenerateTotalScreenTimeChanged(rule, tempMilliseconds);
+				TotalScreenTimeChangedRequest tstcr = 
+					TotalScreenTimeManager
+					.GenerateTotalScreenTimeChangedRequest(rule, tempMilliseconds, User.Identity.Name, "");
 
-				TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
+				TotalScreenTimeManager.AddOrUpdateRuleAppliedRequest(tstcr);
 
 				return Json(new {success = ModelState.IsValid, redirectUrl = Url.Action("Index")});
 			}

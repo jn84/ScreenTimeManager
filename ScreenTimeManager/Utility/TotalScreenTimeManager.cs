@@ -50,11 +50,12 @@ namespace ScreenTimeManager.Utility
 		}
 
 		// timeApplied is nullable since not all rules have an input for it (variable rules)
-		public static TotalScreenTimeChanged GenerateTotalScreenTimeChanged(RuleBase rule, long? timeAppliedMilliseconds)
+		private static TotalScreenTimeChanged GenerateTotalScreenTimeChanged(RuleBase rule, long? timeAppliedMilliseconds, string submissionNote)
 		{
 			var timeChanged = new TotalScreenTimeChanged
 			{
-				RuleUsedId = rule.Id
+				RuleUsedId = rule.Id,
+				SubmissionNote = submissionNote
 			};
 
 			switch (rule.RuleType)
@@ -77,6 +78,51 @@ namespace ScreenTimeManager.Utility
 			}
 			return timeChanged;
 		}
+
+		public static TotalScreenTimeChanged GenerateTotalScreenTimeChangedApproved(
+			RuleBase rule, 
+			long? timeAppliedMilliseconds,
+			string approvedBy,
+			string submissionNote
+			)
+		{
+			TotalScreenTimeChanged tstc =
+				GenerateTotalScreenTimeChanged(rule, timeAppliedMilliseconds, submissionNote);
+
+			tstc.ApprovedBy = approvedBy;
+
+			return tstc;
+		}
+
+		public static TotalScreenTimeChangedRequest GenerateTotalScreenTimeChangedRequest(
+			RuleBase rule,
+			long? timeAppliedMilliseconds,
+			string requestedBy,
+			string submissionNote)
+		{
+			TotalScreenTimeChanged tstc = GenerateTotalScreenTimeChanged(rule, timeAppliedMilliseconds, submissionNote);
+
+			return new TotalScreenTimeChangedRequest
+			{
+				SecondsAdded = tstc.SecondsAdded,
+				RuleUsedId = tstc.RuleUsedId,
+				SubmissionNote = tstc.SubmissionNote,
+				RequestedBy = requestedBy
+			};
+		}
+
+		public static TotalScreenTimeChanged GetApprovedTotalScreenTimeChangedRequest(TotalScreenTimeChangedRequest tstcr, string approvedBy)
+		{
+			return new TotalScreenTimeChanged
+			{
+				SecondsAdded = tstcr.SecondsAdded,
+				ApprovedBy = approvedBy,
+				RequestedBy = tstcr.RequestedBy,
+				RuleUsedId = tstcr.RuleUsedId,
+				SubmissionNote = tstcr.SubmissionNote
+			};
+		}
+
 
 		public static long GetModifiedTimeInMillisecnds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
@@ -110,6 +156,18 @@ namespace ScreenTimeManager.Utility
 
 			return ts.ToString(
 				Math.Floor(Math.Abs(ts.TotalDays)) > 0 ? "ddd'd 'hh'h 'mm'm 'ss's '" : "hh'h 'mm'm 'ss's'");
+		}
+
+		public static void AddOrUpdateRuleAppliedRequest(TotalScreenTimeChangedRequest changed)
+		{
+			if (changed == null)
+				throw new Exception("Error in add/update TotalScreenTimeChangedRequest entry to database: changed object was null");
+
+			using (var ctx = new ScreenTimeManagerContext())
+			{
+				ctx.TimeRequests.AddOrUpdate(changed);
+				ctx.SaveChanges();
+			}
 		}
 
 		public static void AddOrUpdateRuleAppliedEntry(TotalScreenTimeChanged changed)
@@ -148,7 +206,7 @@ namespace ScreenTimeManager.Utility
 				{
 					case TimerState.Begin:
 						// Create a new one
-						timeChanged = GenerateTotalScreenTimeChanged(rule, timeElapsedMilliseconds);
+						timeChanged = GenerateTotalScreenTimeChangedApproved(rule, timeElapsedMilliseconds, "Application", "Time used via timer");
 						ctx.TimeChanged.Add(timeChanged);
 						ctx.SaveChanges();
 						// Save a reference to the database entry for the currently running timer
