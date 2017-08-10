@@ -104,6 +104,18 @@
     <Compile Include="Migrations\201708100050118_AddedRequestNoteToTotalScreenTimeChanged.Designer.cs">
       <DependentUpon>201708100050118_AddedRequestNoteToTotalScreenTimeChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708101919533_AddedIsApprovedPropertyToTotalScreenTimeChangedRequest.cs" />
+    <Compile Include="Migrations\201708101919533_AddedIsApprovedPropertyToTotalScreenTimeChangedRequest.Designer.cs">
+      <DependentUpon>201708101919533_AddedIsApprovedPropertyToTotalScreenTimeChangedRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708101921452_MadeIsApprovedPropertyNullable.cs" />
+    <Compile Include="Migrations\201708101921452_MadeIsApprovedPropertyNullable.Designer.cs">
+      <DependentUpon>201708101921452_MadeIsApprovedPropertyNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708102005245_AddedApprovalNoteToTotalSCreenTimeChangedRequest.cs" />
+    <Compile Include="Migrations\201708102005245_AddedApprovalNoteToTotalSCreenTimeChangedRequest.Designer.cs">
+      <DependentUpon>201708102005245_AddedApprovalNoteToTotalSCreenTimeChangedRequest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataContexts\ScreenTimeManagerContext.cs" />
@@ -154,6 +166,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708100050118_AddedRequestNoteToTotalScreenTimeChanged.resx">
       <DependentUpon>201708100050118_AddedRequestNoteToTotalScreenTimeChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708101919533_AddedIsApprovedPropertyToTotalScreenTimeChangedRequest.resx">
+      <DependentUpon>201708101919533_AddedIsApprovedPropertyToTotalScreenTimeChangedRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708101921452_MadeIsApprovedPropertyNullable.resx">
+      <DependentUpon>201708101921452_MadeIsApprovedPropertyNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708102005245_AddedApprovalNoteToTotalSCreenTimeChangedRequest.resx">
+      <DependentUpon>201708102005245_AddedApprovalNoteToTotalSCreenTimeChangedRequest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

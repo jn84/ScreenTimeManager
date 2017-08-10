@@ -1,2 +1,38 @@
 ﻿@model ScreenTimeManager.Models.TotalScreenTimeChangedRequest
 
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <p class="modal-title" id="myModalLabel">Approve/Deny Request</p>
+</div>
+
+@using (Html.BeginForm("ApproveTime", "RuleBases", FormMethod.Post, new { id = "modalForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body">
+    
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.SecondsAdded)
+            @Html.HiddenFor(model => model.RuleUsedId)
+            @Html.HiddenFor(model => model.SubmissionNote)
+            @Html.HiddenFor(model => model.RequestedBy)
+            <div>
+                <div>
+                    @Html.EditorFor(model => model.IsApproved)
+                    @Html.ValidationMessageFor(model => model.IsApproved, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="button-container">
+            <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
+        </div>
+        <div class="button-container">
+            <button class="confirm-apply" type="submit" id="modal-submit">Submit Choice</button>
+        </div>
+    </div>
+}

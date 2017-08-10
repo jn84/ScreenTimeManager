@@ -25,6 +25,8 @@ namespace ScreenTimeManager.Models
 
 		public string SubmissionNote { get; set; }
 
+		public string ApprovalNote { get; set; }
+
 		public string RequestedBy { get; set; }
 
 		public int TimeHistoryDateId { get; set; }
@@ -38,5 +40,8 @@ namespace ScreenTimeManager.Models
 		[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
+
+		[DisplayName("Approve")]
+		public bool? IsApproved { get; set; }
 	}
 }

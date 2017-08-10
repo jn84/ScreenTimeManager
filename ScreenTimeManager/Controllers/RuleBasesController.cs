@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using Newtonsoft.Json;
 using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.Models;
@@ -17,7 +18,13 @@ namespace ScreenTimeManager.Controllers
 		// GET: RuleBases
 		public ActionResult Index()
 		{
-			return View(db.Rules.Where(r => !r.IsExpired && !r.IsHidden).ToList());
+			RuleBaseViewModel rb = new RuleBaseViewModel
+			{
+				Rules = db.Rules.Where(r => !r.IsExpired && !r.IsHidden).AsEnumerable(),
+				Requests = db.TimeRequests.AsEnumerable()
+			};
+
+			return View(rb);
 		}
 
 
@@ -169,6 +176,34 @@ namespace ScreenTimeManager.Controllers
 			ViewBag.Rule = rule;
 
 			return PartialView(rule.RuleType == RuleType.Fixed ? "_FixedInputModal" : "_VariableInputModal", timeSubmission);
+		}
+
+		[Authorize(Roles = "Admin,Parent")]
+		public ActionResult ApproveTime(int? id)
+		{
+			TotalScreenTimeChangedRequest tstcr = db.TimeRequests.Find(id);
+
+			return PartialView("_ApproveDenyRequest", tstcr);
+		}
+
+
+		[HttpPost]
+		[Authorize(Roles = "Admin,Parent")]
+		[ValidateAntiForgeryToken]
+		public ActionResult ApproveTime([Bind(Include = "Id, SecondsAdded, RuleUsedId, SubmissionNote, ApprovalNote, RequestedBy, IsApproved")] TotalScreenTimeChangedRequest tstcr)
+		{
+			if (tstcr.IsApproved == null)
+				ModelState.AddModelError("IsApproved", @"You must choose to either approve or deny the request");
+
+
+
+			if (ModelState.IsValid)
+			{
+
+				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
+			}
+
+			return PartialView("_ApproveDenyRequest", tstcr);
 		}
 
 

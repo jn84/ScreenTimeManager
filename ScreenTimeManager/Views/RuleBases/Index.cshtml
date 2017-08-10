@@ -1,18 +1,26 @@
 ﻿@using ScreenTimeManager.Models
 @using ScreenTimeManager.Models.Enums
-@model IEnumerable<ScreenTimeManager.Models.RuleBase>
+@model RuleBaseViewModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@*Exclude Guest role*@
 @if (User.IsInRole("Admin") || User.IsInRole("Parent") || User.IsInRole("Child"))
 {
+    @*Admin/Parent only*@
+    if (User.IsInRole("Admin") || User.IsInRole("Parent"))
+    {
+        Html.RenderPartial("_TimeRequestsList", Model.Requests);
+    <hr/>
+    }
+
     @*The sorting and arranging should probably be done in the controller*@
     @*This way, the controller could rearrange on request*@
     @*Order by name, then separate into groups by add/subtract*@
-    foreach (IGrouping<RuleModifier, RuleBase> group in Model.OrderBy(r => r.RuleTitle).GroupBy(r => r.RuleModifier))
+    foreach (IGrouping<RuleModifier, RuleBase> group in Model.Rules.OrderBy(r => r.RuleTitle).GroupBy(r => r.RuleModifier))
     {
         foreach (RuleBase item in group)
         {

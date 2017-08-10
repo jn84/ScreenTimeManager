@@ -1,0 +1,52 @@
+﻿@using ScreenTimeManager.Helpers
+@model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChangedRequest>
+
+@*If there are no pending requests, just return a blank page.*@
+@if (Model == null || !Model.Any())
+{}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SecondsAdded)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.RequestedBy)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Rule.RuleTitle)
+            
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordAddedTime)
+            </th>
+            <th>
+                @Html.Encode(@"Actions")
+            </th>
+        </tr>
+
+        @foreach (var item in Model) {
+            <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
+                <td>
+                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rule.RuleTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
+                    @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
+                </td>
+                <td>
+                    @Html.ActionLink("Approve/Deny", "ApproveTime", new {id = item.Id}, new {data_modal = "", @class = "history-detail-link"})
+                </td>
+            </tr>
+        }
+    </table>
+}

@@ -223,6 +223,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RuleBaseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\ActivityTimer.cs" />
@@ -352,6 +353,9 @@
     <Content Include="Views\ManageRules\_DeleteRuleModal.cshtml" />
     <Content Include="Views\RuleBases\_PendingTime.cshtml" />
     <Content Include="Views\RuleBases\_ApproveDenyRequest.cshtml" />
+    <Content Include="Views\RuleBases\_TimeRequestsList.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\TimeSpan.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
