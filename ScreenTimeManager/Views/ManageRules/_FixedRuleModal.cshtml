@@ -3,10 +3,12 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <p class="modal-title" id="myModalLabel">Create New Fixed Rule</p>
+    <p class="modal-title" id="myModalLabel">
+        @ViewBag.ModalTitle
+    </p>
 </div>
 
-@using (Html.BeginForm("Create", "ManageRules", FormMethod.Post, new {id = "modalForm"}))
+@using (Html.BeginForm(ViewContext.RouteData.GetRequiredString("action"), "ManageRules", FormMethod.Post, new {id = "modalForm"}))
 {
     <div class="modal-body">
 

@@ -4,25 +4,13 @@
 
 @if (Model.RuleType == RuleType.Fixed)
 {
-    if (Model.RuleModifier == RuleModifier.Add)
-    {
-        <p>
-            Time Charged:
-            <span class="pendingTime pendingTime-add">
-                @("+ " + TotalScreenTimeManager.FormatTimeSpan((long) Model.FixedTimeEarned.TotalMilliseconds))
-            </span>
-        </p>
-    }
-
-    if (Model.RuleModifier == RuleModifier.Subtract)
-    {
-        <p>
-            Time Charged:
-            <span class="pendingTime pendingTime-subtract">
-                @("- " + TotalScreenTimeManager.FormatTimeSpan((long) Model.FixedTimeEarned.TotalMilliseconds))
-            </span>
-        </p>
-    }
+    <p>
+        Time Charged:
+        <span class="pendingTime @(Model.RuleModifier == RuleModifier.Add ? "pendingTime-add" : "pendingTime-subtract")">
+            @((Model.RuleModifier == RuleModifier.Add ? "+ " : "- ") + 
+                TotalScreenTimeManager.FormatTimeSpan((long) Model.FixedTimeEarned.TotalMilliseconds))
+        </span>
+    </p>
 }
 
 @if (Model.RuleType == RuleType.Variable)

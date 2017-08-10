@@ -30,14 +30,13 @@ namespace ScreenTimeManager.Controllers
 			Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(formData);
 			int ruleId;
 			int hours, minutes;
-			RuleBase rule;
 
 			if (!int.TryParse(data["RuleBaseId"], out ruleId) ||
 			    !int.TryParse(data["Hours"], out hours) ||
 			    !int.TryParse(data["Minutes"], out minutes))
 				return Json(new {success = false});
 
-			rule = db.Rules.Find(ruleId);
+			RuleBase rule = db.Rules.Find(ruleId);
 
 			if (rule == null)
 				return Json(new {success = false});

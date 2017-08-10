@@ -1,12 +1,15 @@
-﻿@model ScreenTimeManager.Models.RuleBase
+﻿@using ScreenTimeManager.Models.Enums
+@model ScreenTimeManager.Models.RuleBase
 
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <p class="modal-title" id="myModalLabel">Create New Fixed Rule</p>
+    <p class="modal-title" id="myModalLabel">
+        @ViewBag.ModalTitle
+    </p>
 </div>
 
-@using (Html.BeginForm("Edit", "ManageRules", FormMethod.Post, new {id = "modalForm"}))
+@using (Html.BeginForm(ViewContext.RouteData.GetRequiredString("action"), "ManageRules", FormMethod.Post, new {id = "modalForm"}))
 {
     <div class="modal-body">
 
@@ -15,7 +18,7 @@
         <div class="form-horizontal">
             @Html.ValidationSummary(true, "", new {@class = "validation-error-text"})
 
-            <div>
+            <div >
                 <p>Give this rule a title</p>
                 <div>
                     @Html.EditorFor(model => model.RuleTitle, new {htmlAttributes = new {@class = "", placeholder = "Enter a title here"}})
@@ -23,7 +26,7 @@
                 @Html.ValidationMessageFor(model => model.RuleTitle, "", new {@class = "validation-error-text"})
             </div>
 
-            <div>
+            <div >
                 <p>Give this rule a description</p>
                 <div>
                     @Html.EditorFor(model => model.RuleDescription, new {htmlAttributes = new {@class = "description-text-area", placeholder = "Enter a description here"}})
@@ -31,7 +34,7 @@
                 @Html.ValidationMessageFor(model => model.RuleDescription, "", new {@class = "validation-error-text"})
             </div>
 
-            <div>
+            <div >
                 <p>Will this rule add or subtract time?</p>
                 <div>
                     @Html.EnumDropDownListFor(model => model.RuleModifier, new {@class = ""})
@@ -39,28 +42,38 @@
                 @Html.ValidationMessageFor(model => model.RuleModifier, "", new {@class = "validation-error-text"})
             </div>
 
+            <p>
+                For every
+                @Html.EditorFor(model => model.VariableRatioDenominator, new {htmlAttributes = new {@class = "", min = "1", max = "60"}})
+                minute(s) spent on this task
+            </p>
             <div>
-                <p>How much time will this rule apply? Format: hh:mm:ss or hh:mm</p>
-                <div>
-                    @Html.EditorFor(model => model.FixedTimeEarned, new {htmlAttributes = new {@class = ""}})
-                </div>
-                @Html.ValidationMessageFor(model => model.FixedTimeEarned, "", new {@class = "validation-error-text"})
+                @Html.ValidationMessageFor(model => model.VariableRatioDenominator, "", new {@class = "validation-error-text"})
+            </div>
+            <p>
+                earn
+                @Html.EditorFor(model => model.VariableRatioNumerator, new {htmlAttributes = new {@class = "", min = "1", max = "60"}})
+                minute(s) of time.
+            </p>
+            <div>
+                @Html.ValidationMessageFor(model => model.VariableRatioNumerator, "", new {@class = "validation-error-text"})
             </div>
 
-            @Html.HiddenFor(model => model.RuleType)
-            @Html.HiddenFor(model => model.VariableRatioNumerator)
-            @Html.HiddenFor(model => model.VariableRatioDenominator)
-        </div>
+            @Html.HiddenFor(model => model.RuleType, new {Value = RuleType.Variable})
+            @Html.HiddenFor(model => model.FixedTimeEarned, new {Value = "00:00:00"})
 
+        </div>
+        <!-- Show example after separator -->
     </div>
 
-    <!--Need javascript to submit the form -> Previous code works here. No additional code needed. -->
+    <!--Need javascript to submit the form-->
     <div class="modal-footer">
         <div class="button-container">
             <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
         </div>
+
         <div class="button-container">
-            <button class="confirm-apply" type="submit"id="modal-submit">Confirm</button> <!-- TODO: Change to id for javascript on click function-->
+            <button class="confirm-apply" type="submit" id="modal-submit">Create</button> <!-- TODO: Change to id for javascript on click function-->
         </div>
     </div>
 }

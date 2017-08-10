@@ -342,18 +342,16 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\RuleBases\Index.cshtml" />
     <Content Include="Views\RuleBases\_Rule.cshtml" />
-    <Content Include="Views\RuleBases\_ConfirmApplyRuleOverlay.cshtml" />
     <Content Include="Views\ManageRules\Index.cshtml" />
     <Content Include="Views\ScreenTimeHistory\Index.cshtml" />
     <Content Include="Views\ScreenTimeHistory\_Details.cshtml" />
     <Content Include="Views\RuleBases\_FixedInputModal.cshtml" />
     <Content Include="Views\RuleBases\_VariableInputModal.cshtml" />
-    <Content Include="Views\ManageRules\_CreateFixedRuleModal.cshtml" />
-    <Content Include="Views\ManageRules\_CreateVariableRuleModal.cshtml" />
-    <Content Include="Views\ManageRules\_EditFixedRuleModal.cshtml" />
-    <Content Include="Views\ManageRules\_EditVariableRuleModal.cshtml" />
+    <Content Include="Views\ManageRules\_FixedRuleModal.cshtml" />
+    <Content Include="Views\ManageRules\_VariableRuleModal.cshtml" />
     <Content Include="Views\ManageRules\_DeleteRuleModal.cshtml" />
     <Content Include="Views\RuleBases\_PendingTime.cshtml" />
+    <Content Include="Views\RuleBases\_ApproveDenyRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

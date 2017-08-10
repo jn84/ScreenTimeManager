@@ -28,10 +28,12 @@ namespace ScreenTimeManager.Controllers
 			if (ruleType == (int) RuleType.Fixed)
 			{
 				newRule.RuleType = RuleType.Fixed;
-				return PartialView("_CreateFixedRuleModal", newRule);
+				ViewBag.ModalTitle = "Create New Fixed Rule";
+				return PartialView("_FixedRuleModal", newRule);
 			}
 			newRule.RuleType = RuleType.Variable;
-			return PartialView("_CreateVariableRuleModal", newRule);
+			ViewBag.ModalTitle = "Create New Variable Rule";
+			return PartialView("_VariableRuleModal", newRule);
 		}
 
 		// POST: ManageRules/Create
@@ -56,8 +58,12 @@ namespace ScreenTimeManager.Controllers
 			}
 
 			if (ruleBase.RuleType == RuleType.Fixed)
-				return PartialView("_CreateFixedRuleModal", ruleBase);
-			return PartialView("_CreateVariableRuleModal", ruleBase);
+			{
+				ViewBag.ModalTitle = "Create New Fixed Rule";
+				return PartialView("_FixedRuleModal", ruleBase);
+			}
+			ViewBag.ModalTitle = "Create New Variable Rule";
+			return PartialView("_VariableRuleModal", ruleBase);
 		}
 
 		// GET: ManageRules/Edit/5
@@ -72,9 +78,12 @@ namespace ScreenTimeManager.Controllers
 				return HttpNotFound();
 
 			if (ruleBase.RuleType == RuleType.Fixed)
-				return PartialView("_EditFixedRuleModal", ruleBase);
-
-			return PartialView("_EditVariableRuleModal", ruleBase);
+			{
+				ViewBag.ModalTitle = "Edit Fixed Rule";
+				return PartialView("_FixedRuleModal", ruleBase);
+			}
+			ViewBag.ModalTitle = "Edit Variable Rule";
+			return PartialView("_VariableRuleModal", ruleBase);
 		}
 
 		// POST: ManageRules/Edit/5
@@ -105,9 +114,12 @@ namespace ScreenTimeManager.Controllers
 			}
 
 			if (ruleBase.RuleType == RuleType.Fixed)
-				return PartialView("_EditFixedRuleModal", ruleBase);
-
-			return PartialView("_EditVariableRuleModal", ruleBase);
+			{
+				ViewBag.ModalTitle = "Edit Fixed Rule";
+				return PartialView("_FixedRuleModal", ruleBase);
+			}
+			ViewBag.ModalTitle = "Edit Variable Rule";
+			return PartialView("_VariableRuleModal", ruleBase);
 		}
 
 		// GET: ManageRules/Delete/5
