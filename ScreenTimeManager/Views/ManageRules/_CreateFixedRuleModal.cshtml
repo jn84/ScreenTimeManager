@@ -26,7 +26,7 @@
             <div>
                 <p>Give this rule a description</p>
                 <div>
-                    @Html.EditorFor(model => model.RuleDescription, new {htmlAttributes = new {@class = "description-text-area", placeholder = "Enter a description here"}})
+                    @Html.EditorFor(model => model.RuleDescription, new { htmlAttributes = new {@class = "description-text-area", placeholder = "Enter a description here"}})
                 </div>
                 @Html.ValidationMessageFor(model => model.RuleDescription, "", new {@class = "validation-error-text"})
             </div>

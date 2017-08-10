@@ -91,7 +91,7 @@ namespace ScreenTimeManager.Controllers
 		[HttpPost]
 		[Authorize(Roles = "Admin,Parent")]
 		[ValidateAntiForgeryToken]
-		public ActionResult ApplyTime([Bind(Include = "RuleBaseId, Hours, Minutes")] TimeSubmission timeSubmission)
+		public ActionResult ApplyTime([Bind(Include = "RuleBaseId, Hours, Minutes, Note")] TimeSubmission timeSubmission)
 		{
 			RuleBase rule = db.Rules.Find(timeSubmission.RuleBaseId);
 
@@ -106,7 +106,7 @@ namespace ScreenTimeManager.Controllers
 
 				TotalScreenTimeChanged tstc = 
 					TotalScreenTimeManager
-					.GenerateTotalScreenTimeChangedApproved(rule, tempMilliseconds, User.Identity.Name, "");
+					.GenerateTotalScreenTimeChangedApproved(rule, tempMilliseconds, User.Identity.Name, timeSubmission.Note);
 
 				TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
 
@@ -145,7 +145,7 @@ namespace ScreenTimeManager.Controllers
 		[HttpPost]
 		[Authorize(Roles = "Child")]
 		[ValidateAntiForgeryToken]
-		public ActionResult RequestTime([Bind(Include = "RuleBaseId, Hours, Minutes")] TimeSubmission timeSubmission)
+		public ActionResult RequestTime([Bind(Include = "RuleBaseId, Hours, Minutes, Note")] TimeSubmission timeSubmission)
 		{
 			RuleBase rule = db.Rules.Find(timeSubmission.RuleBaseId);
 
@@ -160,7 +160,7 @@ namespace ScreenTimeManager.Controllers
 
 				TotalScreenTimeChangedRequest tstcr = 
 					TotalScreenTimeManager
-					.GenerateTotalScreenTimeChangedRequest(rule, tempMilliseconds, User.Identity.Name, "");
+					.GenerateTotalScreenTimeChangedRequest(rule, tempMilliseconds, User.Identity.Name, timeSubmission.Note);
 
 				TotalScreenTimeManager.AddOrUpdateRuleAppliedRequest(tstcr);
 

@@ -17,8 +17,6 @@ namespace ScreenTimeManager.Controllers
 			// If dateId is null, give back today's date
 			int selectedIndex = 0;
 
-			TimeHistoryDate previousDate, selectedDate, nextDate;
-
 			// Ick. Maybe a way to only grab the three we need?
 			// TODO: Rework this. Grabbing the whole list is a waste
 			List<TimeHistoryDate> hbList = db.HistoryDates.OrderBy(hb => hb.EntriesDate).ToList();
@@ -29,7 +27,7 @@ namespace ScreenTimeManager.Controllers
 				// If there's no entries yet today, do what? For now, get the last valid date
 				TimeHistoryDate h =
 					db.HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today) ??
-					db.HistoryDates.OrderBy(hd => hd.EntriesDate).Last();
+					db.HistoryDates.OrderBy(hd => hd.EntriesDate).AsEnumerable().Last();
 
 				selectedIndex = hbList.IndexOf(h);
 			}

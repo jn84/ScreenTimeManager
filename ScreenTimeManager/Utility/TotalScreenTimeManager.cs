@@ -111,7 +111,7 @@ namespace ScreenTimeManager.Utility
 			};
 		}
 
-		public static TotalScreenTimeChanged GetApprovedTotalScreenTimeChangedRequest(TotalScreenTimeChangedRequest tstcr, string approvedBy)
+		public static TotalScreenTimeChanged GetApprovedTotalScreenTimeChangedRequest(TotalScreenTimeChangedRequest tstcr, string approvedBy, string approvalNote)
 		{
 			return new TotalScreenTimeChanged
 			{
@@ -119,10 +119,10 @@ namespace ScreenTimeManager.Utility
 				ApprovedBy = approvedBy,
 				RequestedBy = tstcr.RequestedBy,
 				RuleUsedId = tstcr.RuleUsedId,
-				SubmissionNote = tstcr.SubmissionNote
+				SubmissionNote = approvalNote,
+				RequestNote = tstcr.SubmissionNote
 			};
 		}
-
 
 		public static long GetModifiedTimeInMillisecnds(RuleBase rule, long timeAppliedInMilliseconds)
 		{

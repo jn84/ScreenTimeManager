@@ -11,7 +11,7 @@
     <p class="modal-title" id="myModalLabel">Confirm Screen Time Change</p>
 </div>
 
-@using (Html.BeginForm("ApplyTime", "RuleBases", null, FormMethod.Post, new {id = "modalForm"}))
+@using (Html.BeginForm(ViewContext.RouteData.GetRequiredString("action"), "RuleBases", null, FormMethod.Post, new {id = "modalForm"}))
 {
     <div class="modal-body">
 
@@ -24,6 +24,16 @@
         @Html.HiddenFor(model => model.RuleBaseId)
         @Html.HiddenFor(model => model.Hours, new {Value = 0})
         @Html.HiddenFor(model => model.Minutes, new {Value = 0})
+        
+        <hr/>
+
+        <div>
+            <p>Comment</p>
+            <div>
+                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "note-text-area", placeholder = "Enter a comment (not required)" }})
+            </div>
+            @Html.ValidationMessageFor(model => model.Note, "", new { @class = "validation-error-text" })
+        </div>
 
         @* Use the ID's so javascript can make *@
 
@@ -36,9 +46,17 @@
         <div class="button-container">
             <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
         </div>
-
+        
+        @*Apparently, any helpers from ButtonsAndLinksExtensions cannot be used in a security conscious view/environment :(*@
         <div class="button-container">
-            <button class="confirm-apply" type="submit" id="modal-submit">Apply Rule</button> <!-- TODO: Change to id for javascript on click function-->
+            @if (User.IsInRole("Admin") || User.IsInRole("Parent"))
+            {
+                <button class="confirm-apply" type="submit" id="modal-submit">Apply Rule</button>
+            }
+            else if (User.IsInRole("Child"))
+            {
+                <button class="confirm-apply" type="submit" id="modal-submit">Submit Request</button>
+            }
         </div>
     </div>
 }

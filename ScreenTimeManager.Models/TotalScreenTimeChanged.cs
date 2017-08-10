@@ -23,6 +23,8 @@ namespace ScreenTimeManager.Models
 		[ForeignKey("RuleUsedId")]
 		public virtual RuleBase Rule { get; set; }
 
+		public string RequestNote { get; set; }
+
 		public string SubmissionNote { get; set; }
 
 		public string ApprovedBy { get; set; }

@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (User.IsInRole("Admin") || User.IsInRole("Parent"))
+@if (User.IsInRole("Admin") || User.IsInRole("Parent") || User.IsInRole("Child"))
 {
     @*The sorting and arranging should probably be done in the controller*@
     @*This way, the controller could rearrange on request*@

@@ -16,12 +16,16 @@ namespace ScreenTimeManager.Models
 		[Range(0, 59, ErrorMessage = "The value must be between 0 and 59 minutes")]
 		public int Minutes { get; set; }
 
+		[DataType(DataType.MultilineText)]
+		public string Note { get; set; }
+
 		public static TimeSubmission Create(int ruleId)
 		{
 			return new TimeSubmission
 			{
 				Hours = 0,
 				Minutes = 0,
+				Note = "",
 				RuleBaseId = ruleId
 			};
 		}

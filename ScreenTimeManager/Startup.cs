@@ -29,6 +29,9 @@ namespace ScreenTimeManager
 
 			if (CreateRole("Child"))
 				CreateNewUserInRole("TheKid", "anims06@gmail.com", "default", "Child");
+
+			if (CreateRole("Guest"))
+				CreateNewUserInRole("TheGuest", "jmnims@gmail.com", "default", "Guest");
 		}
 
 		private bool CreateRole(string roleName)
