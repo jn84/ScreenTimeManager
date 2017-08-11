@@ -1,2 +1,5 @@
 ﻿@model TimeSpan
 
+@{
+    @DateTime.Today.Add(Model).ToString("h\\:mm\\:ss tt");
+}

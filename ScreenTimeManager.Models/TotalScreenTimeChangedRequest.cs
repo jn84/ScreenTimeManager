@@ -23,8 +23,10 @@ namespace ScreenTimeManager.Models
 		[ForeignKey("RuleUsedId")]
 		public virtual RuleBase Rule { get; set; }
 
+		[DataType(DataType.MultilineText)]
 		public string SubmissionNote { get; set; }
 
+		[DataType(DataType.MultilineText)]
 		public string ApprovalNote { get; set; }
 
 		public string RequestedBy { get; set; }
@@ -41,6 +43,7 @@ namespace ScreenTimeManager.Models
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
 
+		[UIHint("BooleanNullable")]
 		[DisplayName("Approve")]
 		public bool? IsApproved { get; set; }
 	}

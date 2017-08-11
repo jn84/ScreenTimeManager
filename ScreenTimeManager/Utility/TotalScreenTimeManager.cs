@@ -151,6 +151,11 @@ namespace ScreenTimeManager.Utility
 		{
 			TimeSpan ts = TimeSpan.FromMilliseconds(milliseconds);
 
+			return FormatTimeSpan(ts);
+		}
+
+		public static string FormatTimeSpan(TimeSpan ts)
+		{
 			Debug.WriteLine(ts.ToString());
 			Debug.WriteLine(ts.TotalMilliseconds);
 

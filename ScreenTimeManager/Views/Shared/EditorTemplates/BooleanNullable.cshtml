@@ -1,0 +1,12 @@
+﻿@model bool?
+
+@*@Html.DropDownList("", new SelectListItem[] { new SelectListItem() { Text = "Yes", Value = "true", Selected = Model }, new SelectListItem() { Text = "No", Value = "false", Selected = !Model } })*@
+
+<span>
+    @Html.RadioButtonFor(model => model, "false")
+    @Html.Encode(@"Deny")
+</span>
+<span>
+    @Html.RadioButtonFor(model => model, "true")
+    @Html.Encode(@"Approve")
+</span>

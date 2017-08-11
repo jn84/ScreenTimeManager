@@ -1,0 +1,8 @@
+﻿@using ScreenTimeManager.Models.Enums
+@using ScreenTimeManager.Utility
+@model ScreenTimeManager.Models.TotalScreenTimeChangedRequest
+
+<span class="pendingTime @(Model.Rule.RuleModifier == RuleModifier.Add ? "pendingTime-add" : "pendingTime-subtract")">
+    @((Model.Rule.RuleModifier == RuleModifier.Add ? "+ " : "- ") 
+        + TotalScreenTimeManager.FormatTimeSpan(TimeSpan.FromSeconds(Model.SecondsAdded)))
+</span>

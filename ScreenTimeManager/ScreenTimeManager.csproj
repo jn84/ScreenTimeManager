@@ -355,7 +355,8 @@
     <Content Include="Views\RuleBases\_ApproveDenyRequest.cshtml" />
     <Content Include="Views\RuleBases\_TimeRequestsList.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\TimeSpan.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\BooleanNullable.cshtml" />
+    <Content Include="Views\RuleBases\_PendingApprovalTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -192,16 +193,24 @@ namespace ScreenTimeManager.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult ApproveTime([Bind(Include = "Id, SecondsAdded, RuleUsedId, SubmissionNote, ApprovalNote, RequestedBy, IsApproved")] TotalScreenTimeChangedRequest tstcr)
 		{
+			if (tstcr == null)
+				throw new Exception("TotalScreenTimeChangedRequest was null for some reason");
+
 			if (tstcr.IsApproved == null)
 				ModelState.AddModelError("IsApproved", @"You must choose to either approve or deny the request");
 
-
-
 			if (ModelState.IsValid)
 			{
+				// Commit the change.
+				// Should we keep the request history around, or just delete the entries as they are added to the time changed list?
 
 				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
 			}
+
+			// Have to attach and manually load the navigation property since the view needs it.
+			// Property will be null if we don't do this.
+			db.TimeRequests.Attach(tstcr);
+			db.Entry(tstcr).Reference(r => r.Rule).Load();
 
 			return PartialView("_ApproveDenyRequest", tstcr);
 		}

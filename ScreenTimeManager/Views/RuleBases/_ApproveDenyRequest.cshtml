@@ -19,10 +19,40 @@
             @Html.HiddenFor(model => model.SubmissionNote)
             @Html.HiddenFor(model => model.RequestedBy)
             <div>
+                @*Details here*@
                 <div>
-                    @Html.EditorFor(model => model.IsApproved)
-                    @Html.ValidationMessageFor(model => model.IsApproved, "", new { @class = "text-danger" })
+                    @Html.Encode(@"Rule Used:")
+                    @Html.DisplayFor(model => model.Rule.RuleTitle)
                 </div>
+                <div>
+                    @Html.Encode(@"Time Charged: ")
+                    @Html.Partial("_PendingApprovalTime", Model)
+                </div>
+                <div>
+                    @Html.Encode(@"Request By: ")
+                    @Html.DisplayFor(model => model.RequestedBy)
+                </div>
+                @if (Model.SubmissionNote != null && !Model.SubmissionNote.IsEmpty())
+                {
+                    <div>
+                        @Html.Encode(@"Request Comment")
+                        @Html.Encode(Model.SubmissionNote)
+                    </div>
+                }
+                <hr/>
+                <div>
+                    @Html.Encode(@"Approve or deny this requst?")
+                </div>
+                @Html.EditorFor(model => model.IsApproved)
+                @Html.ValidationMessageFor(model => model.IsApproved, "", new {@class = "text-danger"})
+            </div>
+            <hr/>
+            <div >
+                @Html.Encode(@"Comment")
+                <div>
+                    @Html.EditorFor(model => model.ApprovalNote, new { htmlAttributes = new {@class = "note-text-area", placeholder = "Enter a comment (not required)"}})
+                </div>
+                @Html.ValidationMessageFor(model => model.ApprovalNote, "", new {@class = "validation-error-text"})
             </div>
         </div>
     </div>
