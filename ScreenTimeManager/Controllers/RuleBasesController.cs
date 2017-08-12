@@ -55,7 +55,7 @@ namespace ScreenTimeManager.Controllers
 				return Json(new {success = false});
 
 			long resultMilliseconds =
-				TotalScreenTimeManager.GetModifiedTimeInMillisecnds(
+				TotalScreenTimeManager.GetModifiedTimeInMilliseconds(
 					rule,
 					(long) unmodifiedMilliseconds);
 

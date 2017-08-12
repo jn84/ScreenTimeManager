@@ -64,7 +64,7 @@ namespace ScreenTimeManager.Utility
 				case RuleType.Fixed:
 					timeChanged.SecondsAdded = (int) rule.RuleModifier * (long) rule.FixedTimeEarned.TotalSeconds;
 					break;
-				case RuleType.Timer:
+				case RuleType.Timer: // Timer rule functions like a variable rule with a 1:1 ratio and RuleModifier.Subtract
 				case RuleType.Variable:
 					if (timeAppliedMilliseconds == null)
 						// Shouldn't happen. But who knows?
@@ -79,29 +79,47 @@ namespace ScreenTimeManager.Utility
 			return timeChanged;
 		}
 
+		// Now why would the approve/deny methods take a rule? Shouldn't we be passing the TotalScreenTimeChangedRequest object?
+		/// <summary>
+		/// Get a new time changed object based on the paramaters provided
+		/// This is a "wrapper" to include the new ApprovedBy and submissionote parameters
+		/// Use this one with manually adding time via the Add/Remove Time page
+		/// </summary>
 		public static TotalScreenTimeChanged GenerateTotalScreenTimeChangedApproved(
 			RuleBase rule, 
 			long? timeAppliedMilliseconds,
 			string approvedBy,
-			string submissionNote
-			)
+			string submissionNote)
 		{
 			TotalScreenTimeChanged tstc =
 				GenerateTotalScreenTimeChanged(rule, timeAppliedMilliseconds, submissionNote);
 
 			tstc.ApprovedBy = approvedBy;
+			tstc.IsDenied = false;
+			tstc.IsFinalized = true;
 
 			return tstc;
 		}
 
+		// What was I thinking?
+		// Was this me?
+		// Who am I?
+		// What's going on?
+		// Ok. Got it. This works.
+
+		/// <summary>
+		/// Use this one to generate a time request from a child user
+		/// </summary>
 		public static TotalScreenTimeChangedRequest GenerateTotalScreenTimeChangedRequest(
 			RuleBase rule,
 			long? timeAppliedMilliseconds,
 			string requestedBy,
 			string submissionNote)
 		{
+			// Ok, we generate a tstc object with the method so it can do the calculations (code reuse)
 			TotalScreenTimeChanged tstc = GenerateTotalScreenTimeChanged(rule, timeAppliedMilliseconds, submissionNote);
 
+			// Now, use that information to fill out the request object. 
 			return new TotalScreenTimeChangedRequest
 			{
 				SecondsAdded = tstc.SecondsAdded,
@@ -111,7 +129,11 @@ namespace ScreenTimeManager.Utility
 			};
 		}
 
-		public static TotalScreenTimeChanged GetApprovedTotalScreenTimeChangedRequest(TotalScreenTimeChangedRequest tstcr, string approvedBy, string approvalNote)
+		///////////////////// THIS ONE OK.
+		/// <summary>
+		/// Use this one to transform
+		/// </summary>
+		public static TotalScreenTimeChanged GetHandledTotalScreenTimeChangedRequest(TotalScreenTimeChangedRequest tstcr, string approvedBy, string approvalNote, bool isApproved)
 		{
 			return new TotalScreenTimeChanged
 			{
@@ -120,11 +142,14 @@ namespace ScreenTimeManager.Utility
 				RequestedBy = tstcr.RequestedBy,
 				RuleUsedId = tstcr.RuleUsedId,
 				SubmissionNote = approvalNote,
-				RequestNote = tstcr.SubmissionNote
+				RequestNote = tstcr.SubmissionNote,
+				IsDenied = !isApproved,
+				IsFinalized = true
+				// We're done here. Ready to add to the table
 			};
 		}
 
-		public static long GetModifiedTimeInMillisecnds(RuleBase rule, long timeAppliedInMilliseconds)
+		public static long GetModifiedTimeInMilliseconds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
 			// Apply the positive or negative factor from RuleModifier
 			double modifiedMilliseconds = (int) rule.RuleModifier * timeAppliedInMilliseconds;
@@ -146,7 +171,12 @@ namespace ScreenTimeManager.Utility
 			return (long) Math.Ceiling(modifiedSeconds * ratio / 1000);
 		}
 
-		// If everyong uses this, we'll all be consistent
+		// If everyong uses this, we'll all be consistent.... aaand barely anyone else is using it.
+		/// <summary>
+		/// Displays a span of time in the format "00d 00h 00m 00s"
+		/// </summary>
+		/// <param name="milliseconds">The amount of time to format in milliseconds</param>
+		/// <returns>A formatted string in the form of 00d 00h 00m 00s</returns>
 		public static string FormatTimeSpan(long milliseconds)
 		{
 			TimeSpan ts = TimeSpan.FromMilliseconds(milliseconds);
@@ -154,15 +184,25 @@ namespace ScreenTimeManager.Utility
 			return FormatTimeSpan(ts);
 		}
 
-		public static string FormatTimeSpan(TimeSpan ts)
+		// If everyong uses this, we'll all be consistent.... aaand barely anyone else is using it.
+		/// <summary>
+		/// Displays a span of time in the format "00d 00h 00m 00s"
+		/// </summary>
+		/// <param name="timeSpan">A TimeSpan object representing the amount of time to format</param>
+		/// <returns>A formatted string in the form of 00d 00h 00m 00s</returns>
+		public static string FormatTimeSpan(TimeSpan timeSpan)
 		{
-			Debug.WriteLine(ts.ToString());
-			Debug.WriteLine(ts.TotalMilliseconds);
+			Debug.WriteLine(timeSpan.ToString());
+			Debug.WriteLine(timeSpan.TotalMilliseconds);
 
-			return ts.ToString(
-				Math.Floor(Math.Abs(ts.TotalDays)) > 0 ? "ddd'd 'hh'h 'mm'm 'ss's '" : "hh'h 'mm'm 'ss's'");
+			return timeSpan.ToString(
+				Math.Floor(Math.Abs(timeSpan.TotalDays)) > 0 ? "ddd'd 'hh'h 'mm'm 'ss's '" : "hh'h 'mm'm 'ss's'");
 		}
 
+		/// <summary>
+		/// Adds the given TotalScreenTimeChangedRequest to the active requests table
+		/// </summary>
+		/// <param name="changed"></param>
 		public static void AddOrUpdateRuleAppliedRequest(TotalScreenTimeChangedRequest changed)
 		{
 			if (changed == null)
@@ -175,6 +215,7 @@ namespace ScreenTimeManager.Utility
 			}
 		}
 
+		// For use with RuleType.Timer only
 		public static void AddOrUpdateRuleAppliedEntry(TotalScreenTimeChanged changed)
 		{
 			if (changed == null)
@@ -211,7 +252,9 @@ namespace ScreenTimeManager.Utility
 				{
 					case TimerState.Begin:
 						// Create a new one
-						timeChanged = GenerateTotalScreenTimeChangedApproved(rule, timeElapsedMilliseconds, "Application", "Time used via timer");
+						timeChanged = GenerateTotalScreenTimeChangedApproved(rule, timeElapsedMilliseconds, "Application", "Time deducted via timer");
+						timeChanged.IsDenied = false;
+						timeChanged.IsFinalized = false;
 						ctx.TimeChanged.Add(timeChanged);
 						ctx.SaveChanges();
 						// Save a reference to the database entry for the currently running timer
@@ -241,6 +284,7 @@ namespace ScreenTimeManager.Utility
 							throw new Exception(
 								"Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
 						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
+						timeChanged.IsFinalized = true; // Can now be counted against the total.
 						ctx.SaveChanges();
 
 						// Reset the state
@@ -263,7 +307,15 @@ namespace ScreenTimeManager.Utility
 			long dbTotalMinusTimer;
 			using (var ctx = new ScreenTimeManagerContext())
 			{
-				dbTotalMinusTimer = ctx.TimeChanged.Where(tstc => tstc.Id != _lastTimeHistoryId).Sum(tstc => tstc.SecondsAdded);
+				// Perhaps a property should be added to TotalScreenTimeChanged
+				// IsFinalized: Only include the value if this property is true
+				// tstc => tstc.IsFinalized && !tstc.IsDenied
+				// Keeping track of the last used id seems clunky.
+				// HOWEVER: If using an IsFinalized property, what happens in case of a service interruption?
+				// On startup, should the application check for, and finalize, any RuleType.Timer entries that aren't finalized?
+				// I can't think of any potential issues with this, yet.
+				// Either way, _lastTimeHistoryId has to go. I don't trust that the system won't get confused at some point, despite my repeated tests.
+				dbTotalMinusTimer = ctx.TimeChanged.Where(tstc => tstc.IsFinalized && !tstc.IsDenied).Sum(tstc => tstc.SecondsAdded);
 			}
 
 			// Why + (-val): It makes it clearer (to me) what exactly is happening

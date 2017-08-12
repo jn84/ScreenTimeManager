@@ -9,15 +9,16 @@ namespace ScreenTimeManager.Models
 	public class TotalScreenTimeChanged : IDateTimeCreated
 	{
 		[Key]
+		[ScaffoldColumn(false)]
 		public int Id { get; set; }
 
 		[Required]
 		public long SecondsAdded { get; set; }
 
-
 		// The rule used for this entry into the history
 		// At least one, but not more than one
 		[Required]
+		[ScaffoldColumn(false)]
 		public int RuleUsedId { get; set; }
 
 		[ForeignKey("RuleUsedId")]
@@ -33,6 +34,7 @@ namespace ScreenTimeManager.Models
 
 		public string RequestedBy { get; set; }
 
+		[ScaffoldColumn(false)]
 		public int TimeHistoryDateId { get; set; }
 
 		[DisplayName("Date Added")]
@@ -44,5 +46,20 @@ namespace ScreenTimeManager.Models
 		[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
+
+		// Not sure about this...
+		// This could easily complicate things such as calculating the time on the timer
+		// For time that is denied, it needs to be excluded from the calculation
+		// Fairly well compartmentalized code shouldn't make this too difficult
+		// Yet, I can't shake the feeling that this is just lazy
+		// At, the same time, there needs to be a way to keep track of denied requests
+		// Hmm...
+		[Required]
+		[ScaffoldColumn(false)]
+		public bool IsDenied { get; set; }
+
+		[Required]
+		[ScaffoldColumn(false)]
+		public bool IsFinalized { get; set; }
 	}
 }

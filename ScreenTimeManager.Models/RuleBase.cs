@@ -11,12 +11,15 @@ namespace ScreenTimeManager.Models
 	public class RuleBase
 	{
 		[Key]
+		[ScaffoldColumn(false)]
 		public int Id { get; set; }
 
 		[Required]
+		[ScaffoldColumn(false)]
 		public bool IsExpired { get; set; }
 
 		[Required]
+		[ScaffoldColumn(false)]
 		public bool IsHidden { get; set; }
 
 		[Required]

@@ -31,7 +31,7 @@ namespace ScreenTimeManager.Utility
 
 		public static TimerState State { get; private set; } = TimerState.Stopped;
 
-		// Why = delegate {}
+		// Explanation: "Why = delegate {}"
 		// https://stackoverflow.com/questions/289002/how-to-raise-custom-event-from-a-static-class
 		public static event ElapsedTimerEventHandler ElapsedTimerNotifier = delegate { };
 

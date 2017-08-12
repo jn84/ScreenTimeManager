@@ -10,6 +10,7 @@ namespace ScreenTimeManager.Models
 	public class TotalScreenTimeChangedRequest : IDateTimeCreated
 	{
 		[Key]
+		[ScaffoldColumn(false)]
 		public int Id { get; set; }
 
 		[Required]
@@ -18,6 +19,7 @@ namespace ScreenTimeManager.Models
 		// The rule used for this entry into the history
 		// At least one, but not more than one
 		[Required]
+		[ScaffoldColumn(false)]
 		public int RuleUsedId { get; set; }
 
 		[ForeignKey("RuleUsedId")]
@@ -31,6 +33,7 @@ namespace ScreenTimeManager.Models
 
 		public string RequestedBy { get; set; }
 
+		[ScaffoldColumn(false)]
 		public int TimeHistoryDateId { get; set; }
 
 		[DisplayName("Date Added")]
