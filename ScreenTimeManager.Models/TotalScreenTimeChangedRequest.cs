@@ -26,7 +26,7 @@ namespace ScreenTimeManager.Models
 		public virtual RuleBase Rule { get; set; }
 
 		[DataType(DataType.MultilineText)]
-		public string SubmissionNote { get; set; }
+		public string RequestNote { get; set; }
 
 		[DataType(DataType.MultilineText)]
 		public string ApprovalNote { get; set; }

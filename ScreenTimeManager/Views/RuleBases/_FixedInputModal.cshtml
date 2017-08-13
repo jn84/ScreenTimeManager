@@ -24,6 +24,7 @@
         @Html.HiddenFor(model => model.RuleBaseId)
         @Html.HiddenFor(model => model.Hours, new {Value = 0})
         @Html.HiddenFor(model => model.Minutes, new {Value = 0})
+        @Html.HiddenFor(model => model.User, new {Value = User.Identity.Name})
         
         <hr/>
 

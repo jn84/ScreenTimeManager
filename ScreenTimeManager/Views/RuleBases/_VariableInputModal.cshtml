@@ -32,6 +32,7 @@
         <hr/>
 
         @Html.HiddenFor(model => model.RuleBaseId, new {@class = "modal-input"})
+        @Html.HiddenFor(model => model.User, new { Value = User.Identity.Name })
 
         <div >
             <div>

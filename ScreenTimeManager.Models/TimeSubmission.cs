@@ -19,6 +19,10 @@ namespace ScreenTimeManager.Models
 		[DataType(DataType.MultilineText)]
 		public string Note { get; set; }
 
+		//[Required]
+		// Should be set automatically by the form
+		public string User { get; set; }
+
 		public static TimeSubmission Create(int ruleId)
 		{
 			return new TimeSubmission

@@ -98,27 +98,22 @@ namespace ScreenTimeManager.Controllers
 		[HttpPost]
 		[Authorize(Roles = "Admin,Parent")]
 		[ValidateAntiForgeryToken]
-		public ActionResult ApplyTime([Bind(Include = "RuleBaseId, Hours, Minutes, Note")] TimeSubmission timeSubmission)
+		public ActionResult ApplyTime([Bind(Include = "RuleBaseId, Hours, Minutes, Note, User")] TimeSubmission timeSubmission)
 		{
-			RuleBase rule = db.Rules.Find(timeSubmission.RuleBaseId);
-
-			if (rule == null)
-				throw new ArgumentException("The rule ID does not correspond to a rule found in the database." +
-				                            " You shouldn't be able to get here if the rule doesn't exist.");
-
 			if (ModelState.IsValid)
 			{
-				long? tempMilliseconds =
-					TotalScreenTimeManager.ConvertHoursMinutesToMilliseconds(timeSubmission.Hours, timeSubmission.Minutes);
+				var tstc = TotalScreenTimeManager.GenerateTotalScreenTimeChangedApproved(timeSubmission);
 
-				TotalScreenTimeChanged tstc = 
-					TotalScreenTimeManager
-					.GenerateTotalScreenTimeChangedApproved(rule, tempMilliseconds, User.Identity.Name, timeSubmission.Note);
+				tstc.IsDenied = false;
 
 				TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
 
 				return Json(new {success = ModelState.IsValid, redirectUrl = Url.Action("Index")});
 			}
+
+			RuleBase rule =
+				db.Rules.Find(timeSubmission.RuleBaseId) ??
+				throw new Exception("RuleBase ID was invalid or the rule does not exist");
 
 			ViewBag.Rule = rule;
 
@@ -152,29 +147,20 @@ namespace ScreenTimeManager.Controllers
 		[HttpPost]
 		[Authorize(Roles = "Child")]
 		[ValidateAntiForgeryToken]
-		public ActionResult RequestTime([Bind(Include = "RuleBaseId, Hours, Minutes, Note")] TimeSubmission timeSubmission)
+		public ActionResult RequestTime([Bind(Include = "RuleBaseId, Hours, Minutes, Note, User")] TimeSubmission timeSubmission)
 		{
-			RuleBase rule = db.Rules.Find(timeSubmission.RuleBaseId);
-
-			if (rule == null)
-				throw new ArgumentException("The rule ID does not correspond to a rule found in the database." +
-				                            " You shouldn't be able to get here if the rule doesn't exist.");
-
 			if (ModelState.IsValid)
 			{
-				long? tempMilliseconds =
-					TotalScreenTimeManager.ConvertHoursMinutesToMilliseconds(timeSubmission.Hours, timeSubmission.Minutes);
-
-				TotalScreenTimeChangedRequest tstcr = 
-					TotalScreenTimeManager
-					.GenerateTotalScreenTimeChangedRequest(rule, tempMilliseconds, User.Identity.Name, timeSubmission.Note);
+				var tstcr = TotalScreenTimeManager.GenerateTotalScreenTimeChangedRequest(timeSubmission);
 
 				TotalScreenTimeManager.AddOrUpdateRuleAppliedRequest(tstcr);
 
 				return Json(new {success = ModelState.IsValid, redirectUrl = Url.Action("Index")});
 			}
 
-			ViewBag.Rule = rule;
+			RuleBase rule = 
+				db.Rules.Find(timeSubmission.RuleBaseId) ?? 
+				throw new Exception("RuleBase ID was invalid or the rule does not exist");
 
 			return PartialView(rule.RuleType == RuleType.Fixed ? "_FixedInputModal" : "_VariableInputModal", timeSubmission);
 		}
@@ -191,7 +177,7 @@ namespace ScreenTimeManager.Controllers
 		[HttpPost]
 		[Authorize(Roles = "Admin,Parent")]
 		[ValidateAntiForgeryToken]
-		public ActionResult ApproveTime([Bind(Include = "Id, SecondsAdded, RuleUsedId, SubmissionNote, ApprovalNote, RequestedBy, IsApproved")] TotalScreenTimeChangedRequest tstcr)
+		public ActionResult ApproveTime([Bind(Include = "Id, SecondsAdded, RuleUsedId, RequestNote, ApprovalNote, RequestedBy, IsApproved")] TotalScreenTimeChangedRequest tstcr)
 		{
 			if (tstcr == null)
 				throw new Exception("TotalScreenTimeChangedRequest was null for some reason");
@@ -201,8 +187,11 @@ namespace ScreenTimeManager.Controllers
 
 			if (ModelState.IsValid)
 			{
-				// Commit the change.
-				// Should we keep the request history around, or just delete the entries as they are added to the time changed list?
+				var tstc = TotalScreenTimeManager.HandleRequest(tstcr, User.Identity.Name);
+
+				tstc.IsFinalized = true;
+
+				TotalScreenTimeManager.AddOrUpdateRuleAppliedRequest(tstcr);
 
 				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
 			}
