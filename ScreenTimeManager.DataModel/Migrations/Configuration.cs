@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using ScreenTimeManager.DataModel.DataContexts;
+using ScreenTimeManager.Models;
+using ScreenTimeManager.Models.Enums;
 
 namespace ScreenTimeManager.DataModel.Migrations
 {

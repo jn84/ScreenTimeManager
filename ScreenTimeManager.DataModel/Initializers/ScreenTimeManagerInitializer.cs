@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using ScreenTimeManager.DataModel.DataContexts;
+using ScreenTimeManager.DataModel.Migrations;
 using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
 

@@ -34,7 +34,7 @@
         {
             <tr class="table-rule-entry">
                 <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
-                    <img src="@(item.SecondsAdded >= 0 ? @"/Resources/PLUS.png" : @"/Resources/MINUS.png")" alt="PLUSMINUS" class="image-autosize"/>
+                    <img src="@(item.SecondsAdded >= 0 ? Href("~/Resources/PLUS.png") : Href("~/Resources/MINUS.png"))" alt="PLUSMINUS" class="image-autosize"/>
                     @Html.Encode(TimeSpan.FromSeconds(Math.Abs(item.SecondsAdded)).ToString())
                 </td>
                 <td>
@@ -77,7 +77,7 @@
         {
             <tr class="table-rule-entry">
                 <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
-                    <img src="@(item.SecondsAdded >= 0 ? @"/Resources/PLUS.png" : @"/Resources/MINUS.png")" alt="PLUSMINUS" class="image-autosize"/>
+                    <img src="@(item.SecondsAdded >= 0 ? Href("~/Resources/PLUS.png") : Href("~/Resources/MINUS.png"))" alt="PLUSMINUS" class="image-autosize" />
                     @Html.Encode(TimeSpan.FromSeconds(Math.Abs(item.SecondsAdded)).ToString())
                 </td>
                 <td>
