@@ -1,4 +1,5 @@
-﻿@using ScreenTimeManager.Helpers
+﻿@using Microsoft.Web.Mvc
+@using ScreenTimeManager.Helpers
 @using ScreenTimeManager.Models
 @model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChangedRequest>
 
@@ -27,7 +28,8 @@ else
             {
                 <tr class="table-rule-entry">
                     <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
-                        @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                        @*Html.Image(item.SecondsAdded >= 0 ? @"~/Resources/PLUS.png" : @"~/Resources/MINUS.png")*@
+                        @Html.Encode(TimeSpan.FromSeconds(Math.Abs(item.SecondsAdded)).ToString())
                     </td>
                     <td>
                         @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
@@ -45,47 +47,4 @@ else
             }
         </table>
     </div>
-    @*<table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SecondsAdded)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.RequestedBy)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.Rule.RuleTitle)
-            
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecordAddedTime)
-            </th>
-            <th>
-                @Html.Encode(@"Actions")
-            </th>
-        </tr>
-
-        @foreach (var item in Model) {
-            <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
-                <td>
-                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RequestedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rule.RuleTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
-                    @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
-                </td>
-                <td>
-                    @Html.ActionLink("Approve/Deny", "ApproveTime", new {id = item.Id}, new {data_modal = "", @class = "history-detail-link"})
-                </td>
-            </tr>
-        }
-    </table>*@
 }
