@@ -13,49 +13,53 @@
     @Html.PagedDateActionLink(ViewBag.SelectedDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
     @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
 </div>
-<div class="rule-table">
-    <h1 class="rule-table-header">Denied Requests</h1>
-    <table class="rule-table">
-        @*BOOTSTRAP INFECTING EVERYTHING*@
-        <tr>
-            <th class="rule-table">
-                @Html.Encode(@"Time Requested")
-            </th>
-            <th class="rule-table">
-                @Html.DisplayNameFor(model => model.RecordAddedTime)
-            </th>
-            <th class="rule-table">@Html.Encode(@"Rule")</th>
-            <th class="rule-table">@Html.Encode(@"Requested By")</th>
-            <th class="rule-table">@Html.Encode(@"Denied By")</th>
-            <th class="rule-table"></th>
-        </tr>
 
-        @foreach (TotalScreenTimeChanged item in Model.Where(tstc => tstc.IsDenied && tstc.IsFinalized))
-        {
-            <tr class="table-rule-entry">
-                <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
-                    <img src="@(item.SecondsAdded >= 0 ? Href("~/Resources/PLUS.png") : Href("~/Resources/MINUS.png"))" alt="PLUSMINUS" class="image-autosize"/>
-                    @Html.Encode(TimeSpan.FromSeconds(Math.Abs(item.SecondsAdded)).ToString())
-                </td>
-                <td>
-                    @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
-                </td>
-                <td>
-                    @Html.Encode(item.Rule.RuleTitle)
-                </td>
-                <td>
-                    @Html.Encode(item.RequestedBy == null || item.RequestedBy.IsEmpty() ? "" : item.RequestedBy)
-                </td>
-                <td>
-                    @Html.Encode(item.ApprovedBy == null || item.ApprovedBy.IsEmpty() ? "" : item.ApprovedBy)
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { data_modal = "", @class = "rule-options-link" })
-                </td>
+@if (Model.Any(tstc => tstc.IsDenied && tstc.IsFinalized))
+{
+    <div class="rule-table">
+        <h1 class="rule-table-header">Denied Requests</h1>
+        <table class="rule-table">
+            @*BOOTSTRAP INFECTING EVERYTHING*@
+            <tr>
+                <th class="rule-table">
+                    @Html.Encode(@"Time Requested")
+                </th>
+                <th class="rule-table">
+                    @Html.DisplayNameFor(model => model.RecordAddedTime)
+                </th>
+                <th class="rule-table">@Html.Encode(@"Rule")</th>
+                <th class="rule-table">@Html.Encode(@"Requested By")</th>
+                <th class="rule-table">@Html.Encode(@"Denied By")</th>
+                <th class="rule-table"></th>
             </tr>
-        }
-    </table>
-</div>
+
+            @foreach (TotalScreenTimeChanged item in Model.Where(tstc => tstc.IsDenied && tstc.IsFinalized))
+            {
+                <tr class="table-rule-entry">
+                    <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
+                        <img src="@(item.SecondsAdded >= 0 ? Href("~/Resources/PLUS.png") : Href("~/Resources/MINUS.png"))" alt="PLUSMINUS" class="image-autosize"/>
+                        @Html.Encode(TimeSpan.FromSeconds(Math.Abs(item.SecondsAdded)).ToString())
+                    </td>
+                    <td>
+                        @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
+                    </td>
+                    <td>
+                        @Html.Encode(item.Rule.RuleTitle)
+                    </td>
+                    <td>
+                        @Html.Encode(item.RequestedBy == null || item.RequestedBy.IsEmpty() ? "" : item.RequestedBy)
+                    </td>
+                    <td>
+                        @Html.Encode(item.ApprovedBy == null || item.ApprovedBy.IsEmpty() ? "" : item.ApprovedBy)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new {id = item.Id}, new {data_modal = "", @class = "rule-options-link"})
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
 
 <div class="rule-table">
     <h1 class="rule-table-header">Time Applied</h1>
