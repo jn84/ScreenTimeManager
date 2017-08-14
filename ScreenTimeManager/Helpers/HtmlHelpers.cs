@@ -41,6 +41,9 @@ namespace ScreenTimeManager.Helpers
 			return htmlHelper.ActionLink(
 				historyDate.EntriesDate == DateTime.Today ? "Today" : historyDate.EntriesDate.ToString("MMM dd, yyyy"),
 				actionName, controllerName,
+				null,
+				null,
+				"begin-time-history-data",
 				new {dateId = historyDate.Id},
 				new {@class = "history-paged-link"});
 		}
