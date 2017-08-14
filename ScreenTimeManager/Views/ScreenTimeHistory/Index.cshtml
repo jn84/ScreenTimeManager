@@ -1,4 +1,5 @@
-﻿@using ScreenTimeManager.Helpers
+﻿@using Microsoft.Web.Mvc
+@using ScreenTimeManager.Helpers
 @using ScreenTimeManager.Models
 @model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
 
@@ -33,7 +34,8 @@
         {
             <tr class="table-rule-entry">
                 <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
-                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                    <img src="@(item.SecondsAdded >= 0 ? @"/Resources/PLUS.png" : @"/Resources/MINUS.png")" alt="PLUSMINUS" class="image-autosize"/>
+                    @Html.Encode(TimeSpan.FromSeconds(Math.Abs(item.SecondsAdded)).ToString())
                 </td>
                 <td>
                     @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
@@ -75,7 +77,8 @@
         {
             <tr class="table-rule-entry">
                 <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
-                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                    <img src="@(item.SecondsAdded >= 0 ? @"/Resources/PLUS.png" : @"/Resources/MINUS.png")" alt="PLUSMINUS" class="image-autosize"/>
+                    @Html.Encode(TimeSpan.FromSeconds(Math.Abs(item.SecondsAdded)).ToString())
                 </td>
                 <td>
                     @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
