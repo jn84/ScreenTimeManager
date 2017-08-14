@@ -13,7 +13,7 @@
     @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
 </div>
 
-
+<p>Denied Requests</p>
 <table class="table">
     <tr>
         <th>
@@ -29,6 +29,10 @@
     </tr>
     @foreach (TotalScreenTimeChanged item in Model)
     {
+        if (!item.IsDenied && item.IsFinalized)
+        {
+            continue;
+        }
         <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
             <td>
                 @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
@@ -44,5 +48,43 @@
                 @Html.ActionLink("Details", "Details", new {id = item.Id}, new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
             </td>
         </tr>
+    }
+</table>
+<hr/>
+<p>Time History</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.Encode(@"Time Charged")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecordAddedTime)
+        </th>
+        <th>
+            @Html.Encode(@"Rule")
+        </th>
+        <th></th>
+    </tr>
+    @foreach (TotalScreenTimeChanged item in Model)
+    {
+        if (!item.IsFinalized || item.IsDenied)
+        {
+            continue;
+        }
+            <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
+                <td>
+                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
+                    @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
+                </td>
+                <td>
+                    @Html.Encode(item.Rule.RuleTitle)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new {id = item.Id}, new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
+                </td>
+            </tr>
     }
 </table>

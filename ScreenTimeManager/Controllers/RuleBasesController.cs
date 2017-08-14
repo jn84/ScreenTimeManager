@@ -105,6 +105,7 @@ namespace ScreenTimeManager.Controllers
 				var tstc = TotalScreenTimeManager.GenerateTotalScreenTimeChangedApproved(timeSubmission);
 
 				tstc.IsDenied = false;
+				tstc.IsFinalized = true;
 
 				TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
 
@@ -191,7 +192,9 @@ namespace ScreenTimeManager.Controllers
 
 				tstc.IsFinalized = true;
 
-				TotalScreenTimeManager.AddOrUpdateRuleAppliedRequest(tstcr);
+				TotalScreenTimeManager.AddOrUpdateRuleAppliedEntry(tstc);
+
+				TotalScreenTimeManager.ArchiveRequest(tstcr);
 
 				return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
 			}

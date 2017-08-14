@@ -27,7 +27,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 				RuleDescription = "Used the timer to deduct time",
 				VariableRatioNumerator = 1,
 				VariableRatioDenominator = 1,
-				IsHidden = true
+				IsHidden = true,
 			});
 
 			// Keep this rule in production
@@ -82,7 +82,9 @@ namespace ScreenTimeManager.DataModel.Initializers
 			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds
+				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds,
+				IsDenied = false,
+				IsFinalized = true
 			});
 
 			if (i + 1 == allRules.Count)
@@ -93,7 +95,9 @@ namespace ScreenTimeManager.DataModel.Initializers
 			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds
+				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds,
+				IsDenied = false,
+				IsFinalized = true
 			});
 			if (i + 1 == allRules.Count)
 				i = 0;
@@ -103,7 +107,9 @@ namespace ScreenTimeManager.DataModel.Initializers
 			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 1, 13, 22).TotalSeconds
+				SecondsAdded = (long) new TimeSpan(0, 1, 13, 22).TotalSeconds,
+				IsDenied = false,
+				IsFinalized = true
 			});
 			if (i + 1 == allRules.Count)
 				i = 0;
@@ -113,7 +119,9 @@ namespace ScreenTimeManager.DataModel.Initializers
 			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds
+				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds,
+				IsDenied = false,
+				IsFinalized = true
 			});
 			if (i + 1 == allRules.Count)
 				i = 0;
@@ -123,7 +131,9 @@ namespace ScreenTimeManager.DataModel.Initializers
 			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds
+				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds,
+				IsDenied = false,
+				IsFinalized = true
 			});
 			if (i + 1 == allRules.Count)
 				i = 0;
@@ -133,7 +143,9 @@ namespace ScreenTimeManager.DataModel.Initializers
 			timeChangeList.Add(new TotalScreenTimeChanged
 			{
 				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 31, 4).TotalSeconds
+				SecondsAdded = (long) new TimeSpan(0, 0, 31, 4).TotalSeconds,
+				IsDenied = false,
+				IsFinalized = true
 			});
 			if (i + 1 == allRules.Count)
 				i = 0;

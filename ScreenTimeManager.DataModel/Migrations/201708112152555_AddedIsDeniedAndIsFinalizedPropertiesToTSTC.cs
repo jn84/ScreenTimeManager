@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace ScreenTimeManager.DataModel.Migrations
 {
     using System;
@@ -8,8 +10,10 @@ namespace ScreenTimeManager.DataModel.Migrations
         public override void Up()
         {
             AddColumn("dbo.TotalScreenTimeChangeds", "IsDenied", c => c.Boolean(nullable: false, defaultValue: false));
+			Sql("UPDATE dbo.TotalScreenTimeChangeds SET IsDenied=0");
             AddColumn("dbo.TotalScreenTimeChangeds", "IsFinalized", c => c.Boolean(nullable: false, defaultValue: true));
-        }
+	        Sql("UPDATE dbo.TotalScreenTimeChangeds SET IsFinalized=1");
+		}
         
         public override void Down()
         {

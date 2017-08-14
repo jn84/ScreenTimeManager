@@ -154,6 +154,16 @@ namespace ScreenTimeManager.Utility
 			};
 		}
 
+		public static void ArchiveRequest(TotalScreenTimeChangedRequest tstcr)
+		{
+			using (var ctx = new ScreenTimeManagerContext())
+			{
+				ctx.TimeRequests.Attach(tstcr); // What if the tstcr entity does not exist in the database?
+				ctx.TimeRequests.Remove(tstcr);
+				ctx.SaveChanges();
+			}
+		}
+
 		public static long GetModifiedTimeInMilliseconds(RuleBase rule, long timeAppliedInMilliseconds)
 		{
 			// Apply the positive or negative factor from RuleModifier
@@ -320,6 +330,9 @@ namespace ScreenTimeManager.Utility
 				// On startup, should the application check for, and finalize, any RuleType.Timer entries that aren't finalized?
 				// I can't think of any potential issues with this, yet.
 				// Either way, _lastTimeHistoryId has to go. I don't trust that the system won't get confused at some point, despite my repeated tests.
+
+
+				///// These values need to be populated in the database
 				dbTotalMinusTimer = ctx.TimeChanged.Where(tstc => tstc.IsFinalized && !tstc.IsDenied).Sum(tstc => tstc.SecondsAdded);
 			}
 
