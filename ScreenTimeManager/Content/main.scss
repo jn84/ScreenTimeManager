@@ -577,6 +577,16 @@ tr.table-rule-entry
     }
 }
 
+td.table-cell-time-add
+{
+    color: green;
+}
+
+td.table-cell-time-subtract
+{
+    color: red;
+}
+
 // complete to scale items for mobile/desktop
 @media screen and (min-width : 1080px)
 {

@@ -12,79 +12,84 @@
     @Html.PagedDateActionLink(ViewBag.SelectedDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
     @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
 </div>
-
-<p>Denied Requests</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.Encode(@"Time Charged")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RecordAddedTime)
-        </th>
-        <th>
-            @Html.Encode(@"Rule")
-        </th>
-        <th></th>
-    </tr>
-    @foreach (TotalScreenTimeChanged item in Model)
-    {
-        if (!item.IsDenied && item.IsFinalized)
-        {
-            continue;
-        }
-        <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
-            <td>
-                @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
-                @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
-            </td>
-            <td>
-                @Html.Encode(item.Rule.RuleTitle)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new {id = item.Id}, new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
-            </td>
+<div class="rule-table">
+    <h1 class="rule-table-header">Denied Requests</h1>
+    <table class="rule-table">
+        @*BOOTSTRAP INFECTING EVERYTHING*@
+        <tr>
+            <th class="rule-table">
+                @Html.Encode(@"Time Requested")
+            </th>
+            <th class="rule-table">
+                @Html.DisplayNameFor(model => model.RecordAddedTime)
+            </th>
+            <th class="rule-table">@Html.Encode(@"Rule")</th>
+            <th class="rule-table">@Html.Encode(@"Requested By")</th>
+            <th class="rule-table">@Html.Encode(@"Denied By")</th>
+            <th class="rule-table"></th>
         </tr>
-    }
-</table>
-<hr/>
-<p>Time History</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.Encode(@"Time Charged")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RecordAddedTime)
-        </th>
-        <th>
-            @Html.Encode(@"Rule")
-        </th>
-        <th></th>
-    </tr>
-    @foreach (TotalScreenTimeChanged item in Model)
-    {
-        if (!item.IsFinalized || item.IsDenied)
+
+        @foreach (TotalScreenTimeChanged item in Model.Where(tstc => tstc.IsDenied && tstc.IsFinalized))
         {
-            continue;
-        }
-            <tr class="@(item.SecondsAdded >= 0 ? @"history-add" : @"history-subtract")">
-                <td>
+            <tr class="table-rule-entry">
+                <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
                     @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TimeHistoryDate.EntriesDate)
                     @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
                 </td>
                 <td>
                     @Html.Encode(item.Rule.RuleTitle)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new {id = item.Id}, new {data_modal = "", @class = "history-details-" + item.Id + " history-detail-link"})
+                    @Html.Encode(item.RequestedBy == null || item.RequestedBy.IsEmpty() ? "" : item.RequestedBy)
+                </td>
+                <td>
+                    @Html.Encode(item.ApprovedBy == null || item.ApprovedBy.IsEmpty() ? "" : item.ApprovedBy)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { data_modal = "", @class = "rule-options-link" })
                 </td>
             </tr>
-    }
-</table>
+        }
+    </table>
+</div>
+
+<div class="rule-table">
+    <h1 class="rule-table-header">Time Applied</h1>
+    <table class="rule-table">
+        @*BOOTSTRAP INFECTING EVERYTHING*@
+        <tr>
+            <th class="rule-table">
+                @Html.Encode(@"Time Charged")
+            </th>
+            <th class="rule-table">
+                @Html.DisplayNameFor(model => model.RecordAddedTime)
+            </th>
+            <th class="rule-table">@Html.Encode(@"Rule")</th>
+            <th class="rule-table">@Html.Encode(@"Approved By")</th>
+            <th class="rule-table"></th>
+        </tr>
+
+        @foreach (TotalScreenTimeChanged item in Model.Where(tstc => !tstc.IsDenied && tstc.IsFinalized))
+        {
+            <tr class="table-rule-entry">
+                <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
+                    @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                </td>
+                <td>
+                    @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
+                </td>
+                <td>
+                    @Html.Encode(item.Rule.RuleTitle)
+                </td>
+                <td>
+                     @Html.Encode(item.ApprovedBy == null || item.ApprovedBy.IsEmpty() ? "" : item.ApprovedBy)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { data_modal = "", @class = "rule-options-link" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

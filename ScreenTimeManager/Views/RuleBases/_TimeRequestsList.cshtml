@@ -1,4 +1,5 @@
 ﻿@using ScreenTimeManager.Helpers
+@using ScreenTimeManager.Models
 @model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChangedRequest>
 
 @*If there are no pending requests, just return a blank page.*@
@@ -6,7 +7,45 @@
 {}
 else
 {
-    <table class="table">
+    <div class="rule-table">
+        <h1 class="rule-table-header">Pending Requests</h1>
+        <table class="rule-table">
+            @*BOOTSTRAP INFECTING EVERYTHING*@
+            <tr>
+                <th class="rule-table">
+                    @Html.Encode(@"Time Charged")
+                </th>
+                <th class="rule-table">
+                    @Html.DisplayNameFor(model => model.RecordAddedTime)
+                </th>
+                <th class="rule-table">@Html.Encode(@"Rule")</th>
+                <th class="rule-table">@Html.Encode(@"Requested By")</th>
+                <th class="rule-table"></th>
+            </tr>
+
+            @foreach (TotalScreenTimeChangedRequest item in Model)
+            {
+                <tr class="table-rule-entry">
+                    <td class="@(item.SecondsAdded >= 0 ? "table-cell-time-add" : "table-cell-time-subtract")">
+                        @Html.Encode(TimeSpan.FromSeconds(item.SecondsAdded).ToString())
+                    </td>
+                    <td>
+                        @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
+                    </td>
+                    <td>
+                        @Html.Encode(item.Rule.RuleTitle)
+                    </td>
+                    <td>
+                        @Html.Encode(item.RequestedBy)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Approve/Deny", "ApproveTime", new {id = item.Id}, new {data_modal = "", @class = "history-detail-link"})
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    @*<table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.SecondsAdded)
@@ -48,5 +87,5 @@ else
                 </td>
             </tr>
         }
-    </table>
+    </table>*@
 }
