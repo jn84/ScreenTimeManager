@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using CsvHelper;
 using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.DataModel.Migrations;
 using ScreenTimeManager.Models;
@@ -17,143 +22,196 @@ namespace ScreenTimeManager.DataModel.Initializers
 		{
 			base.Seed(context);
 
-			IList<RuleBase> ruleList = new List<RuleBase>();
-
-			// Keep this rule in production
-			ruleList.Add(new RuleBase
+			Assembly assembly = Assembly.GetExecutingAssembly();
+			string resourceName = "ScreenTimeManager.DataModel.Initializers.rulebases.csv";
+			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
-				RuleType = RuleType.Timer,
-				RuleModifier = RuleModifier.Subtract,
-				RuleTitle = "Timer Used",
-				RuleDescription = "Used the timer to deduct time",
-				VariableRatioNumerator = 1,
-				VariableRatioDenominator = 1,
-				IsHidden = true,
-			});
+				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
+				{
+					CsvReader csvReader = new CsvReader(reader);
+					csvReader.Configuration.Delimiter = "|";
+					csvReader.Configuration.WillThrowOnMissingField = false;
+					var rules = csvReader.GetRecords<RuleBase>().ToArray();
+					context.Rules.AddOrUpdate(r => r.Id, rules);
+				}
+			}
 
-			// Keep this rule in production
-			ruleList.Add(new RuleBase
+			resourceName = "ScreenTimeManager.DataModel.Initializers.timehistorydates.csv";
+			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
-				RuleType = RuleType.Fixed,
-				RuleModifier = RuleModifier.Add,
-				RuleTitle = "Cleaned Room",
-				RuleDescription = "Earn 30 minutes for cleaning room",
-				FixedTimeEarned = new TimeSpan(0, 0, 30, 0)
-			});
+				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
+				{
+					CsvReader csvReader = new CsvReader(reader);
+					csvReader.Configuration.Delimiter = "|";
+					csvReader.Configuration.WillThrowOnMissingField = false;
+					var timeHistory = csvReader.GetRecords<TimeHistoryDate>().ToArray();
+					context.HistoryDates.AddOrUpdate(h => h.Id, timeHistory);
+				}
+			}
 
-			ruleList.Add(new RuleBase
+			resourceName = "ScreenTimeManager.DataModel.Initializers.totalscreentimechanged.csv";
+			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
-				RuleType = RuleType.Fixed,
-				RuleModifier = RuleModifier.Add,
-				RuleTitle = "Changed Litter",
-				RuleDescription = "Earn 20 minutes for cleaning/changing all the litter boxes",
-				FixedTimeEarned = new TimeSpan(0, 0, 20, 0)
-			});
+				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
+				{
+					CsvReader csvReader = new CsvReader(reader);
+					csvReader.Configuration.Delimiter = "|";
+					csvReader.Configuration.WillThrowOnMissingField = false;
+					var timeChange = csvReader.GetRecords<TotalScreenTimeChanged>().ToArray();
+					context.TimeChanged.AddOrUpdate(tc => tc.Id, timeChange);
+				}
+			}
 
-			ruleList.Add(new RuleBase
+			resourceName = "ScreenTimeManager.DataModel.Initializers.totalscreentimechangedrequests.csv";
+			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
-				RuleType = RuleType.Variable,
-				RuleModifier = RuleModifier.Add,
-				RuleTitle = "Played Outside",
-				RuleDescription = "For every hour of time spent playing outside, earn 15 minutes",
-				VariableRatioNumerator = 1,
-				VariableRatioDenominator = 4
-			});
+				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
+				{
+					CsvReader csvReader = new CsvReader(reader);
+					csvReader.Configuration.Delimiter = "|";
+					csvReader.Configuration.WillThrowOnMissingField = false;
+					var timeChangeRequests = csvReader.GetRecords<TotalScreenTimeChangedRequest>().ToArray();
+					context.TimeRequests.AddOrUpdate(tcr => tcr.Id, timeChangeRequests);
+				}
+			}
 
-			ruleList.Add(new RuleBase
-			{
-				RuleType = RuleType.Variable,
-				RuleModifier = RuleModifier.Subtract,
-				RuleTitle = "Stole Time",
-				RuleDescription = "For every 1 minute of time stolen, subtract 1.5 minutes",
-				VariableRatioNumerator = 3,
-				VariableRatioDenominator = 2
-			});
+			//IList<RuleBase> ruleList = new List<RuleBase>();
 
-			//foreach (var rule in ruleList)
-			context.Rules.AddRange(ruleList);
+			//// Keep this rule in production
+			//ruleList.Add(new RuleBase
+			//{
+			//	RuleType = RuleType.Timer,
+			//	RuleModifier = RuleModifier.Subtract,
+			//	RuleTitle = "Timer Used",
+			//	RuleDescription = "Used the timer to deduct time",
+			//	VariableRatioNumerator = 1,
+			//	VariableRatioDenominator = 1,
+			//	IsHidden = true,
+			//});
 
-			context.SaveChanges();
+			//// Keep this rule in production
+			//ruleList.Add(new RuleBase
+			//{
+			//	RuleType = RuleType.Fixed,
+			//	RuleModifier = RuleModifier.Add,
+			//	RuleTitle = "Cleaned Room",
+			//	RuleDescription = "Earn 30 minutes for cleaning room",
+			//	FixedTimeEarned = new TimeSpan(0, 0, 30, 0)
+			//});
 
-			IList<TotalScreenTimeChanged> timeChangeList = new List<TotalScreenTimeChanged>();
+			//ruleList.Add(new RuleBase
+			//{
+			//	RuleType = RuleType.Fixed,
+			//	RuleModifier = RuleModifier.Add,
+			//	RuleTitle = "Changed Litter",
+			//	RuleDescription = "Earn 20 minutes for cleaning/changing all the litter boxes",
+			//	FixedTimeEarned = new TimeSpan(0, 0, 20, 0)
+			//});
 
-			List<RuleBase> allRules = context.Rules.ToList();
-			int i = 0;
+			//ruleList.Add(new RuleBase
+			//{
+			//	RuleType = RuleType.Variable,
+			//	RuleModifier = RuleModifier.Add,
+			//	RuleTitle = "Played Outside",
+			//	RuleDescription = "For every hour of time spent playing outside, earn 15 minutes",
+			//	VariableRatioNumerator = 1,
+			//	VariableRatioDenominator = 4
+			//});
 
-			timeChangeList.Add(new TotalScreenTimeChanged
-			{
-				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds,
-				IsDenied = false,
-				IsFinalized = true
-			});
+			//ruleList.Add(new RuleBase
+			//{
+			//	RuleType = RuleType.Variable,
+			//	RuleModifier = RuleModifier.Subtract,
+			//	RuleTitle = "Stole Time",
+			//	RuleDescription = "For every 1 minute of time stolen, subtract 1.5 minutes",
+			//	VariableRatioNumerator = 3,
+			//	VariableRatioDenominator = 2
+			//});
 
-			if (i + 1 == allRules.Count)
-				i = 0;
-			else
-				i++;
+			////foreach (var rule in ruleList)
+			//context.Rules.AddRange(ruleList);
 
-			timeChangeList.Add(new TotalScreenTimeChanged
-			{
-				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds,
-				IsDenied = false,
-				IsFinalized = true
-			});
-			if (i + 1 == allRules.Count)
-				i = 0;
-			else
-				i++;
+			//context.SaveChanges();
 
-			timeChangeList.Add(new TotalScreenTimeChanged
-			{
-				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 1, 13, 22).TotalSeconds,
-				IsDenied = false,
-				IsFinalized = true
-			});
-			if (i + 1 == allRules.Count)
-				i = 0;
-			else
-				i++;
+			//IList<TotalScreenTimeChanged> timeChangeList = new List<TotalScreenTimeChanged>();
 
-			timeChangeList.Add(new TotalScreenTimeChanged
-			{
-				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds,
-				IsDenied = false,
-				IsFinalized = true
-			});
-			if (i + 1 == allRules.Count)
-				i = 0;
-			else
-				i++;
+			//List<RuleBase> allRules = context.Rules.ToList();
+			//int i = 0;
 
-			timeChangeList.Add(new TotalScreenTimeChanged
-			{
-				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds,
-				IsDenied = false,
-				IsFinalized = true
-			});
-			if (i + 1 == allRules.Count)
-				i = 0;
-			else
-				i++;
+			//timeChangeList.Add(new TotalScreenTimeChanged
+			//{
+			//	RuleUsedId = allRules[i].Id,
+			//	SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds,
+			//	IsDenied = false,
+			//	IsFinalized = true
+			//});
 
-			timeChangeList.Add(new TotalScreenTimeChanged
-			{
-				RuleUsedId = allRules[i].Id,
-				SecondsAdded = (long) new TimeSpan(0, 0, 31, 4).TotalSeconds,
-				IsDenied = false,
-				IsFinalized = true
-			});
-			if (i + 1 == allRules.Count)
-				i = 0;
-			else
-				i++;
+			//if (i + 1 == allRules.Count)
+			//	i = 0;
+			//else
+			//	i++;
 
-			context.TimeChanged.AddRange(timeChangeList);
+			//timeChangeList.Add(new TotalScreenTimeChanged
+			//{
+			//	RuleUsedId = allRules[i].Id,
+			//	SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds,
+			//	IsDenied = false,
+			//	IsFinalized = true
+			//});
+			//if (i + 1 == allRules.Count)
+			//	i = 0;
+			//else
+			//	i++;
+
+			//timeChangeList.Add(new TotalScreenTimeChanged
+			//{
+			//	RuleUsedId = allRules[i].Id,
+			//	SecondsAdded = (long) new TimeSpan(0, 1, 13, 22).TotalSeconds,
+			//	IsDenied = false,
+			//	IsFinalized = true
+			//});
+			//if (i + 1 == allRules.Count)
+			//	i = 0;
+			//else
+			//	i++;
+
+			//timeChangeList.Add(new TotalScreenTimeChanged
+			//{
+			//	RuleUsedId = allRules[i].Id,
+			//	SecondsAdded = (long) new TimeSpan(0, 0, 30, 0).TotalSeconds,
+			//	IsDenied = false,
+			//	IsFinalized = true
+			//});
+			//if (i + 1 == allRules.Count)
+			//	i = 0;
+			//else
+			//	i++;
+
+			//timeChangeList.Add(new TotalScreenTimeChanged
+			//{
+			//	RuleUsedId = allRules[i].Id,
+			//	SecondsAdded = (long) new TimeSpan(0, 0, 20, 0).TotalSeconds,
+			//	IsDenied = false,
+			//	IsFinalized = true
+			//});
+			//if (i + 1 == allRules.Count)
+			//	i = 0;
+			//else
+			//	i++;
+
+			//timeChangeList.Add(new TotalScreenTimeChanged
+			//{
+			//	RuleUsedId = allRules[i].Id,
+			//	SecondsAdded = (long) new TimeSpan(0, 0, 31, 4).TotalSeconds,
+			//	IsDenied = false,
+			//	IsFinalized = true
+			//});
+			//if (i + 1 == allRules.Count)
+			//	i = 0;
+			//else
+			//	i++;
+
+			//context.TimeChanged.AddRange(timeChangeList);
 
 			context.SaveChanges();
 		}
