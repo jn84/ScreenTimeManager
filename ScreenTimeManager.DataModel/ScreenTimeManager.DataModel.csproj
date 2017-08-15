@@ -137,10 +137,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Initializers\SeedData\rulebases.csv" />
-    <None Include="Initializers\SeedData\timehistorydates.csv" />
-    <None Include="Initializers\SeedData\totalscreentimechanged.csv" />
-    <None Include="Initializers\SeedData\totalscreentimechangedrequest.csv" />
+    <EmbeddedResource Include="Initializers\SeedData\rulebases.csv" />
+    <EmbeddedResource Include="Initializers\SeedData\timehistorydates.csv" />
+    <EmbeddedResource Include="Initializers\SeedData\totalscreentimechanged.csv" />
+    <EmbeddedResource Include="Initializers\SeedData\totalscreentimechangedrequest.csv" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -23,7 +23,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 			base.Seed(context);
 
 			Assembly assembly = Assembly.GetExecutingAssembly();
-			string resourceName = "ScreenTimeManager.DataModel.Initializers.rulebases.csv";
+			string resourceName = "ScreenTimeManager.DataModel.Initializers.SeedData.rulebases.csv";
 			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
 				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
@@ -36,7 +36,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 				}
 			}
 
-			resourceName = "ScreenTimeManager.DataModel.Initializers.timehistorydates.csv";
+			resourceName = "ScreenTimeManager.DataModel.Initializers.SeedData.timehistorydates.csv";
 			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
 				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
@@ -49,7 +49,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 				}
 			}
 
-			resourceName = "ScreenTimeManager.DataModel.Initializers.totalscreentimechanged.csv";
+			resourceName = "ScreenTimeManager.DataModel.Initializers.SeedData.totalscreentimechanged.csv";
 			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
 				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
@@ -62,7 +62,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 				}
 			}
 
-			resourceName = "ScreenTimeManager.DataModel.Initializers.totalscreentimechangedrequests.csv";
+			resourceName = "ScreenTimeManager.DataModel.Initializers.SeedData.totalscreentimechangedrequests.csv";
 			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
 				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
