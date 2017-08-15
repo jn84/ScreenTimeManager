@@ -17,10 +17,10 @@
 @if (Model.Any(tstc => !tstc.IsDenied && tstc.IsFinalized))
 {
     Html.RenderPartial("_ApprovedTimeChanges", Model);
+    <hr/>
 }
 
 @if (Model.Any(tstc => tstc.IsDenied && tstc.IsFinalized))
 {
     Html.RenderPartial("_DeniedRequests", Model);
-    <hr/>
 }

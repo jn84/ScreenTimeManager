@@ -51,12 +51,11 @@ namespace ScreenTimeManager.Utility
 		}
 
 		// timeApplied is nullable since not all rules have an input for it (variable rules)
-		private static TotalScreenTimeChanged BuildTotalScreenTimeChanged(RuleBase rule, long? timeAppliedMilliseconds, string userName, string submissionNote)
+		private static TotalScreenTimeChanged BuildTotalScreenTimeChanged(RuleBase rule, long? timeAppliedMilliseconds)
 		{
 			var timeChanged = new TotalScreenTimeChanged
 			{
 				RuleUsedId = rule.Id,
-				SubmissionNote = submissionNote
 			};
 
 			switch (rule.RuleType)
@@ -99,7 +98,12 @@ namespace ScreenTimeManager.Utility
 
 			long? timeInMilliseconds = ConvertHoursMinutesToMilliseconds(ts.Hours, ts.Minutes);
 
-			return BuildTotalScreenTimeChanged(rule, timeInMilliseconds, ts.User, ts.Note);
+			TotalScreenTimeChanged tstc = BuildTotalScreenTimeChanged(rule, timeInMilliseconds);
+
+			tstc.ApprovedBy = ts.User;
+			tstc.SubmissionNote = ts.Note;
+
+			return tstc;
 		}
 
 		/// <summary>
@@ -113,7 +117,7 @@ namespace ScreenTimeManager.Utility
 			{
 				SecondsAdded = tstc.SecondsAdded,
 				RuleUsedId = tstc.RuleUsedId,
-				RequestNote = tstc.SubmissionNote,
+				RequestNote = ts.Note,
 				RequestedBy = ts.User
 			};
 		}
@@ -130,7 +134,12 @@ namespace ScreenTimeManager.Utility
 			if (rule == null)
 				throw new Exception("The database contains no Timer rule entry. The application cannot continue");
 
-			return BuildTotalScreenTimeChanged(rule, timeElapsedMilliseconds, "Application", "Used to the timer to deduct time");
+			TotalScreenTimeChanged tstc = BuildTotalScreenTimeChanged(rule, timeElapsedMilliseconds);
+
+			tstc.ApprovedBy = "Application";
+			tstc.SubmissionNote = "Used to the timer to deduct time";
+
+			return tstc;
 		}
 
 		///////////////////// THIS ONE OK.
