@@ -24,6 +24,12 @@ namespace ScreenTimeManager.DataModel.DataContexts
 				.Where(m => m.State.Equals(EntityState.Added))
 				.Select(e => e.Entity))
 			{
+				// In some circumstances (seeding specific data for debugging), we don't
+				// want the date/time to be set to NOW.
+				// this is a separate routine for readability and explanation
+				if (entry.IsOverrideDateTimeCreated)
+					continue;
+
 				// If today's date is not in the table, we need to add it
 				TimeHistoryDate date = HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today);
 				if (date == null)

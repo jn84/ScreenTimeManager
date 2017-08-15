@@ -18,5 +18,9 @@ namespace ScreenTimeManager.Models.Interfaces
 		[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
 		[Column(TypeName = "Time")]
 		TimeSpan RecordAddedTime { get; set; }
+
+		[NotMapped]
+		[ScaffoldColumn(false)]
+		bool IsOverrideDateTimeCreated { get; set; }
 	}
 }

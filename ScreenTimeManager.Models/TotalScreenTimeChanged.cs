@@ -47,6 +47,10 @@ namespace ScreenTimeManager.Models
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
 
+		[NotMapped]
+		[ScaffoldColumn(false)]
+		public bool IsOverrideDateTimeCreated { get; set; }
+
 		// Not sure about this...
 		// This could easily complicate things such as calculating the time on the timer
 		// For time that is denied, it needs to be excluded from the calculation

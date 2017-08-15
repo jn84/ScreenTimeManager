@@ -18,8 +18,8 @@ namespace ScreenTimeManager.Models
 		[Column(TypeName = "Date")]
 		public DateTime EntriesDate { get; set; }
 
-		[ScaffoldColumn(false)]
-		public int StartOfDayTotalSeconds { get; set; }
+		//[ScaffoldColumn(false)]
+		//public int StartOfDayTotalSeconds { get; set; }
 
 		public virtual ICollection<TotalScreenTimeChanged> EntriesForThisDate { get; set; }
 	}

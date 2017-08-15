@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +12,7 @@ using ScreenTimeManager.DataModel.DataContexts;
 using ScreenTimeManager.DataModel.Migrations;
 using ScreenTimeManager.Models;
 using ScreenTimeManager.Models.Enums;
+using ScreenTimeManager.Models.Interfaces;
 
 namespace ScreenTimeManager.DataModel.Initializers
 {
@@ -31,6 +33,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 					CsvReader csvReader = new CsvReader(reader);
 					csvReader.Configuration.Delimiter = "|";
 					csvReader.Configuration.WillThrowOnMissingField = false;
+					csvReader.Configuration.UseNewObjectForNullReferenceProperties = false;
 					var rules = csvReader.GetRecords<RuleBase>().ToArray();
 					context.Rules.AddOrUpdate(r => r.Id, rules);
 				}
@@ -44,6 +47,7 @@ namespace ScreenTimeManager.DataModel.Initializers
 					CsvReader csvReader = new CsvReader(reader);
 					csvReader.Configuration.Delimiter = "|";
 					csvReader.Configuration.WillThrowOnMissingField = false;
+					csvReader.Configuration.UseNewObjectForNullReferenceProperties = false;
 					var timeHistory = csvReader.GetRecords<TimeHistoryDate>().ToArray();
 					context.HistoryDates.AddOrUpdate(h => h.Id, timeHistory);
 				}
@@ -57,12 +61,19 @@ namespace ScreenTimeManager.DataModel.Initializers
 					CsvReader csvReader = new CsvReader(reader);
 					csvReader.Configuration.Delimiter = "|";
 					csvReader.Configuration.WillThrowOnMissingField = false;
+					csvReader.Configuration.UseNewObjectForNullReferenceProperties = false;
 					var timeChange = csvReader.GetRecords<TotalScreenTimeChanged>().ToArray();
+					foreach (TotalScreenTimeChanged totalScreenTimeChanged in timeChange)
+					{
+						totalScreenTimeChanged.Rule = null;
+						totalScreenTimeChanged.TimeHistoryDate = null;
+					}
+
 					context.TimeChanged.AddOrUpdate(tc => tc.Id, timeChange);
 				}
 			}
 
-			resourceName = "ScreenTimeManager.DataModel.Initializers.SeedData.totalscreentimechangedrequests.csv";
+			resourceName = "ScreenTimeManager.DataModel.Initializers.SeedData.totalscreentimechangedrequest.csv";
 			using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 			{
 				using (StreamReader reader = new StreamReader(stream, Encoding.Unicode))
@@ -70,7 +81,13 @@ namespace ScreenTimeManager.DataModel.Initializers
 					CsvReader csvReader = new CsvReader(reader);
 					csvReader.Configuration.Delimiter = "|";
 					csvReader.Configuration.WillThrowOnMissingField = false;
+					csvReader.Configuration.UseNewObjectForNullReferenceProperties = false;
 					var timeChangeRequests = csvReader.GetRecords<TotalScreenTimeChangedRequest>().ToArray();
+					foreach (TotalScreenTimeChangedRequest totalScreenTimeChanged in timeChangeRequests)
+					{
+						totalScreenTimeChanged.Rule = null;
+						totalScreenTimeChanged.TimeHistoryDate = null;
+					}
 					context.TimeRequests.AddOrUpdate(tcr => tcr.Id, timeChangeRequests);
 				}
 			}
@@ -213,7 +230,15 @@ namespace ScreenTimeManager.DataModel.Initializers
 
 			//context.TimeChanged.AddRange(timeChangeList);
 
+			// We don't want the framework to use the current date/time
+			foreach (var entry in context.ChangeTracker.Entries<IDateTimeCreated>())
+			{
+				entry.Entity.IsOverrideDateTimeCreated = true;
+			}
+
 			context.SaveChanges();
+
+
 		}
 	}
 

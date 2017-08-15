@@ -46,6 +46,10 @@ namespace ScreenTimeManager.Models
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
 
+		[NotMapped]
+		[ScaffoldColumn(false)]
+		public bool IsOverrideDateTimeCreated { get; set; }
+
 		[UIHint("BooleanNullable")]
 		[DisplayName("Approve")]
 		public bool? IsApproved { get; set; }
