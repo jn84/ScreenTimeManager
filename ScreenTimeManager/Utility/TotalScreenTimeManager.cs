@@ -13,6 +13,9 @@ namespace ScreenTimeManager.Utility
 {
 	public static class TotalScreenTimeManager
 	{
+		// Nullable to eliminate confusion about whether or not we need to add or update
+		private static int? _lastTimeHistoryId;
+
 		// ### Begin Event Code TODO: Move events to partial?
 
 		// Fire an event whenever screen time changes
@@ -24,8 +27,7 @@ namespace ScreenTimeManager.Utility
 		// If the timer IS running, update the last used ScreenTimeHistory object with the new time elapsed
 		private static TimerState _timerState = TimerState.Stopped;
 
-		// Nullable to eliminate confusion about whether or not we need to add or update
-		private static int? _lastTimeHistoryId;
+
 
 		// ### End Event Code
 
@@ -318,6 +320,7 @@ namespace ScreenTimeManager.Utility
 
 							// Add it again with the new date.
 							ctx.TimeChanged.Add(timeChanged);
+							ctx.SaveChanges();
 							_lastTimeHistoryId = timeChanged.Id;
 						}
 
