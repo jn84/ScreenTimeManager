@@ -33,15 +33,42 @@ namespace ScreenTimeManager.DataModel.DataContexts
 				// If today's date is not in the table, we need to add it
 				TimeHistoryDate date = HistoryDates.FirstOrDefault(hd => hd.EntriesDate == DateTime.Today);
 				if (date == null)
+				{
 					using (var ctx = new ScreenTimeManagerContext())
 					{
-						// Spin up a new context so only the TimeHistoryDate will be added, 
-						// and we can grab its newly created id for the TotalScreenTimeChanged entity
+						int newSum = 0;
+
+						// Get the last (usually yesterday) TimeHistoryDate
+						var historyDate =
+							ctx.HistoryDates.OrderByDescending(hd => hd.EntriesDate).FirstOrDefault();
+
 						date = ctx.HistoryDates.Create();
+
+						// Since there was a previous day's entry, sum everything from that day
+						// and place the result as the beginning sum for today's date.
+						if (historyDate != null)
+						{
+							// What if the timer is running when we get here?
+							// Stop it, then immediately start it? Should work.
+							// But we don't (can't) reference the startup project here.
+							// This is quite the conundrum.
+							// What a mess I've made.
+							// Maybe the timer should automatically stop/restart just before/after midnight.
+							// Doing anything not date/time related here is a BIG NO NO
+
+							newSum =
+								historyDate.StartOfDayTotalSeconds
+								+ (int)historyDate.EntriesForThisDate
+								.Where(e => !e.IsDenied && e.IsFinalized) // ensure we don't add denied entires!
+								.Sum(e => e.SecondsAdded);
+						}
+
+						date.StartOfDayTotalSeconds = newSum;
 						date.EntriesDate = DateTime.Today;
 						ctx.HistoryDates.Add(date);
 						ctx.SaveChanges();
 					}
+				}
 
 				HistoryDates.Attach(date);
 

@@ -19,6 +19,9 @@ namespace ScreenTimeManager.Models.Interfaces
 		[Column(TypeName = "Time")]
 		TimeSpan RecordAddedTime { get; set; }
 
+		/// <summary>
+		/// If true, will skip setting date/time values in implementing class
+		/// </summary>
 		[NotMapped]
 		[ScaffoldColumn(false)]
 		bool IsOverrideDateTimeCreated { get; set; }

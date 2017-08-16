@@ -33,6 +33,9 @@ namespace ScreenTimeManager.Utility
 		static TotalScreenTimeManager()
 		{
 			ElapsedTimer.ElapsedTimerNotifier += TimerStateChangedOrUpdated;
+
+			// Run once on startup.
+			RecalculateRunningTotals();
 		}
 
 		// Why = delegate {}
@@ -340,9 +343,16 @@ namespace ScreenTimeManager.Utility
 				// I can't think of any potential issues with this, yet.
 				// Either way, _lastTimeHistoryId has to go. I don't trust that the system won't get confused at some point, despite my repeated tests.
 
+				var today = ctx.HistoryDates.OrderByDescending(hd => hd.EntriesDate).FirstOrDefault();
 
-				///// These values need to be populated in the database
-				dbTotalMinusTimer = ctx.TimeChanged.Where(tstc => tstc.IsFinalized && !tstc.IsDenied).Sum(tstc => tstc.SecondsAdded);
+				if (today == null)
+					return 0; // The table must be empty, so time is zero.
+
+				dbTotalMinusTimer = 
+					today.StartOfDayTotalSeconds
+					+ today.EntriesForThisDate
+					.Where(tstc => tstc.IsFinalized && !tstc.IsDenied)
+					.Sum(tstc => tstc.SecondsAdded);
 			}
 
 			// Why + (-val): It makes it clearer (to me) what exactly is happening
@@ -395,6 +405,31 @@ namespace ScreenTimeManager.Utility
 				        + MinutePlurality(rule.VariableRatioDenominator) + " applied";
 			return temp;
 		}
+
+		// Will only run occasionally.
+		public static void RecalculateRunningTotals()
+		{
+			using (var ctx = new ScreenTimeManagerContext())
+			{
+				int previousDayTotal = 0;
+				var dates = ctx.HistoryDates.OrderBy(d => d.EntriesDate).ToList();
+
+				foreach (var date in ctx.HistoryDates.OrderBy(d => d.EntriesDate))
+				{
+					// Don't calculate today's value. That should be done at upon adding the next
+					// day's first entry
+					if (date.EntriesDate == DateTime.Today)
+						continue;
+
+					date.StartOfDayTotalSeconds = previousDayTotal;
+					previousDayTotal = 
+						(int) date.EntriesForThisDate.Sum(e => e.SecondsAdded) + previousDayTotal;
+				}
+				// Was it that easy?
+				ctx.SaveChanges();
+			}
+		}
+
 	}
 
 	// This is only used via the timer
