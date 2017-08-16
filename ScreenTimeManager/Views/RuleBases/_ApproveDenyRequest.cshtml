@@ -11,52 +11,88 @@
     @Html.AntiForgeryToken()
 
     <div class="modal-body">
-        
-            <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.HiddenFor(model => model.Id)
-                    @Html.HiddenFor(model => model.SecondsAdded)
-                    @Html.HiddenFor(model => model.RuleUsedId)
-                    @Html.HiddenFor(model => model.RequestNote)
-                    @Html.HiddenFor(model => model.RequestedBy)
-                    <div>
-                            @*Details here*@
-                            <div>
-                                    @Html.Encode(@"Rule Used:")
-                                    @Html.DisplayFor(model => model.Rule.RuleTitle)
-                                </div>
-                            <div>
-                                    @Html.Encode(@"Time Charged: ")
-                                    @Html.Partial("_PendingApprovalTime", Model)
-                                </div>
-                            <div>
-                                    @Html.Encode(@"Request By: ")
-                                    @Html.DisplayFor(model => model.RequestedBy)
-                                </div>
-                            @if (Model.RequestNote != null && !Model.RequestNote.IsEmpty())
-                            {
-                                <div>
-                                        @Html.Encode(@"Request Comment")
-                                        @Html.Encode(Model.RequestNote)
-                                    </div>
-                            }
-                            <hr/>
-                            <div>
-                                    @Html.Encode(@"Approve or deny this requst?")
-                                </div>
-                            @Html.EditorFor(model => model.IsApproved)
-                            @Html.ValidationMessageFor(model => model.IsApproved, "", new {@class = "text-danger"})
-                        </div>
-                    <hr/>
-                    <div >
-                            @Html.Encode(@"Comment")
-                            <div>
-                                    @Html.EditorFor(model => model.ApprovalNote, new { htmlAttributes = new {@class = "note-text-area", placeholder = "Enter a comment (not required)"}})
-                                </div>
-                            @Html.ValidationMessageFor(model => model.ApprovalNote, "", new {@class = "validation-error-text"})
-                        </div>
+        <div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.SecondsAdded)
+            @Html.HiddenFor(model => model.RuleUsedId)
+            @Html.HiddenFor(model => model.RequestNote)
+            @Html.HiddenFor(model => model.RequestedBy)
+            <table class="time-change-detail-table">
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Rule Used")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        @Html.DisplayFor(m => m.Rule.RuleTitle)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Rule Description")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        @Html.DisplayFor(m => m.Rule.RuleDescription)
+                    </td>
+                </tr>
+                </table>
+                <hr/>
+            <table class="time-change-detail-table">
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Time Requested")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        @Html.DisplayFor(m => m.SecondsAdded)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Requested")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        @Html.DisplayFor(m => m.TimeHistoryDate.EntriesDate)
+                        @Html.DisplayFor(m => m.RecordAddedTime)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Requested By")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        <p>@Model.RequestedBy</p>
+                    </td>
+                </tr>
+                @if (!Model.RequestNote.IsEmpty())
+                {
+                    <tr>
+                        <td class="time-change-detail-cell-title">
+                            @Html.Encode(@"Request Note")
+                        </td>
+                        <td class="time-change-detail-cell-content">
+                            <p>@Model.RequestNote</p>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <hr />
+            <div>
+                <div>
+                    @Html.Encode(@"Approve or deny this requst?")
                 </div>
+                @Html.EditorFor(model => model.IsApproved)
+                @Html.ValidationMessageFor(model => model.IsApproved, "", new {@class = "text-danger"})
+            </div>
+            <div>
+                @Html.Encode(@"Comment")
+                <div>
+                    @Html.EditorFor(model => model.ApprovalNote, new { htmlAttributes = new {@class = "note-text-area", placeholder = "Enter a comment (not required)"}})
+                </div>
+                @Html.ValidationMessageFor(model => model.ApprovalNote, "", new {@class = "validation-error-text"})
+            </div>
         </div>
+    </div>
+
 
     <div class="modal-footer">
             <div class="button-container">
