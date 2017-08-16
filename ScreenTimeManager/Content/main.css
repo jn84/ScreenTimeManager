@@ -275,22 +275,22 @@ a.history-paged-link {
   a.history-paged-link:active {
     background-color: #2542ff; }
 
+a.date-page-previous {
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  background-color: #626894;
+  border-color: #00128b; }
+
+a.date-page-next {
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: #626894;
+  border-color: #00128b; }
+
 a.history-paged-link-null {
   height: 100%;
   width: 100%;
   visibility: hidden; }
-
-tr.history-add {
-  color: black;
-  background-color: #6d866d; }
-  tr.history-add:hover {
-    background-color: #368336; }
-
-tr.history-subtract {
-  color: black;
-  background-color: #a06d6d; }
-  tr.history-subtract:hover {
-    background-color: #cf3636; }
 
 a.history-detail-link {
   height: 100%;
@@ -328,7 +328,7 @@ a.delete {
 img.image-autosize {
   height: 20px;
   width: 20px;
-  vertical-align: middle; }
+  vertical-align: text-top; }
 
 td.rule-options-table-cell {
   display: flex;

@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Web.Mvc
+@using ScreenTimeManager.Enums
 @using ScreenTimeManager.Helpers
 @using ScreenTimeManager.Models
 @model IEnumerable<ScreenTimeManager.Models.TotalScreenTimeChanged>
@@ -9,9 +10,9 @@
 }
 
 <div class="time-history-page-nav" id ="begin-time-history-data">
-    @Html.PagedDateActionLink(ViewBag.PreviousDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
-    @Html.PagedDateActionLink(ViewBag.SelectedDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
-    @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory")
+    @Html.PagedDateActionLink(ViewBag.PreviousDate as TimeHistoryDate, "Index", "ScreenTimeHistory", DatePage.Previous)
+    @Html.PagedDateActionLink(ViewBag.SelectedDate as TimeHistoryDate, "Index", "ScreenTimeHistory", DatePage.Selected)
+    @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory", DatePage.Next)
 </div>
 
 @if (Model.Any(tstc => !tstc.IsDenied && tstc.IsFinalized))

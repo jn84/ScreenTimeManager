@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using ScreenTimeManager.Enums;
 using ScreenTimeManager.Models;
 
 namespace ScreenTimeManager.Helpers
@@ -28,7 +30,8 @@ namespace ScreenTimeManager.Helpers
 			this HtmlHelper htmlHelper,
 			TimeHistoryDate historyDate,
 			string actionName,
-			string controllerName)
+			string controllerName,
+			DatePage page)
 		{
 			if (historyDate == null)
 				return htmlHelper.ActionLink(
@@ -38,6 +41,21 @@ namespace ScreenTimeManager.Helpers
 					null,
 					new {@class = "history-paged-link-null"});
 
+			string buttonClass = "";
+
+			switch (page)
+			{
+				case DatePage.Previous:
+					buttonClass = "history-paged-link date-page-previous";
+					break;
+				case DatePage.Next:
+					buttonClass = "history-paged-link date-page-next";
+					break;
+				default:
+					buttonClass = "history-paged-link date-page-default";
+					break;
+			}
+
 			return htmlHelper.ActionLink(
 				historyDate.EntriesDate == DateTime.Today ? "Today" : historyDate.EntriesDate.ToString("MMM dd, yyyy"),
 				actionName, controllerName,
@@ -45,7 +63,7 @@ namespace ScreenTimeManager.Helpers
 				null,
 				"begin-time-history-data",
 				new {dateId = historyDate.Id},
-				new {@class = "history-paged-link"});
+				new {@class = buttonClass});
 		}
 
 		public static MvcHtmlString If(this MvcHtmlString value, bool evaluation)

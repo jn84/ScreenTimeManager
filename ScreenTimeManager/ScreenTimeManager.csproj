@@ -216,6 +216,7 @@
     <Compile Include="Controllers\ManageRulesController.cs" />
     <Compile Include="Controllers\RuleBasesController.cs" />
     <Compile Include="Controllers\ScreenTimeHistoryController.cs" />
+    <Compile Include="Enums\DatePage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

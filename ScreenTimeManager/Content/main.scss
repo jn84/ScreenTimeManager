@@ -412,33 +412,31 @@ a.history-paged-link
     }
 }
 
+a.date-page-previous
+{
+    border-top-left-radius: ($rule-element-border-radius * 5);
+    border-bottom-left-radius: ($rule-element-border-radius * 5);
+    background-color: mix($header-background-color, $main-content-background-color, 30%);
+    border-color: darken($header-background-color, 40%);
+}
+
+a.date-page-default
+{
+}
+
+a.date-page-next
+{
+    border-top-right-radius: ($rule-element-border-radius * 5);
+    border-bottom-right-radius: ($rule-element-border-radius * 5);
+    background-color: mix($header-background-color, $main-content-background-color, 30%);
+    border-color: darken($header-background-color, 40%);
+}
+
 a.history-paged-link-null
 {
     height: 100%;
     width: 100%;
     visibility: hidden;
-}
-
-tr.history-add
-{
-    color: black;
-    background-color: mix($base-gray, green, 80%);
-
-    &:hover
-    {
-        background-color: mix($base-gray, green, 40%);
-    }
-}
-
-tr.history-subtract
-{
-    color: black;
-    background-color: mix($base-gray, red, 80%);
-
-    &:hover
-    {
-        background-color: mix($base-gray, red, 40%);
-    }
 }
 
 a.history-detail-link
@@ -493,7 +491,7 @@ img.image-autosize
 {
     height: 20px;
     width: 20px;
-    vertical-align: middle;
+    vertical-align: text-top;
 }
 
 td.rule-options-table-cell
