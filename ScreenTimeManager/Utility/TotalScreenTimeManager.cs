@@ -450,7 +450,9 @@ namespace ScreenTimeManager.Utility
 
 					date.StartOfDayTotalSeconds = previousDayTotal;
 					previousDayTotal = 
-						(int) date.EntriesForThisDate.Sum(e => e.SecondsAdded) + previousDayTotal;
+						(int) date.EntriesForThisDate
+						.Where(hd => hd.IsFinalized && !hd.IsDenied)
+						.Sum(e => e.SecondsAdded) + previousDayTotal;
 				}
 				// Was it that easy?
 				ctx.SaveChanges();
