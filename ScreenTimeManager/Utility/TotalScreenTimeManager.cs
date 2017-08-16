@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
@@ -299,6 +300,27 @@ namespace ScreenTimeManager.Utility
 							throw new Exception(
 								"Timer state is running, but the TotalScreenTimeChanged object was not found in the database.");
 
+						// This special chunk of code handles and edge case where the timer is running
+						// when the system time crosses the threshold into a new day, and a rule is manually appleid.
+						// Due to the way that the running total of the timer is calculated,
+						// the timer's value would never be counted toward the total time available.
+						// The workaround is to recreate the timer's entry in the time changed table, 
+						// moving it to the new day.
+						// This has the unfortunate side effect of falsifying the timer's beginning timestamp.
+						if (timeChanged.RecordAddedTime + TimeSpan.FromMilliseconds(timeElapsedMilliseconds) > TimeSpan.FromDays(1))
+						{
+							ctx.TimeChanged.Remove(timeChanged);
+							ctx.SaveChanges();
+
+							// Make sure they're null or EF might try to add them to the table.
+							timeChanged.Rule = null;
+							timeChanged.TimeHistoryDate = null;
+
+							// Add it again with the new date.
+							ctx.TimeChanged.Add(timeChanged);
+							_lastTimeHistoryId = timeChanged.Id;
+						}
+
 						// Update the entry in the database. 
 						timeChanged.SecondsAdded = GetModifiedTimeInSeconds(rule, timeElapsedMilliseconds);
 						ctx.SaveChanges();
@@ -348,11 +370,13 @@ namespace ScreenTimeManager.Utility
 				if (today == null)
 					return 0; // The table must be empty, so time is zero.
 
-				dbTotalMinusTimer = 
+
+				// If there are no countable entries for this date, return 0.
+				dbTotalMinusTimer =
 					today.StartOfDayTotalSeconds
 					+ today.EntriesForThisDate
-					.Where(tstc => tstc.IsFinalized && !tstc.IsDenied)
-					.Sum(tstc => tstc.SecondsAdded);
+						.Where(tstc => tstc.IsFinalized && !tstc.IsDenied)
+						.Sum(tstc => (int?) tstc.SecondsAdded) ?? 0;
 			}
 
 			// Why + (-val): It makes it clearer (to me) what exactly is happening
