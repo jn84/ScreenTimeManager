@@ -1,0 +1,6 @@
+﻿@model long
+    
+<div class="@(Model >= 0 ? "div-time-add" : "div-time-subtract")">
+    <img src="@(Model >= 0 ? Href("~/Resources/PLUS.png") : Href("~/Resources/MINUS.png"))" alt="PLUSMINUS" class="image-autosize"/>
+    @Html.Encode(TimeSpan.FromSeconds(Math.Abs(Model)).ToString())
+</div>

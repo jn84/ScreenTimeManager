@@ -8,32 +8,79 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">
-            @(ruleBase != null ? ruleBase.RuleTitle : Html.Encode(@"Error parsing rule data"))
+            @Html.Encode(Model.Rule.RuleTitle)
         </h4>
     </div>
 
     <div class="modal-body">
         <h4>
-            @(ruleBase != null ? ruleBase.RuleDescription : Html.Encode(@"Error parsing rule data"))
+            @Html.Encode(Model.Rule.RuleDescription)
         </h4>
         <hr/>
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.Encode(@"Time Charged")
-            </dt>
+        <table class="time-change-detail-table">
+            <tr>
+                <td class="time-change-detail-cell-title">
+                    @Html.Encode(@"Time Applied")
+                </td>
+                <td class="time-change-detail-cell-content">
+                    @Html.DisplayFor(m => m.SecondsAdded)
+                </td>
+            </tr>
+            <tr>
+                <td class="time-change-detail-cell-title">
+                    @Html.Encode(@"Added")
+                </td>
+                <td class="time-change-detail-cell-content">
+                    @Html.DisplayFor(m => m.TimeHistoryDate.EntriesDate)
+                    @Html.DisplayFor(m => m.RecordAddedTime)
+                </td>
+            </tr>
+            @if (!Model.RequestedBy.IsEmpty())
+            {
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Requested By")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        <p>@Model.RequestedBy</p>
+                    </td>
+                </tr>
+            }
+            @if (!Model.RequestNote.IsEmpty())
+            {
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Request Note")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        <p>@Model.RequestNote</p>
+                    </td>
+                </tr>
+            }        
+            @if (!Model.ApprovedBy.IsEmpty())
+            {
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Approved By")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        <p>@Model.ApprovedBy</p>
+                    </td>
+                </tr>
+            }
+            @if (!Model.SubmissionNote.IsEmpty())
+            {
+                <tr>
+                    <td class="time-change-detail-cell-title">
+                        @Html.Encode(@"Approval Note")
+                    </td>
+                    <td class="time-change-detail-cell-content">
+                        <p>@Model.SubmissionNote</p>
+                    </td>
+                </tr>
+            }      
 
-            <dd>
-                @Html.Encode(TimeSpan.FromSeconds(Model.SecondsAdded).ToString())
-            </dd>
-
-            <dt>
-                @Html.Encode(@"Added")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.RecordAddedTime)
-            </dd>
-        </dl>
+        </table>
     </div>
 }
 <div class="modal-footer">

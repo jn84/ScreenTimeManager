@@ -416,7 +416,7 @@ a.date-page-previous
 {
     border-top-left-radius: ($rule-element-border-radius * 5);
     border-bottom-left-radius: ($rule-element-border-radius * 5);
-    background-color: mix($header-background-color, $main-content-background-color, 30%);
+    background-color: mix($header-background-color, $main-content-background-color, 20%);
     border-color: darken($header-background-color, 40%);
 }
 
@@ -428,7 +428,7 @@ a.date-page-next
 {
     border-top-right-radius: ($rule-element-border-radius * 5);
     border-bottom-right-radius: ($rule-element-border-radius * 5);
-    background-color: mix($header-background-color, $main-content-background-color, 30%);
+    background-color: mix($header-background-color, $main-content-background-color, 20%);
     border-color: darken($header-background-color, 40%);
 }
 
@@ -582,14 +582,32 @@ tr.table-rule-entry
     }
 }
 
-td.table-cell-time-add
+div.div-time-add
 {
     color: green;
 }
 
-td.table-cell-time-subtract
+div.div-time-subtract
 {
     color: red;
+}
+
+table.time-change-detail-table
+{
+    width: 100%;
+}
+
+td.time-change-detail-cell-title
+{
+    white-space: nowrap;
+    padding: 7px 5px 7px 5px;
+    text-align: right
+}
+
+td.time-change-detail-cell-content
+{
+    width: 100%;
+    padding: 5px;
 }
 
 // complete to scale items for mobile/desktop

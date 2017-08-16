@@ -363,6 +363,7 @@
     <Content Include="Views\RuleBases\_PendingApprovalTime.cshtml" />
     <Content Include="Views\ScreenTimeHistory\_DeniedRequests.cshtml" />
     <Content Include="Views\ScreenTimeHistory\_ApprovedTimeChanges.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Long.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

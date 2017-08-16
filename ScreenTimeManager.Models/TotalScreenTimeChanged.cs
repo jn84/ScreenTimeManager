@@ -13,6 +13,7 @@ namespace ScreenTimeManager.Models
 		public int Id { get; set; }
 
 		[Required]
+		[UIHint("Long")]
 		public long SecondsAdded { get; set; }
 
 		// The rule used for this entry into the history

@@ -278,13 +278,13 @@ a.history-paged-link {
 a.date-page-previous {
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
-  background-color: #626894;
+  background-color: #636885;
   border-color: #00128b; }
 
 a.date-page-next {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
-  background-color: #626894;
+  background-color: #636885;
   border-color: #00128b; }
 
 a.history-paged-link-null {
@@ -393,11 +393,23 @@ tr.table-rule-entry {
   tr.table-rule-entry:hover {
     background-color: #2b2b2b; }
 
-td.table-cell-time-add {
+div.div-time-add {
   color: green; }
 
-td.table-cell-time-subtract {
+div.div-time-subtract {
   color: red; }
+
+table.time-change-detail-table {
+  width: 100%; }
+
+td.time-change-detail-cell-title {
+  white-space: nowrap;
+  padding: 7px 5px 7px 5px;
+  text-align: right; }
+
+td.time-change-detail-cell-content {
+  width: 100%;
+  padding: 5px; }
 
 @media screen and (min-width: 1080px) {
   div.title-bar {
