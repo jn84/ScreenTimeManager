@@ -346,12 +346,12 @@ input:checked ~ .rule-content
     transition: all .35s;
 }
 
-input[type=checkbox] + label::after
+input[type=radio] + label::after
 {
     content: "+";
 }
 
-input[type=checkbox]:checked + label::after
+input[type=radio]:checked + label::after
 {
     transform: rotate(315deg);
 }

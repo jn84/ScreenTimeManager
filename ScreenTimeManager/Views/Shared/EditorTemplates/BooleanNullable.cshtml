@@ -1,14 +1,10 @@
 ﻿@model bool?
 
 @{
-    <div class="">
-        <div>
-            @Html.RadioButtonFor(model => model, "false", new {@class = "", id = "falseRadio"})
-            @Html.LabelFor(model => model, "Deny", new {@class = ""})
-        </div>
-        <div>
-            @Html.RadioButtonFor(model => model, "true", new {@class = "", id = "trueRadio" })
-            @Html.LabelFor(model => model, "Approve", new {@class = ""})
-        </div>
+    <div class="approve-deny-boolean-input-group">
+            @Html.RadioButtonFor(model => model, "false", new {@class = "boolean-radio", id = "falseRadio"})
+            <label for="falseRadio" class="boolean-radio-label">Deny</label>
+            @Html.RadioButtonFor(model => model, "true", new {@class = "boolean-radio", id = "trueRadio" })
+            <label for="trueRadio" class="boolean-radio-label">Approve</label>
     </div>
 }

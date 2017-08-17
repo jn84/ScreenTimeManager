@@ -137,9 +137,30 @@ td.boolean-editor-table-cell
     text-align: center;
 }
 
+div.approve-deny-boolean-input-group
+{
+    display: flex;
+    flex-direction: row;
+}
+
 label.boolean-radio-label
 {
-    width: 100%;
-    height: 100%;
-    background-color: white;
+    padding: 5px 10px 5px 20px;
+    background: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 3px;
+    width: 33%;
+    line-height: 2;
+}
+
+input.boolean-radio 
+{
+    display: none;
+    width: 33%;
+}
+
+input.boolean-radio[type="radio"]:checked + label.boolean-radio-label
+{
+    background-color: lightgreen;
 }
