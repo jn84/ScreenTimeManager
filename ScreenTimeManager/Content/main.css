@@ -214,12 +214,6 @@ a.link-apply-rule {
 .btn-apply-rule:active {
   background: brown; }
 
-.btn-delete-rule:hover {
-  background: pink; }
-
-.btn-delete-rule:active {
-  background: brown; }
-
 /* :checked */
 input:checked ~ .rule-content {
   max-height: 5000px; }

@@ -324,19 +324,6 @@ a.link-apply-rule
     }
 }
 
-.btn-delete-rule
-{
-    &:hover
-    {
-        background: pink;
-    }
-
-    &:active
-    {
-        background: brown;
-    }
-}
-
 /* :checked */
 input:checked ~ .rule-content
 {
