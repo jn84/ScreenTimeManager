@@ -3,25 +3,22 @@
 var numerator;
 var denominator;
 
-$(function() {
+$(function () {
     $.ajaxSetup({ cache: false }); ///////////////////////////////////// Document never ready
 
-    $("a[data-modal]").on("click",
-        function(e) {
-            $("#myModalContent").load(this.href,
-                function() {
+    $("a[data-modal]").on("click", function (e) {
+        $("#myModalContent").load(this.href, function () {
 
-                    $("#myModal").modal({
-                            backdrop: "static",
-                            keyboard: true
-                        },
-                        "show");
+            $("#myModal").modal({
+                backdrop: "static",
+                keyboard: true
+            }, "show");
 
-                    bindForm(this);
-                });
-
-            return false;
+            bindForm(this);
         });
+
+        return false;
+    });
 });
 
 function bindForm(dialog) {
@@ -42,10 +39,9 @@ function bindForm(dialog) {
         var output = {};
 
         // convert to key/value pairs
-        $.each(rawData,
-            function() {
-                output[this.name] = this.value;
-            });
+        $.each(rawData, function () {
+            output[this.name] = this.value;
+        });
         return JSON.stringify(output);
     }
 
@@ -72,11 +68,16 @@ function bindForm(dialog) {
                 var spanRef = $("span#pendingTime");
                 if (result.success) {
                     if (result.modifier === "add") {
+                        // Time is positive
                         spanRef.text("+ " + result.timespan);
-                        spanRef.css("color", "green");
+                        spanRef.addClass("pendingTime-add");
+                        spanRef.removeClass("pendingTime-neutral");
+                        spanRef.removeClass("pendingTime-subtract");
                     } else {
                         spanRef.text("- " + result.timespan);
-                        spanRef.css("color", "red");
+                        spanRef.addClass("pendingTime-subtract");
+                        spanRef.removeClass("pendingTime-neutral");
+                        spanRef.removeClass("pendingTime-add");
                     }
                 } else {
                     spanRef.text("I AM ERROR");
@@ -89,14 +90,13 @@ function bindForm(dialog) {
 
     // Submit the form to the server with a standard (see: easily styled) button, rather
     // than via a form input tag
-    $("button#modal-submit").on("click",
-        function(e) {
-            e.preventDefault();
-            $("form").submit();
-        });
+    $("button#modal-submit").on("click", function (e) {
+        e.preventDefault();
+        $("form#modalForm").submit();
+    });
 
     // any <form> tag, the context in which that form tag is found
-    $("form#modalForm", dialog).submit(function() {
+    $("form#modalForm", dialog).submit(function () {
         // Why is this not called when hitting the submit button?
         //alert("entered submit function");
         $.ajax({
@@ -110,15 +110,16 @@ function bindForm(dialog) {
                     if (result.redirectUrl === null) {
                         location.reload();
                     } else {
-                        location.replace("/RuleBases");
+                        location.replace(result.redirectUrl);
                     }
                     // There was a validation error or something, so update the modal
                 } else {
-                    $("#myModalContent").html(result);
-                    bindForm();
-                }
+                        $("#myModalContent").html(result);
+                        bindForm();
+                    }
             }
         });
         return false;
     });
 }
+

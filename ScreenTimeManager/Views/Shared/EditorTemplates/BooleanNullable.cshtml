@@ -1,16 +1,14 @@
 ﻿@model bool?
 
-<table class="boolean-editor-table">
-    <tbody>
-        <tr class="boolean-editor-table-row">
-            <td class="boolean-editor-table-cell">
-                @Html.RadioButtonFor(model => model, "false", new {@class = ""})
-                @Html.Encode(@"Deny")
-            </td>
-            <td class="boolean-editor-table-cell">
-                @Html.RadioButtonFor(model => model, "true", new { @class = "" })
-                @Html.Encode(@"Approve")
-            </td>
-        </tr>
-    </tbody>
-</table>
+@{
+    <div class="">
+        <div>
+            @Html.RadioButtonFor(model => model, "false", new {@class = ""})
+            @Html.LabelFor(model => model, "Deny", new {@class = "", value="false"})
+        </div>
+        <div>
+            @Html.RadioButtonFor(model => model, "true", new {@class = ""})
+            @Html.LabelFor(model => model, "Approve", new {@class = "", value="true"})
+        </div>
+    </div>
+}

@@ -4,7 +4,7 @@ var seconds = 360000000;
 
 //console.log("JavaScript is amazing!");
 
-$(function() {
+$(function () {
     bindTimer();
 
     parseCounter();
@@ -17,37 +17,40 @@ var bindTimer = function bindTimer() {
 
     var timerHub = $.connection.timerSyncHub;
 
-    $.connection.hub.start().done(function() {
-
-        timerHub.server.syncTimer();
-
-        timerHub.client.doTimerStateUpdate = function(isRunning) {
-
-            updateTimerView(isRunning);
-
-            if (isRunning && timerIntervalId == null) {
-                timerIntervalId = startTimer();
-                parseCounter(totalTimerSeconds);
-            } else if (!isRunning && timerIntervalId != null) {
-                timerIntervalId = stopTimer(timerIntervalId);
-                parseCounter(totalTimerSeconds);
-            } else {
-                // alert("The timer inverval id was null when it shouldn't be!");
-            }
-        };
-
-        timerHub.client.doTimerValueUpdate = function(totalSeconds) {
-            totalTimerSeconds = totalSeconds;
+    var startTimer = function startTimer() {
+        return setInterval(function () {
+            totalTimerSeconds--;
             parseCounter(totalTimerSeconds);
-        };
+        }, 1000);
+    };
 
-        // Rework so that the server triggers a change in button state
-        $("button#btn-timer-toggle").click(function() {
-            timerHub.server.toggleTimerState();
-        });
+    var stopTimer = function stopTimer(intervalId) {
+        clearInterval(intervalId);
+        return null;
+    };
+
+    timerHub.client.doTimerStateUpdate = function (isRunning, totalSeconds) {
+
+        updateTimerView(isRunning);
+
+        if (isRunning && timerIntervalId === null) {
+            timerIntervalId = startTimer();
+        } else if (!isRunning && timerIntervalId !== null) {
+            timerIntervalId = stopTimer(timerIntervalId);
+        }
+
+        totalTimerSeconds = totalSeconds;
+        parseCounter(totalTimerSeconds);
+    };
+
+    // Rework so that the server triggers a change in button state
+    $("button#btn-timer-toggle").click(function () {
+        timerHub.server.toggleTimerState();
     });
 
-    // Do we need to call this again?
+    $.connection.hub.start().done(function () {
+        timerHub.server.syncTimer();
+    });
 };
 
 var updateTimerView = function updateTimerView(isRunning) {
@@ -66,17 +69,13 @@ var updateTimerView = function updateTimerView(isRunning) {
     button.blur();
 };
 
-var decrement = function decrement(integer) {
-    integer--;
-    if (integer < 0) {
-        $("p.time-number").css("background-color", "pink");
-        return integer;
-    }
-    $("p.time-number").css("background-color", "lightgreen");
-    return integer;
-};
-
 var parseCounter = function parseCounter(inputSeconds) {
+    if (inputSeconds < 0) {
+        $("p.time-number").css("background-color", "pink");
+    } else {
+        $("p.time-number").css("background-color", "lightgreen");
+    }
+
     var counter = inputSeconds;
 
     var hrs = ~ ~(counter / 3600);
@@ -101,14 +100,3 @@ var parseCounter = function parseCounter(inputSeconds) {
     $("p.seconds-ones").html(Math.abs(secondsones));
 };
 
-var startTimer = function startTimer() {
-    return setInterval(function() {
-            seconds = decrement(seconds);
-        },
-        1000);
-};
-
-var stopTimer = function stopTimer(intervalId) {
-    clearInterval(intervalId);
-    return null;
-};
