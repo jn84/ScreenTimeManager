@@ -2,13 +2,13 @@
 
 @{
     <div class="">
-        <div>
+        <label class="">
             @Html.RadioButtonFor(model => model, "false", new {@class = ""})
-            @Html.LabelFor(model => model, "Deny", new {@class = "", value="false"})
-        </div>
-        <div>
+            Deny
+        </label>
+        <label class="">
             @Html.RadioButtonFor(model => model, "true", new {@class = ""})
-            @Html.LabelFor(model => model, "Approve", new {@class = "", value="true"})
-        </div>
+            Approve
+        </label>
     </div>
 }
