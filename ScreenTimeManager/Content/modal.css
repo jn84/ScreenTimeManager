@@ -83,21 +83,31 @@ td.boolean-editor-table-cell {
 
 div.approve-deny-boolean-input-group {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  justify-content: center; }
 
 label.boolean-radio-label {
   padding: 5px 10px 5px 20px;
-  background: white;
+  background: #b3b3b3;
   color: black;
   border: 1px solid black;
   border-radius: 3px;
   width: 33%;
-  line-height: 2; }
+  line-height: 1.8;
+  font-size: 130%; }
+  label.boolean-radio-label:hover {
+    background: #e6e6e6; }
 
 input.boolean-radio {
   display: none;
   width: 33%; }
 
 input.boolean-radio[type="radio"]:checked + label.boolean-radio-label {
-  background-color: lightgreen; }
+  background-color: #7baa7b; }
+
+input.boolean-radio[type="radio"]:checked + label.boolean-radio-label::after {
+  content: "  \2714";
+  font-weight: bold;
+  text-align: right;
+  float: right; }
 

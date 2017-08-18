@@ -6,7 +6,7 @@
 <div class="rule-container">
     <!-- rule title colors depends on the rule type -->
     <div class="rule-title">
-        <input id="tab-@Model.Id" type="radio" name="tabs">
+        <input id="tab-@Model.Id" type="radio" name="tabs" class="rule-apply-radio">
 
         <label for="tab-@Model.Id" class="@(Model.RuleModifier == RuleModifier.Add ? "add" : "subtract")">
             @Model.RuleTitle

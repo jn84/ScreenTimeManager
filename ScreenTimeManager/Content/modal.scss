@@ -1,4 +1,5 @@
 ﻿$modal-border-radius: 10px;
+$main-content-background-color: #666666;
 
 .modal-content
 {
@@ -141,17 +142,24 @@ div.approve-deny-boolean-input-group
 {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 label.boolean-radio-label
 {
     padding: 5px 10px 5px 20px;
-    background: white;
+    background: lighten($main-content-background-color, 30%);
     color: black;
     border: 1px solid black;
     border-radius: 3px;
     width: 33%;
-    line-height: 2;
+    line-height: 1.8;
+    font-size: 130%;
+
+    &:hover
+    {
+        background: lighten($main-content-background-color, 50%);
+    }
 }
 
 input.boolean-radio 
@@ -162,5 +170,14 @@ input.boolean-radio
 
 input.boolean-radio[type="radio"]:checked + label.boolean-radio-label
 {
-    background-color: lightgreen;
+    background-color: mix($main-content-background-color, lightgreen, 50%);
+
+
+}
+input.boolean-radio[type="radio"]:checked + label.boolean-radio-label::after
+{
+    content: "  \2714";
+    font-weight: bold;
+    text-align: right;
+    float: right;
 }

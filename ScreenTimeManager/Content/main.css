@@ -232,12 +232,6 @@ input:checked ~ .rule-content {
   -o-transition: all .35s;
   transition: all .35s; }
 
-input[type=radio] + label::after {
-  content: "+"; }
-
-input[type=radio]:checked + label::after {
-  transform: rotate(315deg); }
-
 div.footer {
   display: flex;
   flex: 0 0 100%;
