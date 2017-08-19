@@ -43,7 +43,7 @@ namespace ScreenTimeManager.Models
 
 		[Required]
 		[DisplayName("Added")]
-		[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
+		[UIHint("TimeSpan")]
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
 

@@ -31,7 +31,7 @@ else
                         @Html.DisplayFor(m => item.SecondsAdded)
                     </td>
                     <td>
-                        @Html.DisplayTimeSpanAsDateTime(modelItem => item.RecordAddedTime)
+                        @Html.DisplayFor(modelItem => item.RecordAddedTime)
                     </td>
                     <td>
                         @Html.Encode(item.Rule.RuleTitle)

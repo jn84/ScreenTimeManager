@@ -71,14 +71,14 @@ namespace ScreenTimeManager.Helpers
 			return evaluation ? value : MvcHtmlString.Empty;
 		}
 
-		public static MvcHtmlString DisplayTimeSpanAsDateTime<TModel, TValue>(
-			this HtmlHelper<TModel> htmlHelper,
-			Expression<Func<TModel, TValue>> expression)
-		{
-			object o = expression.Compile().Invoke(htmlHelper.ViewData.Model);
-			if (o is TimeSpan)
-				return new MvcHtmlString(DateTime.Today.Add((TimeSpan) o).ToString("h\\:mm\\:ss tt"));
-			return htmlHelper.DisplayFor(expression);
-		}
+		//public static MvcHtmlString DisplayTimeSpanAsDateTime<TModel, TValue>(
+		//	this HtmlHelper<TModel> htmlHelper,
+		//	Expression<Func<TModel, TValue>> expression)
+		//{
+		//	object o = expression.Compile().Invoke(htmlHelper.ViewData.Model);
+		//	if (o is TimeSpan)
+		//		return new MvcHtmlString(DateTime.Today.Add((TimeSpan) o).ToString("h\\:mm\\:ss tt"));
+		//	return htmlHelper.DisplayFor(expression);
+		//}
 	}
 }
