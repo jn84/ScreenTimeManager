@@ -74,7 +74,8 @@ namespace ScreenTimeManager.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 			RuleBase ruleBase = db.Rules.Find(id);
-			if (ruleBase == null)
+			// Exclude the timer rule!
+			if (ruleBase == null || ruleBase.RuleType == RuleType.Timer)
 				return HttpNotFound();
 
 			if (ruleBase.RuleType == RuleType.Fixed)
