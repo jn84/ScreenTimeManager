@@ -26,5 +26,7 @@ namespace ScreenTimeManager.Models
 		{
 			return new ApplicationDbContext();
 		}
+
+		public System.Data.Entity.DbSet<ScreenTimeManager.Models.ApplicationUser> ApplicationUsers { get; set; }
 	}
 }

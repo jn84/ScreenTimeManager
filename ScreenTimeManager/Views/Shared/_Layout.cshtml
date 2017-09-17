@@ -58,6 +58,7 @@
             @Html.NavLink("Add/Remove Time", "Index", "RuleBases")
             @Html.NavLink("Add/Remove Rules", "Index", "ManageRules").If(User.IsInRole("Admin") || User.IsInRole("Parent"))
             @Html.NavLink("View Time History", "Index", "ScreenTimeHistory")
+            @Html.NavLink("Admin Panel", "Index", "ApplicationUsers").If(User.IsInRole("Admin"))
             @* Manage Users NavLink *@
         </div>
     </div>
