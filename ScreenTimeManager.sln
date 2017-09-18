@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTimeManager", "ScreenTimeManager\ScreenTimeManager.csproj", "{A71660C4-02E3-423F-94C4-CA06D8EAB3BE}"
 EndProject
@@ -13,22 +13,31 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenTimeManager.Models", 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Azure|Any CPU = Azure|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A71660C4-02E3-423F-94C4-CA06D8EAB3BE}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{A71660C4-02E3-423F-94C4-CA06D8EAB3BE}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{A71660C4-02E3-423F-94C4-CA06D8EAB3BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A71660C4-02E3-423F-94C4-CA06D8EAB3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A71660C4-02E3-423F-94C4-CA06D8EAB3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A71660C4-02E3-423F-94C4-CA06D8EAB3BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D927DF6-5168-4730-80BC-76B390597F95}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{8D927DF6-5168-4730-80BC-76B390597F95}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{8D927DF6-5168-4730-80BC-76B390597F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8D927DF6-5168-4730-80BC-76B390597F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D927DF6-5168-4730-80BC-76B390597F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D927DF6-5168-4730-80BC-76B390597F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2D3F5F5-2ED7-4518-B8FC-33FE1D092C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{638ED674-9C10-42D9-93A7-AC11F2DC29DA}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{638ED674-9C10-42D9-93A7-AC11F2DC29DA}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{638ED674-9C10-42D9-93A7-AC11F2DC29DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{638ED674-9C10-42D9-93A7-AC11F2DC29DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{638ED674-9C10-42D9-93A7-AC11F2DC29DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
