@@ -17,6 +17,9 @@ namespace ScreenTimeManager.Controllers
 			// If dateId is null, give back today's date
 			int selectedIndex = 0;
 
+			if (!db.HistoryDates.Any())
+				return View();
+
 			// Ick. Maybe a way to only grab the three we need?
 			// TODO: Rework this. Grabbing the whole list is a waste
 			List<TimeHistoryDate> hbList = db.HistoryDates.OrderBy(hb => hb.EntriesDate).ToList();

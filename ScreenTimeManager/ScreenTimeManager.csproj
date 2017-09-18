@@ -278,9 +278,9 @@
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Resource Include="ConnectionString.config">
+    <None Include="ConnectionString.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </None>
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\ScreenTimeManager-test - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />

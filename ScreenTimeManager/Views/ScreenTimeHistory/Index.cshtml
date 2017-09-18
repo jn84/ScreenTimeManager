@@ -15,13 +15,20 @@
     @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory", DatePage.Next)
 </div>
 
-@if (Model.Any(tstc => !tstc.IsDenied && tstc.IsFinalized))
+@if (Model == null)
 {
-    Html.RenderPartial("_ApprovedTimeChanges", Model);
-    <hr/>
+    Html.Encode(@"Nothing to see here.");
 }
-
-@if (Model.Any(tstc => tstc.IsDenied && tstc.IsFinalized))
+else
 {
-    Html.RenderPartial("_DeniedRequests", Model);
+    if (Model.Any(tstc => !tstc.IsDenied && tstc.IsFinalized))
+    {
+        Html.RenderPartial("_ApprovedTimeChanges", Model);
+        <hr/>
+    }
+
+    if (Model.Any(tstc => tstc.IsDenied && tstc.IsFinalized))
+    {
+        Html.RenderPartial("_DeniedRequests", Model);
+    }
 }
