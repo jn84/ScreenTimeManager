@@ -15,7 +15,7 @@
     @Html.PagedDateActionLink(ViewBag.NextDate as TimeHistoryDate, "Index", "ScreenTimeHistory", DatePage.Next)
 </div>
 
-@if (Model == null)
+@if (Model == null || !Model.Any())
 {
     Html.Encode(@"Nothing to see here.");
 }

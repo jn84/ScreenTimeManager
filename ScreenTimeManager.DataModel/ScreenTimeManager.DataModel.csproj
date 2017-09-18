@@ -144,6 +144,10 @@
     <Compile Include="Migrations\201709181822438_AddRecordAddedDateTimeColumn.Designer.cs">
       <DependentUpon>201709181822438_AddRecordAddedDateTimeColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709182150081_RemoveRecordAddedTimeColumns.cs" />
+    <Compile Include="Migrations\201709182150081_RemoveRecordAddedTimeColumns.Designer.cs">
+      <DependentUpon>201709182150081_RemoveRecordAddedTimeColumns.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataContexts\ScreenTimeManagerContext.cs" />
@@ -154,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709181822438_AddRecordAddedDateTimeColumn.resx">
       <DependentUpon>201709181822438_AddRecordAddedDateTimeColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709182150081_RemoveRecordAddedTimeColumns.resx">
+      <DependentUpon>201709182150081_RemoveRecordAddedTimeColumns.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <EmbeddedResource Include="Initializers\SeedData\rulebases.csv" />

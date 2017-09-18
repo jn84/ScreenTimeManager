@@ -83,7 +83,7 @@ namespace ScreenTimeManager.DataModel.DataContexts
 				entry.TimeHistoryDateId = date.Id;
 				entry.TimeHistoryDate = date;
 
-				entry.RecordAddedTime = DateTime.Now.TimeOfDay;
+				entry.RecordAddedDateTime = DateTime.Now;
 			}
 
 			return base.SaveChanges();

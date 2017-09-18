@@ -13,11 +13,15 @@ namespace ScreenTimeManager.Models.Interfaces
 		[ForeignKey("TimeHistoryDateId")]
 		TimeHistoryDate TimeHistoryDate { get; set; }
 
+		//[Required]
+		//[DisplayName("Added")]
+		//[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
+		//[Column(TypeName = "Time")]
+		//TimeSpan RecordAddedTime { get; set; }
+
 		[Required]
 		[DisplayName("Added")]
-		[DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}")]
-		[Column(TypeName = "Time")]
-		TimeSpan RecordAddedTime { get; set; }
+		DateTime RecordAddedDateTime { get; set; }
 
 		/// <summary>
 		/// If true, will skip setting date/time values in implementing class

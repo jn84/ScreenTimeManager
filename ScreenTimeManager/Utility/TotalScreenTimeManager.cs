@@ -309,7 +309,7 @@ namespace ScreenTimeManager.Utility
 						// The workaround is to recreate the timer's entry in the time changed table, 
 						// moving it to the new day.
 						// This has the unfortunate side effect of falsifying the timer's beginning timestamp.
-						if (timeChanged.RecordAddedTime + TimeSpan.FromMilliseconds(timeElapsedMilliseconds) > TimeSpan.FromDays(1))
+						if (timeChanged.RecordAddedDateTime.TimeOfDay + TimeSpan.FromMilliseconds(timeElapsedMilliseconds) > TimeSpan.FromDays(1))
 						{
 							ctx.TimeChanged.Remove(timeChanged);
 							ctx.SaveChanges();

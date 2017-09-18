@@ -16,13 +16,6 @@ namespace ScreenTimeManager.DataModel.Migrations
 			    "	INNER JOIN dbo.TimeHistoryDates " +
 			    "	ON dbo.TotalScreenTimeChangeds.TimeHistoryDateId = dbo.TimeHistoryDates.Id");
 
-	        //UPDATE table1
-	        //SET table1.Price = table2.price
-	        //FROM table1  INNER JOIN  table2 ON table1.id = table2.id
-
-
-
-
 			AddColumn("dbo.TotalScreenTimeChangedRequests", "RecordAddedDateTime", c => c.DateTime(nullable: false, precision: 7, storeType: "datetime2"));
 
 	        Sql("UPDATE dbo.TotalScreenTimeChangedRequests " +

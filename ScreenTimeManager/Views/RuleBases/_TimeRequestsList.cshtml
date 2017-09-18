@@ -17,7 +17,7 @@ else
                     @Html.Encode(@"Time Charged")
                 </th>
                 <th class="rule-table">
-                    @Html.DisplayNameFor(model => model.RecordAddedTime)
+                    @Html.DisplayNameFor(model => model.RecordAddedDateTime)
                 </th>
                 <th class="rule-table">@Html.Encode(@"Rule")</th>
                 <th class="rule-table">@Html.Encode(@"Requested By")</th>
@@ -31,7 +31,7 @@ else
                         @Html.DisplayFor(m => item.SecondsAdded)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RecordAddedTime)
+                        @Html.DisplayFor(modelItem => item.RecordAddedDateTime)
                     </td>
                     <td>
                         @Html.Encode(item.Rule.RuleTitle)
