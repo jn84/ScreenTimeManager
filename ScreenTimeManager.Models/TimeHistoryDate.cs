@@ -22,5 +22,7 @@ namespace ScreenTimeManager.Models
 		public int StartOfDayTotalSeconds { get; set; }
 
 		public virtual ICollection<TotalScreenTimeChanged> EntriesForThisDate { get; set; }
+
+		public virtual ICollection<TotalScreenTimeChangedRequest> RequestEntriesForThisDate { get; set; }
 	}
 }

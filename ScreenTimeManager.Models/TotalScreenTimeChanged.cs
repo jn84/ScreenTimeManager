@@ -48,6 +48,10 @@ namespace ScreenTimeManager.Models
 		[Column(TypeName = "Time")]
 		public TimeSpan RecordAddedTime { get; set; }
 
+		[Required]
+		[DisplayName("Added")]
+		public DateTime RecordAddedDateTime { get; set; }
+
 		[NotMapped]
 		[ScaffoldColumn(false)]
 		public bool IsOverrideDateTimeCreated { get; set; }

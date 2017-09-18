@@ -15,6 +15,14 @@ namespace ScreenTimeManager.DataModel.DataContexts
 		public DbSet<TimeHistoryDate> HistoryDates { get; set; }
 		public DbSet<TotalScreenTimeChangedRequest> TimeRequests { get; set; }
 
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			modelBuilder.Properties<DateTime>()
+				.Configure(c => c.HasColumnType("datetime2"));
+
+			base.OnModelCreating(modelBuilder);
+		}
+
 		// Can we fit all the date handling code here?
 		public override int SaveChanges()
 		{
