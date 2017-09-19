@@ -41,12 +41,6 @@ namespace ScreenTimeManager.Models
 		[ForeignKey("TimeHistoryDateId")]
 		public virtual TimeHistoryDate TimeHistoryDate { get; set; }
 
-		//[Required]
-		//[DisplayName("Added")]
-		//[UIHint("TimeSpan")]
-		//[Column(TypeName = "Time")]
-		//public TimeSpan RecordAddedTime { get; set; }
-
 		[Required]
 		[DisplayName("Added")]
 		[DisplayFormat(DataFormatString = "{0:T}")]
