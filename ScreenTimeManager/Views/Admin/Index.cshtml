@@ -1,0 +1,54 @@
+﻿@using ScreenTimeManager.Helpers
+@model ScreenTimeManager.Models.AdminUsersViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Parent"))
+{
+    <div class="create-rule">
+        @Html.ActionLink("Create User", "CreateUser", "Admin", null, new { data_modal = "", @class = "link-create-rule" })
+        @Html.ActionLink("Create Role", "CreateRole", "Admin", null, new { data_modal = "", @class = "link-create-rule" })
+    </div>
+}
+<div class="rule-table">
+    <h1 class="rule-table-header">Users</h1>
+    <table class="rule-table">
+        <tr>
+            <th class="rule-table">
+                @Html.Encode(@"Username")
+            </th>
+            <th class="rule-table">
+                @Html.Encode(@"Roles")
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th class="rule-table">
+                    Options
+                </th>
+            }
+        </tr>
+
+        @foreach (var user in Model.Users)
+        {
+            <tr class="table-rule-entry">
+                <td>
+                    <p>@user.UserName</p>
+                </td>
+                <td>
+                    <p>@string.Join(", ", user.Roles.Select(r => r.))</p>
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td class="rule-options-table-cell">
+                        @Html.ActionLink("Edit Roles", "EditUserRoles", "Admin", new { id = user.Id }, new { data_modal = "", @class = "rule-options-link" }).If(User.IsInRole("Admin"))
+                        @Html.ActionLink("Delete User", "DeleteUser", "Admin", new { id = user.Id }, new { data_modal = "", @class = "rule-options-link delete" }).If(User.IsInRole("Admin"))
+                    </td>
+}
+            </tr>
+        }
+    </table>
+</div>
+

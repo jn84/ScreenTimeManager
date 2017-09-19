@@ -83,6 +83,25 @@ namespace ScreenTimeManager
 		}
 	}
 
+	public class ApplicationRoleManager : RoleManager<IdentityRole>
+	{
+		public ApplicationRoleManager(IRoleStore<IdentityRole, string> store) : base(store)
+		{
+		}
+
+		public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
+		{
+
+			var one = context.Get<ApplicationDbContext>();
+
+			if (one == null)
+				throw new Exception("BUTT");
+
+			var roleStore = new RoleStore<IdentityRole>(one);
+			return new ApplicationRoleManager(roleStore);
+		}
+	}
+
 	// Configure the application sign-in manager which is used in this application.
 	public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
 	{
