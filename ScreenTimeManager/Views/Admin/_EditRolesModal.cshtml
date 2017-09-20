@@ -18,7 +18,7 @@
         @Html.HiddenFor(model => model.UserId)
 
         <hr />
-
+        @Html.ValidationMessageFor(model => model.UserRoles, "", new {@class = "validation-error-text"})
         @Html.ListBoxFor(model => model.UserRoles, new SelectList(Model.AllRoles), new { @class = "form-control", size = "15" })
 
     </div>

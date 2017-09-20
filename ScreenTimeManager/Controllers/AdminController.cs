@@ -85,38 +85,28 @@ namespace ScreenTimeManager.Controllers
 		{
 			List<string> allRoles = RoleManager.Roles.Select(r => r.Name).ToList();
 
-			// Methods are looking for role names
-
-			Debug.WriteLine("-------------------------------------------");
 			foreach (var role in roleData.UserRoles)
-				Debug.WriteLine(role);
-			Debug.WriteLine("-------------------------------------------");
-			foreach (var role in allRoles.Except(roleData.UserRoles))
-				Debug.WriteLine(role);
-			Debug.WriteLine("-------------------------------------------");
+				if (!RoleManager.RoleExists(role))
+					ModelState.AddModelError("UserRoles", @"No such roll: " + role);
 
-			// this is a security hole. Someone could change the user id in form before submitting.
+			// How to ensure UserId wasn't forged?
 
-			var removeResult = UserManager.RemoveFromRoles(roleData.UserId, allRoles.ToArray());
-			Debug.WriteLine(removeResult.Succeeded ? "Remove roles succeeded" : "Remove roles failed");
-			foreach (var error in removeResult.Errors)
-				Debug.WriteLine(error);
+			if (ModelState.IsValid)
+			{
+				foreach (var role in roleData.UserRoles)
+					if (!UserManager.IsInRole(roleData.UserId, role))
+						UserManager.AddToRole(roleData.UserId, role);
 
-			var addResult = UserManager.AddToRoles(roleData.UserId, roleData.UserRoles.ToArray());
-			Debug.WriteLine(addResult.Succeeded ? "Add roles succeeded" : "Add roles failed");
-			foreach (var error in addResult.Errors)
-				Debug.WriteLine(error);
+				foreach (var role in allRoles.Except(roleData.UserRoles))
+					if (UserManager.IsInRole(roleData.UserId, role))
+						UserManager.RemoveFromRole(roleData.UserId, role);
 
+				return Json(new {success = ModelState.IsValid, redirectUrl = Url.Action("Index")});
+			}
 
+			roleData.AllRoles = allRoles;
 
-			// Check if "user" is assigned to the correct roles.
-
-
-			//UserManager.Update(user);
-
-
-
-			return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
+			return PartialView("_EditRolesModal", roleData);
 		}
 
 		public ActionResult DeleteUser(string id)
