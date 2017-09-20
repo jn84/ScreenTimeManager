@@ -1,0 +1,39 @@
+﻿@model ScreenTimeManager.Models.DeleteUserViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <p class="modal-title" id="myModalLabel">Delete User</p>
+</div>
+
+@using (Html.BeginForm(Html.BeginForm(ViewContext.RouteData.GetRequiredString("action"), "Admin", null, FormMethod.Post, new { id = "modalForm" })))
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+        <p>
+            <strong>Delete User: @Model.Username</strong>
+        </p>
+        
+        @Html.HiddenFor(model => model.Username)
+        @Html.HiddenFor(model => model.UserId)
+
+        <hr/>
+        
+        <p class="validation-error-text">Deleting User @Model.Username</p>
+        <p class="validation-error-text">THIS CANNOT BE UNDONE</p>
+        
+        <hr/>
+        
+        @Html.EditorFor(model => model.IsConfirmed)
+        @Html.LabelFor(model => model.IsConfirmed)
+
+    </div>
+    <div class="modal-footer">
+        <div class="button-container">
+            <button class="confirm-apply" type="button" data-dismiss="modal">Cancel</button>
+        </div>
+        <div class="button-container">
+            <button class="cancel-apply" type="submit" id="modal-submit">Confirm Delete</button>
+        </div>
+    </div>
+}

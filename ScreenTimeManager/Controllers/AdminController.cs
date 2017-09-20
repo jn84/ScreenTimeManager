@@ -112,14 +112,20 @@ namespace ScreenTimeManager.Controllers
 
 		public ActionResult DeleteUser(string id)
 		{
-			return View();
+			return PartialView(
+				"_DeleteUserModal", 
+				new DeleteUserViewModel { UserId = id, Username = UserManager.FindById(id).UserName });
 		}
 
 		[HttpPost]
 		[ActionName("DeleteUser")]
-		public ActionResult DeleteUserConfirmed(string id)
-	    {
-		    return View();
-	    }
+		[ValidateAntiForgeryToken]
+		public ActionResult DeleteUserConfirmed([Bind(Include = "UserId, IsConfirmed")] DeleteUserViewModel deleteUserViewModel)
+		{
+			if (deleteUserViewModel.IsConfirmed)
+				UserManager.Delete(UserManager.FindById(deleteUserViewModel.UserId));
+
+			return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
+		}
 	}
 }
