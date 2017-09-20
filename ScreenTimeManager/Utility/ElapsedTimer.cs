@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
 
 namespace ScreenTimeManager.Utility
 {
+	public class TimerManager
+	{
+		public static List<ElapsedTimer> ActiveTimers = new List<ElapsedTimer>();
+	}
+
+
 	public static class ElapsedTimer
 	{
 		// ### Begin event code TODO: Move events to partial?
