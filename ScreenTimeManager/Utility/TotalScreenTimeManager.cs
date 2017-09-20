@@ -27,8 +27,6 @@ namespace ScreenTimeManager.Utility
 		// If the timer IS running, update the last used ScreenTimeHistory object with the new time elapsed
 		private static TimerState _timerState = TimerState.Stopped;
 
-
-
 		// ### End Event Code
 
 

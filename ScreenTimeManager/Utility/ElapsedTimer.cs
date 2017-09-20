@@ -27,10 +27,10 @@ namespace ScreenTimeManager.Utility
 		/// <returns></returns>
 		public static Guid GenerateOid(IUniqueObject o)
 		{
-			Debug.WriteLine(o.GetType().ToString() + o.Id);
-			Debug.WriteLine(GuidUtility.Create(GuidUtility.IsoOidNamespace, o.GetType().ToString() + o.Id).ToString());
 			return GuidUtility.Create(GuidUtility.IsoOidNamespace, o.GetType().ToString() + o.Id);
 		}
+
+		// This class should be the only subscriber to ElapsedTimer events
 	}
 	
 	public class ElapsedTimer
@@ -43,7 +43,7 @@ namespace ScreenTimeManager.Utility
 
 		private Stopwatch _stopWatch;
 
-		private int _updateInterval = 10000;
+		private int _updateInterval = 10000; // 10 seconds
 
 		// ### End event code
 
