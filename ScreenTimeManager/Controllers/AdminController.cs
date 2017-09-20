@@ -98,6 +98,7 @@ namespace ScreenTimeManager.Controllers
 					if (!UserManager.IsInRole(roleData.UserId, role))
 						UserManager.AddToRole(roleData.UserId, role);
 
+
 				foreach (var role in allRoles.Except(roleData.UserRoles))
 					if (UserManager.IsInRole(roleData.UserId, role))
 						UserManager.RemoveFromRole(roleData.UserId, role);
