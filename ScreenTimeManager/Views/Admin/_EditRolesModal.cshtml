@@ -19,7 +19,7 @@
 
         <hr />
 
-        @Html.ListBoxFor(model => model.UserRoles, new SelectList(Model.AllRoles, "RoleId", "RoleName"), new { @class = "form-control", size = "15" })
+        @Html.ListBoxFor(model => model.UserRoles, new SelectList(Model.AllRoles), new { @class = "form-control", size = "15" })
 
     </div>
     <div class="modal-footer">

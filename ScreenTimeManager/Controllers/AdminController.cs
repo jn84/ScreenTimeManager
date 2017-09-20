@@ -56,20 +56,20 @@ namespace ScreenTimeManager.Controllers
 				
 			username = UserManager.Users.Single(u => u.Id == id).UserName;
 
-			List<UserRole> allRoles = new List<UserRole>();
+			List<string> allRoles = RoleManager.Roles.Select(r => r.Name).ToList();
 
-			foreach (var aRole in RoleManager.Roles)
-			{ 
-				allRoles.Add(new UserRole { RoleName = aRole.Name, RoleId = aRole.Id });
-			}
-
-			List<string> userRoles = 
-				UserManager
-				.Users
-				.Single(u => u.Id == id)
-				.Roles
+			IEnumerable<string> userRolesEnumerable = 
+				UserManager.Users
+				.Single(u => u.Id == id).Roles
 				.Select(r => r.RoleId)
-				.ToList();
+				.AsEnumerable();
+
+			List<string> userRoles = new List<string>();
+
+			foreach (var role in userRolesEnumerable)
+			{
+				userRoles.Add(RoleManager.Roles.Single(r => r.Id == role).Name);
+			}
 
 			var vm = new EditRolesViewModel(username, id, allRoles, userRoles);
 
@@ -83,16 +83,26 @@ namespace ScreenTimeManager.Controllers
 		[ValidateAntiForgeryToken]
 	    public ActionResult EditRoles([Bind(Include = "Username, UserId, UserRoles")] EditRolesViewModel roleData)
 		{
-			List<string> allRoles = RoleManager.Roles.Select(r => r.Id).ToList();
+			List<string> allRoles = RoleManager.Roles.Select(r => r.Name).ToList();
 
 			var user = UserManager.Users.Single(u => u.Id == roleData.UserId);
 
 			// Methods are looking for role names
 
+			Debug.WriteLine("-------------------------------------------");
+			foreach (var role in roleData.UserRoles)
+				Debug.WriteLine(role);
+			Debug.WriteLine("-------------------------------------------");
+			foreach (var role in allRoles.Except(roleData.UserRoles))
+				Debug.WriteLine(role);
+			Debug.WriteLine("-------------------------------------------");
+
 			UserManager.AddToRoles(user.Id, roleData.UserRoles.ToArray());
 			UserManager.RemoveFromRoles(user.Id, allRoles.Except(roleData.UserRoles).ToArray());
 
 			UserManager.Update(user);
+
+
 
 			return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
 		}

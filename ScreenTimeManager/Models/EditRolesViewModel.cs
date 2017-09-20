@@ -17,12 +17,12 @@ namespace ScreenTimeManager.Models
 	{
 		public string Username { get; set; }
 		public string UserId { get; set; }
-		public List<UserRole> AllRoles { get; set; }
+		public List<string> AllRoles { get; set; }
 		public List<string> UserRoles { get; set; }
 
 		public EditRolesViewModel() { }
 
-		public EditRolesViewModel(string username, string userId, List<UserRole> allRoles, List<string> userRoles)
+		public EditRolesViewModel(string username, string userId, List<string> allRoles, List<string> userRoles)
 		{
 			Username = username;
 			UserId = userId;
