@@ -7,7 +7,7 @@ using ScreenTimeManager.Models.Interfaces;
 namespace ScreenTimeManager.Models
 {
 	// Model for Child user add/remove time requests
-	public class TotalScreenTimeChangedRequest : IDateTimeCreated
+	public class TotalScreenTimeChangedRequest : IDateTimeCreated, IUniqueObject
 	{
 		[Key]
 		[ScaffoldColumn(false)]

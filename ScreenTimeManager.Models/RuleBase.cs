@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using ScreenTimeManager.Models.Enums;
+using ScreenTimeManager.Models.Interfaces;
 
 namespace ScreenTimeManager.Models
 {
 	// User RuleBase combined with input to create a TotalScreenTimeChanged entry
 	// These rules will be listed in the rule use page
-	public class RuleBase
+	public class RuleBase : IUniqueObject
 	{
 		[Key]
 		[ScaffoldColumn(false)]

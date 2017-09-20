@@ -6,7 +6,7 @@ using ScreenTimeManager.Models.Interfaces;
 
 namespace ScreenTimeManager.Models
 {
-	public class TotalScreenTimeChanged : IDateTimeCreated
+	public class TotalScreenTimeChanged : IDateTimeCreated, IUniqueObject
 	{
 		[Key]
 		[ScaffoldColumn(false)]

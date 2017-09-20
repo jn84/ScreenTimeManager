@@ -2,30 +2,52 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
+using ScreenTimeManager.Models.Interfaces;
 
 namespace ScreenTimeManager.Utility
 {
-	public class TimerManager
+	public enum TimerState
 	{
-		public static List<ElapsedTimer> ActiveTimers = new List<ElapsedTimer>();
+		Stopped = 0,
+		Begin = 1,
+		Running = 2,
+		End = 3
 	}
 
+	public static class TimerManager
+	{
+		private static Dictionary<Guid, ElapsedTimer> _activeTimers = new Dictionary<Guid, ElapsedTimer>();
 
-	public static class ElapsedTimer
+		/// <summary>
+		/// Generate a unique object id
+		/// </summary>
+		/// <param name="className"></param>
+		/// <param name="objectId"></param>
+		/// <param name="o"></param>
+		/// <returns></returns>
+		public static Guid GenerateOid(IUniqueObject o)
+		{
+			Debug.WriteLine(o.GetType().ToString() + o.Id);
+			Debug.WriteLine(GuidUtility.Create(GuidUtility.IsoOidNamespace, o.GetType().ToString() + o.Id).ToString());
+			return GuidUtility.Create(GuidUtility.IsoOidNamespace, o.GetType().ToString() + o.Id);
+		}
+	}
+	
+	public class ElapsedTimer
 	{
 		// ### Begin event code TODO: Move events to partial?
 
 		public delegate void ElapsedTimerEventHandler(object sender, ElapsedTimerEventArgs e);
 
-		private static Timer _timer;
+		private Timer _timer;
 
-		private static Stopwatch _stopWatch;
+		private Stopwatch _stopWatch;
 
-		private static int _updateInterval = 10000;
+		private int _updateInterval = 10000;
 
 		// ### End event code
 
-		public static int UpdateInterval
+		public int UpdateInterval
 		{
 			get => _updateInterval;
 			set
@@ -36,25 +58,25 @@ namespace ScreenTimeManager.Utility
 			}
 		}
 
-		public static TimerState State { get; private set; } = TimerState.Stopped;
+		public TimerState State { get; private set; } = TimerState.Stopped;
 
 		// Explanation: "Why = delegate {}"
 		// https://stackoverflow.com/questions/289002/how-to-raise-custom-event-from-a-static-class
 		public static event ElapsedTimerEventHandler ElapsedTimerNotifier = delegate { };
 
-		private static void OnElapsedTimerNotify(ElapsedTimerEventArgs e)
+		private void OnElapsedTimerNotify(ElapsedTimerEventArgs e)
 		{
 			// Sender is null since "this" is static
 			ElapsedTimerNotifier.Invoke(null, e);
 		}
 
 		// Timer triggers this, which in turn triggers the event
-		private static void OnElapsedTimerEvent(object source, ElapsedEventArgs e)
+		private void OnElapsedTimerEvent(object source, ElapsedEventArgs e)
 		{
 			OnElapsedTimerNotify(new ElapsedTimerEventArgs(State, GetTimeElapsed()));
 		}
 
-		public static bool IsRunning()
+		public bool IsRunning()
 		{
 			return _timer != null && _timer.Enabled && _stopWatch.IsRunning;
 			// If one of these conditions is not like the others, something is broken
@@ -62,7 +84,7 @@ namespace ScreenTimeManager.Utility
 		}
 
 		// Reset the object state to not running
-		public static void Reset()
+		public void Reset()
 		{
 			_timer.Dispose();
 			_timer = null;
@@ -70,7 +92,7 @@ namespace ScreenTimeManager.Utility
 			State = TimerState.Stopped;
 		}
 
-		public static void ToggleTimer()
+		public void ToggleTimer()
 		{
 			if (State == TimerState.Running)
 			{
@@ -80,7 +102,7 @@ namespace ScreenTimeManager.Utility
 			BeginTimer();
 		}
 
-		private static void BeginTimer()
+		private void BeginTimer()
 		{
 			_timer = new Timer(_updateInterval)
 			{
@@ -100,7 +122,7 @@ namespace ScreenTimeManager.Utility
 			State = TimerState.Running;
 		}
 
-		private static void EndTimer()
+		private void EndTimer()
 		{
 			if (_stopWatch != null && _timer != null)
 			{
@@ -119,7 +141,7 @@ namespace ScreenTimeManager.Utility
 		///     If the timer is not running, returns 0
 		/// </summary>
 		/// <returns>Returns the current time elapsed of the timer in milliseconds</returns>
-		public static long GetTimeElapsed()
+		public long GetTimeElapsed()
 		{
 			if (IsRunning())
 				return _stopWatch.ElapsedMilliseconds;
@@ -127,21 +149,13 @@ namespace ScreenTimeManager.Utility
 			return 0;
 		}
 
-		public static long GetTimeElapsedInSeconds()
+		public long GetTimeElapsedInSeconds()
 		{
 			if (IsRunning())
 				return _stopWatch.ElapsedMilliseconds / 1000;
 
 			return 0;
 		}
-	}
-
-	public enum TimerState
-	{
-		Stopped = 0,
-		Begin = 1,
-		Running = 2,
-		End = 3
 	}
 
 	public class ElapsedTimerEventArgs : EventArgs

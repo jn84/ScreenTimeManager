@@ -29,7 +29,7 @@ namespace ScreenTimeManager.Hubs
 
 		public void SyncTimer()
 		{
-			UpdateClientsTimerState(ElapsedTimer.State, TotalScreenTimeManager.GetTotalTime_Now());
+			UpdateClientsTimerState(TimerState.Stopped, TotalScreenTimeManager.GetTotalTime_Now());
 		}
 
 
@@ -37,7 +37,7 @@ namespace ScreenTimeManager.Hubs
 
 		public void ToggleTimerState()
 		{
-			ElapsedTimer.ToggleTimer();
+			//ElapsedTimer.ToggleTimer();
 		}
 	}
 }

@@ -53,6 +53,7 @@
     <Compile Include="Enums\RuleModifier.cs" />
     <Compile Include="Enums\RuleType.cs" />
     <Compile Include="Interfaces\IDateTimeCreated.cs" />
+    <Compile Include="Interfaces\IUniqueObject.cs" />
     <Compile Include="TimeHistoryDate.cs" />
     <Compile Include="TimeSubmission.cs" />
     <Compile Include="TotalScreenTimeChanged.cs" />
