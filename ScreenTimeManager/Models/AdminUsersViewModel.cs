@@ -11,7 +11,7 @@ namespace ScreenTimeManager.Models
 		private IQueryable<ApplicationUser> _users;
 		private IQueryable<IdentityRole> _roles;
 
-		public AdminUsersViewModel() { }
+		private AdminUsersViewModel() { }
 
 		public AdminUsersViewModel(IQueryable<ApplicationUser> users, IQueryable<IdentityRole> roles)
 		{

@@ -91,13 +91,7 @@ namespace ScreenTimeManager
 
 		public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
 		{
-
-			var one = context.Get<ApplicationDbContext>();
-
-			if (one == null)
-				throw new Exception("BUTT");
-
-			var roleStore = new RoleStore<IdentityRole>(one);
+			var roleStore = new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>());
 			return new ApplicationRoleManager(roleStore);
 		}
 	}

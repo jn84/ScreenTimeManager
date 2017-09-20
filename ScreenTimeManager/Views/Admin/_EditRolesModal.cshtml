@@ -1,0 +1,35 @@
+﻿@model ScreenTimeManager.Models.EditRolesViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <p class="modal-title" id="myModalLabel">Modify User Roles</p>
+</div>
+
+@using (Html.BeginForm(Html.BeginForm(ViewContext.RouteData.GetRequiredString("action"), "Admin", null, FormMethod.Post, new { id = "modalForm" })))
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+        <p>
+            <strong>Editing roles for: @Model.Username</strong>
+        </p>
+
+        @Html.HiddenFor(model => model.Username)
+        @Html.HiddenFor(model => model.UserId)
+
+        <hr />
+
+        @Html.ListBoxFor(model => model.UserRoles, new SelectList(Model.AllRoles, "RoleId", "RoleName"), new { @class = "form-control", size = "15" })
+
+    </div>
+    <div class="modal-footer">
+        <div class="button-container">
+            <button class="cancel-apply" type="button" data-dismiss="modal">Cancel</button>
+        </div>
+        <div class="button-container">
+            <button class="confirm-apply" type="submit" id="modal-submit">Update Roles</button>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/MultiSelect")

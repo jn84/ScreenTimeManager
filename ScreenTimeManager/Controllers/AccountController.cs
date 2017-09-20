@@ -135,11 +135,11 @@ namespace ScreenTimeManager.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var user = new ApplicationUser {UserName = model.UserName, Email = model.Email};
+				var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
 
 				// Default role
 				// Admin panel, when built/implemented, can change roles
-				user.Roles.Add(new IdentityUserRole {RoleId = "Child"});
+				user.Roles.Add(new IdentityUserRole { RoleId = "Guest" });
 
 				IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

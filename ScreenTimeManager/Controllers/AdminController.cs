@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -6,17 +7,22 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.WebPages;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using ScreenTimeManager.Models;
 
 namespace ScreenTimeManager.Controllers
 {
-    public class AdminController : Controller
+	[Authorize(Roles = "Admin")]
+	public class AdminController : Controller
     {
 
 	    private ApplicationUserManager _userManager;
 	    private ApplicationRoleManager _roleManager;
 
+		// Required -- This is why the properties will populate the values if not done by the other constructor
 		public AdminController() { }
 
 	    public AdminController(ApplicationUserManager userManager, ApplicationRoleManager roleManager)
@@ -40,33 +46,67 @@ namespace ScreenTimeManager.Controllers
 		// GET: Admin
 		public ActionResult Index()
 		{
-			foreach (var user in UserManager.Users)
-				Debug.WriteLine(user.UserName);
-			foreach (var role in RoleManager.Roles)
-				Debug.WriteLine(role.Name);
-
-
 			return View(new AdminUsersViewModel(UserManager.Users, RoleManager.Roles));
         }
 
-	    public ActionResult CreateUser()
-	    {
-		    return View();
-	    }
+		// GET
+		public ActionResult EditRoles(string id)
+		{
+			string username = "";
+				
+			username = UserManager.Users.Single(u => u.Id == id).UserName;
 
-	    public ActionResult CreateRole()
-	    {
-		    return View();
-	    }
+			List<UserRole> allRoles = new List<UserRole>();
 
-	    public ActionResult EditUserRoles(string id)
-	    {
-		    return View();
-	    }
+			foreach (var aRole in RoleManager.Roles)
+			{ 
+				allRoles.Add(new UserRole { RoleName = aRole.Name, RoleId = aRole.Id });
+			}
 
-	    public ActionResult DeleteUser(string id)
+			List<string> userRoles = 
+				UserManager
+				.Users
+				.Single(u => u.Id == id)
+				.Roles
+				.Select(r => r.RoleId)
+				.ToList();
+
+			var vm = new EditRolesViewModel(username, id, allRoles, userRoles);
+
+			Debug.WriteLine(userRoles.Count);
+
+			return PartialView("_EditRolesModal", vm);
+		}
+
+		// POST
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+	    public ActionResult EditRoles([Bind(Include = "Username, UserId, UserRoles")] EditRolesViewModel roleData)
+		{
+			List<string> allRoles = RoleManager.Roles.Select(r => r.Id).ToList();
+
+			var user = UserManager.Users.Single(u => u.Id == roleData.UserId);
+
+			// Methods are looking for role names
+
+			UserManager.AddToRoles(user.Id, roleData.UserRoles.ToArray());
+			UserManager.RemoveFromRoles(user.Id, allRoles.Except(roleData.UserRoles).ToArray());
+
+			UserManager.Update(user);
+
+			return Json(new { success = ModelState.IsValid, redirectUrl = Url.Action("Index") });
+		}
+
+		public ActionResult DeleteUser(string id)
 		{
 			return View();
 		}
-    }
+
+		[HttpPost]
+		[ActionName("DeleteUser")]
+		public ActionResult DeleteUserConfirmed(string id)
+	    {
+		    return View();
+	    }
+	}
 }

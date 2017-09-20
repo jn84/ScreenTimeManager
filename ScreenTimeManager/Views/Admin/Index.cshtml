@@ -1,4 +1,6 @@
-﻿@using ScreenTimeManager.Helpers
+﻿@using System.IdentityModel.Claims
+@using Microsoft.Ajax.Utilities
+@using ScreenTimeManager.Helpers
 @model ScreenTimeManager.Models.AdminUsersViewModel
 
 @{
@@ -6,13 +8,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (User.IsInRole("Admin") || User.IsInRole("Parent"))
-{
-    <div class="create-rule">
-        @Html.ActionLink("Create User", "CreateUser", "Admin", null, new { data_modal = "", @class = "link-create-rule" })
-        @Html.ActionLink("Create Role", "CreateRole", "Admin", null, new { data_modal = "", @class = "link-create-rule" })
-    </div>
-}
 <div class="rule-table">
     <h1 class="rule-table-header">Users</h1>
     <table class="rule-table">
@@ -38,12 +33,23 @@
                     <p>@user.UserName</p>
                 </td>
                 <td>
-                    <p>@string.Join(", ", user.Roles.Select(r => r.))</p>
+                    @*TODO: Fix this. This is horrible.*@
+                    @{
+                        var roleList = user.Roles;
+                        List<string> userRoles = new List<string>();
+                        foreach (var role in roleList)
+                        {
+                            userRoles.Add(Model.Roles.FirstOrDefault(r => r.Id == role.RoleId)?.Name);
+                        }
+                        <p>
+                            @string.Join(", ", userRoles)
+                        </p>
+                    }
                 </td>
                 @if (User.IsInRole("Admin"))
                 {
                     <td class="rule-options-table-cell">
-                        @Html.ActionLink("Edit Roles", "EditUserRoles", "Admin", new { id = user.Id }, new { data_modal = "", @class = "rule-options-link" }).If(User.IsInRole("Admin"))
+                        @Html.ActionLink("Edit Roles", "EditRoles", "Admin", new { id = user.Id }, new { data_modal = "", @class = "rule-options-link" }).If(User.IsInRole("Admin"))
                         @Html.ActionLink("Delete User", "DeleteUser", "Admin", new { id = user.Id }, new { data_modal = "", @class = "rule-options-link delete" }).If(User.IsInRole("Admin"))
                     </td>
 }

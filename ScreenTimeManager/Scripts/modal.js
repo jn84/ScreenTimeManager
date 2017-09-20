@@ -99,7 +99,7 @@ function bindForm(dialog) {
         });
 
     // any <form> tag, the context in which that form tag is found
-    $("form#modalForm", dialog).submit(function() { // Why is this not called when hitting the submit button?
+    $("form#modalForm", dialog).submit(function() { 
         //alert("entered submit function");
         $.ajax({
             url: this.action,

@@ -36,6 +36,9 @@ namespace ScreenTimeManager
 
 			bundles.Add(new ScriptBundle("~/bundles/Modal").Include(
 				"~/Scripts/modal.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/MultiSelect").Include(
+				"~/Scripts/multiselect.js"));
 		}
 	}
 }
