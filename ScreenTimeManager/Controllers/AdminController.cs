@@ -85,8 +85,6 @@ namespace ScreenTimeManager.Controllers
 		{
 			List<string> allRoles = RoleManager.Roles.Select(r => r.Name).ToList();
 
-			var user = UserManager.Users.Single(u => u.Id == roleData.UserId);
-
 			// Methods are looking for role names
 
 			Debug.WriteLine("-------------------------------------------");
@@ -97,10 +95,24 @@ namespace ScreenTimeManager.Controllers
 				Debug.WriteLine(role);
 			Debug.WriteLine("-------------------------------------------");
 
-			UserManager.AddToRoles(user.Id, roleData.UserRoles.ToArray());
-			UserManager.RemoveFromRoles(user.Id, allRoles.Except(roleData.UserRoles).ToArray());
+			// this is a security hole. Someone could change the user id in form before submitting.
 
-			UserManager.Update(user);
+			var removeResult = UserManager.RemoveFromRoles(roleData.UserId, allRoles.ToArray());
+			Debug.WriteLine(removeResult.Succeeded ? "Remove roles succeeded" : "Remove roles failed");
+			foreach (var error in removeResult.Errors)
+				Debug.WriteLine(error);
+
+			var addResult = UserManager.AddToRoles(roleData.UserId, roleData.UserRoles.ToArray());
+			Debug.WriteLine(addResult.Succeeded ? "Add roles succeeded" : "Add roles failed");
+			foreach (var error in addResult.Errors)
+				Debug.WriteLine(error);
+
+
+
+			// Check if "user" is assigned to the correct roles.
+
+
+			//UserManager.Update(user);
 
 
 
