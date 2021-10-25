@@ -1,3 +1,3 @@
 # ScreenTimeManager
 
-Demo available at: sttest.plaph.org
+A screen time managing tool
